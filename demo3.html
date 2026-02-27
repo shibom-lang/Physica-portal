@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHYSICA - Department of Physics Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.11/dist/dotlottie-wc.js" type="module"></script>
+    
+    <style>
+        /* === PROFESSIONAL THEME === */
+        :root {
+            --primary: #0088ff;
+            --primary-dark: #0055ff;
+            --primary-glow: rgba(0, 136, 255, 0.4);
+            --secondary: #475569;
+            --accent: #0ea5e9;
+            --accent-glow: rgba(14, 165, 233, 0.4);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg-deep: #050810; 
+            --bg-space: #0a0e1a;
+            --surface: rgba(255, 255, 255, 0.03);
+            --surface-elevated: rgba(255, 255, 255, 0.06);
+            --text-main: #f8fafc;
+            --text-dim: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border: rgba(148, 163, 184, 0.15);
+            --border-hover: rgba(0, 136, 255, 0.3);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 8px 30px -5px var(--primary-glow), 0 0 15px rgba(0, 136, 255, 0.1);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-main);
+            line-height: 1.65;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* === ADVANCED SPACE BACKGROUND === */
+        .space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none; 
+        }
+
+        /* Nebula with original colors but subtle opacity */
+        .nebula {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(138, 43, 226, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 0, 110, 0.06) 0%, transparent 60%);
+            animation: nebulaPulse 20s ease-in-out infinite;
+        }
+
+        @keyframes nebulaPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Stars */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.9), transparent),
+                radial-gradient(2px 2px at 60% 70%, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.9), transparent),
+                radial-gradient(2px 2px at 90% 60%, rgba(255,255,255,0.7), transparent);
+            background-size: 200px 200px, 300px 300px, 150px 150px, 250px 250px, 350px 350px;
+            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px, 150px 220px;
+            animation: starsMove 120s linear infinite;
+        }
+
+        .stars-2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 40% 20%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1px 1px at 70% 50%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(2px 2px at 10% 60%, rgba(14, 165, 233, 0.6), transparent);
+            background-size: 250px 250px, 180px 180px, 300px 300px;
+            animation: starsMove 80s linear infinite reverse;
+        }
+
+        /* Shooting Stars */
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0) 100%);
+            animation: shoot 4s ease-in infinite;
+            opacity: 0;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+        }
+
+        .shooting-star:nth-child(1) { top: 15%; left: -100px; width: 120px; animation-delay: 0s; }
+        .shooting-star:nth-child(2) { top: 35%; left: -150px; width: 150px; animation-delay: 2.5s; }
+        .shooting-star:nth-child(3) { top: 55%; left: -80px; width: 90px; animation-delay: 5s; }
+        .shooting-star:nth-child(4) { top: 75%; left: -120px; width: 130px; animation-delay: 7.5s; }
+
+        @keyframes shoot {
+            0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(1000px) translateY(500px) rotate(-45deg); opacity: 0; }
+        }
+
+        @keyframes starsMove {
+            from { transform: translateY(0); }
+            to { transform: translateY(-100px); }
+        }
+
+        /* Particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 10s infinite ease-in-out;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .particle:nth-child(1) { width: 3px; height: 3px; left: 10%; top: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 2px; height: 2px; left: 25%; top: 60%; animation-delay: 1s; }
+        .particle:nth-child(3) { width: 4px; height: 4px; left: 50%; top: 40%; animation-delay: 2s; }
+        .particle:nth-child(4) { width: 2px; height: 2px; left: 75%; top: 70%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            50% { transform: translateY(-30px) translateX(20px); opacity: 1; }
+        }
+
+        /* === TYPOGRAPHY === */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.25rem; }
+
+        .mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        /* === LAYOUT === */
+        .container { 
+            max-width: 1280px; 
+            margin: 0 auto; 
+            padding: 0 2rem; 
+        }
+
+        .grid { display: grid; gap: 1.5rem; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .mt-4 { margin-top: 1rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .text-center { text-align: center; }
+        .text-sm { font-size: 0.875rem; }
+        .font-bold { font-weight: 700; }
+
+        /* === HEADER === */
+        header {
+            background: rgba(10, 14, 26, 0.7);
+            backdrop-filter: blur(16px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo { 
+            font-size: 1.35rem; 
+            font-weight: 800; 
+            color: var(--text-main); 
+            display: flex; 
+            align-items: center; 
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .logo:hover {
+            text-shadow: 0 0 15px var(--primary-glow);
+            transform: scale(1.02);
+        }
+
+        .animated-lottie-logo {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 8px rgba(0, 136, 255, 0.6));
+        }
+
+        .nav-link { 
+            color: var(--text-dim); 
+            margin-left: 2rem; 
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active { 
+            color: var(--text-main); 
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
+        }
+
+        /* === PROFESSIONAL CARDS (WITH SLIGHT GLOW) === */
+        .card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .card:hover {
+            background: var(--surface-elevated);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-4px);
+        }
+
+        .card-header { 
+            padding-bottom: 1rem; 
+            border-bottom: 1px solid var(--border); 
+            font-weight: 600; 
+            font-size: 1.1rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-body { 
+            padding-top: 1rem; 
+            color: var(--text-dim);
+        }
+
+        /* === INPUTS & BUTTONS === */
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        input, select, textarea {
+            width: 100%; 
+            padding: 0.75rem 1rem; 
+            margin-bottom: 1rem;
+            background: rgba(0, 0, 0, 0.2); 
+            border: 1px solid var(--border);
+            border-radius: 8px; 
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus { 
+            outline: none; 
+            border-color: var(--primary); 
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 12px rgba(0, 136, 255, 0.2);
+        }
+
+        .btn { 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem; 
+            border-radius: 8px; 
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer; 
+            border: none; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+        }
+
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--primary), var(--accent)); 
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 136, 255, 0.2);
+        }
+
+        .btn-primary:hover:not(:disabled) { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        .btn-outline { 
+            background: transparent; 
+            border: 1px solid var(--border); 
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: var(--surface-elevated);
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 136, 255, 0.15);
+        }
+
+        .btn-success { 
+            background: linear-gradient(135deg, var(--success), #059669); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+        
+        .btn-success:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm { 
+            padding: 0.5rem 1rem; 
+            font-size: 0.875rem; 
+        }
+
+        /* === DASHBOARD === */
+        .dashboard-layout { 
+            display: flex; 
+            gap: 2rem; 
+            min-height: 80vh; 
+            padding-top: 2rem; 
+        }
+
+        .sidebar { 
+            width: 280px; 
+            flex-shrink: 0; 
+        }
+
+        .menu-item { 
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            color: var(--text-dim); 
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .menu-item:hover { 
+            background: var(--surface); 
+            color: var(--text-main);
+            transform: translateX(4px);
+        }
+
+        .menu-item.active { 
+            background: rgba(0, 136, 255, 0.15);
+            color: var(--primary); 
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0, 136, 255, 0.1);
+        }
+
+        .content-area { 
+            flex-grow: 1; 
+        }
+
+        /* === TABLE === */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 1rem; 
+        }
+
+        th, td { 
+            padding: 0.875rem 1rem; 
+            text-align: left; 
+            border-bottom: 1px solid var(--border); 
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr {
+            transition: background 0.2s ease;
+        }
+
+        tr:hover {
+            background: var(--surface);
+        }
+
+        /* === FACULTY CARDS === */
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .faculty-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .faculty-avatar {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.15), rgba(14, 165, 233, 0.15));
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            transition: all 0.4s ease;
+        }
+
+        .faculty-card:hover .faculty-avatar {
+            transform: scale(1.1) rotate(5deg);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 136, 255, 0.3);
+        }
+
+        /* === HERO SECTION === */
+        .hero {
+            text-align: center;
+            padding: 5rem 0 3rem;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            font-weight: 400;
+        }
+
+        /* === STATS === */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* === MAGAZINE STYLES === */
+        .mag-cover {
+            width: 100%; 
+            height: 220px; 
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1) 0%, rgba(0, 217, 255, 0.1) 100%);
+            border-radius: 8px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem; 
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .mag-cover:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 136, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* === 👩‍🚀 MASCOT === */
+        .astronaut-container { 
+            position: fixed; 
+            bottom: 2rem; 
+            right: 2rem; 
+            z-index: 1000; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-end; 
+        }
+        
+        .astronaut-img { 
+            width: 90px; 
+            height: auto; 
+            filter: drop-shadow(0 0 10px rgba(0, 136, 255, 0.4)); 
+            transition: transform 0.3s ease; 
+            cursor: pointer; 
+            animation: floatSubtle 6s ease-in-out infinite; 
+            opacity: 0.95;
+        }
+        
+        .astronaut-img:hover { 
+            transform: scale(1.1) rotate(5deg);
+            opacity: 1;
+            filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.6));
+        }
+
+        @keyframes floatSubtle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .mascot-bubble { 
+            background: rgba(255, 255, 255, 0.98); 
+            color: #0f172a; 
+            padding: 0.875rem 1rem; 
+            border-radius: 12px; 
+            width: 240px; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 0.75rem; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+        
+        .mascot-bubble.show { 
+            opacity: 1; 
+            visibility: visible; 
+        }
+        
+        /* === RESPONSIVE FIXES === */
+        @media (max-width: 768px) { 
+            header .container { flex-direction: column; gap: 1rem; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; padding: 0; }
+            .nav-link { margin-left: 0; margin: 0 5px; font-size: 0.9rem; }
+            .hero h1 { font-size: 2.2rem; word-wrap: break-word; line-height: 1.2; }
+            .container { width: 100%; padding: 0 1.5rem; overflow-x: hidden; }
+            .dashboard-layout { flex-direction: column; } 
+            .sidebar { width: 100%; }
+            .grid-2 { grid-template-columns: 1fr; }
+            #login-form, #signup-form { width: 100% !important; margin-top: 2rem !important; }
+            .astronaut-container { bottom: 15px; right: 15px; }
+            .astronaut-img { width: 70px; }
+            .mascot-bubble { width: 180px; right: 0; }
+        }
+
+        /* === CUSTOM SCROLLBAR === */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-space); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+    </style>
+</head>
+
+<body>
+    <div class="space-bg">
+        <div class="nebula"></div>
+        <div class="stars"></div>
+        <div class="stars-2"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container flex justify-between items-center">
+            <div class="logo">
+                <dotlottie-wc src="https://lottie.host/b591dbd3-2f76-46d5-9a96-a0b97b60d11b/PY2eF3h4KP.lottie" autoplay loop class="animated-lottie-logo"></dotlottie-wc>
+                <span>PHYSICA</span>
+            </div>
+            <nav>
+                <ul class="flex" id="mainNav"></ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="app" class="container" style="padding-bottom: 3rem; min-height: 80vh;">
+    </main>
+
+    <div class="astronaut-container">
+        <div id="mascotBubble" class="mascot-bubble">Hi! I am Astro. Welcome to our Physics Portal!</div>
+        <img src="https://raw.githubusercontent.com/shibom-lang/projects/refs/heads/main/vecteezy_cartoon-astronaut-celebrating-in-space-outer-space-digital_56706303.png" class="astronaut-img" onclick="document.getElementById('mascotBubble').classList.toggle('show')" alt="Astro Mascot">
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const API_URL = "http://localhost:5001/api";
+
+        // --- DATA STORE ---
+        const STATIC_DATA = {
+            faculty: [
+                { name: 'Dr. Subir Sarkar', designation: 'Associate Professor &', qualification: 'M.Sc, PhD', email: 'subir@avcollege.ac.in', image: '👨‍🏫', pdf:'https://drive.google.com/file/d/17BxaOcQsYW_I2yPXG03WSiDI7Vp7i5Rt/view?usp=drive_link' },
+                { name: 'Dr. Apurba Kumar Das', designation: 'Assistant Professor & HoD', qualification: 'M.Sc, PhD', email: 'apurba@avcollege.ac.in', image: '👨‍🔬', pdf:'https://drive.google.com/file/d/12QQGOdejGWG6Qx7Nw5vsvFL-M7o5TC9o/view?usp=drive_link' },
+                { name: 'Dr. Bhupali Sharma', designation: 'Assistant Professor', qualification: 'M.Sc, PhD', email: 'bhupali@avcollege.ac.in', image: '👩‍🏫', pdf:'https://drive.google.com/file/d/1fXVDslvCRy0sn_FfKh-TxhR7W28UvrLb/view?usp=drive_link'},
+                { name: 'Dr. Anupama Devi', designation: 'Assistant Professor', qualification: 'M.Sc, PhD', email: 'bhupali@avcollege.ac.in', image: '👩‍🔬', pdf:'https://drive.google.com/file/d/18bjhndTC8s_nohIs8hH-_8yxBZMMEUfC/view?usp=drive_link' },
+                { name: 'Dr. Krishna Kingkar Pathak', designation: 'Assistant Professor', qualification: 'M.Sc, PhD', email: 'bhupali@avcollege.ac.in', image: '👨‍🏫', pdf:'https://drive.google.com/file/d/1Oxt6Pl9lfNJ5rK9UgSiq2Re9ntZeb69i/view?usp=drive_link' },
+                { name: 'Nayan Narayan Das', designation: 'Assistant Professor', qualification: 'M.Sc', email: 'bhupali@avcollege.ac.in', image: '👨‍🔬', pdf:'https://drive.google.com/file/d/1jiptm-ANpnFTNKWIrPWd0SnrSW-miacL/view?usp=drive_link' },
+                { name: 'Dr. Deepak Mazumdar', designation: 'Assistant Professor', qualification: 'M.Sc, PhD', email: 'bhupali@avcollege.ac.in', image: '👨‍🏫', pdf:'https://drive.google.com/file/d/1X2_PmVr3KvlHU1iDTv1fgE53DHIhtxny/view?usp=drive_link' }
+            ],
+            magazines: {
+                kalavatika: {
+                    title: "🎨 Kalavatika",
+                    issue: "Volume 12, 2026",
+                    content: "<h3>Welcome to Kalavatika</h3><p>This section features the scanned copies of our wall magazine...</p>"
+                },
+                annual: {
+                    title: "📖 Annual Department Magazine",
+                    issue: "Edition 2025-26",
+                    content: "<h3>Annual Publication</h3><p>Featuring research papers, student articles, and department highlights...</p>"
+                }
+            }
+        };
+
+        let currentUser = null;
+        const routes = {
+            home: renderHome,
+            faculty: renderFaculty,
+            magazines: renderMagazines,
+            blogs: renderBlogs,
+            resources: renderResources,
+            login: renderLogin,
+            notices: renderNotices,
+            research: renderResearch
+        };
+
+        // --- NAVIGATION ---
+        function navigate(page) {
+            if (routes[page]) routes[page]();
+            updateNav(page);
+        }
+
+        function updateNav(activePage) {
+            const pages = currentUser ? 
+                (currentUser.role === 'teacher' ? ['home', 'faculty', 'notices', 'magazines', 'blogs', 'resources'] : ['home', 'faculty', 'notices', 'magazines', 'resources']) : 
+                ['home', 'faculty', 'notices', 'magazines', 'blogs', 'resources', 'login'];
+            
+            const nav = document.getElementById('mainNav');
+            nav.innerHTML = pages.map(p => 
+                `<li><a class="nav-link ${p === activePage ? 'active' : ''}" onclick="navigate('${p}')">${p.toUpperCase()}</a></li>`
+            ).join('');
+
+            if (currentUser) {
+                nav.innerHTML += `<li><a class="nav-link" onclick="logout()">LOGOUT</a></li>`;
+                nav.innerHTML += `<li><a class="nav-link" onclick="goToDashboard()">DASHBOARD</a></li>`;
+            }
+        }
+
+        function goToDashboard() {
+            if (currentUser.role === 'teacher') renderTeacherDash();
+            else renderStudentDash();
+        }
+
+        function logout() {
+            currentUser = null;
+            navigate('home');
+        }
+
+        // --- PAGE RENDERS ---
+        function renderHome() {
+            document.getElementById('app').innerHTML = `
+                <div class="hero">
+                    <h1>Welcome to the Physics Department</h1>
+                    <p>Exploring the Universe from Quarks to Cosmos, one equation at a time</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="card stat-card">
+                        <div class="stat-value">15+</div>
+                        <div class="stat-label">Research Papers</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Faculty Members</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-value">120+</div>
+                        <div class="stat-label">Students</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-value">3+</div>
+                        <div class="stat-label">Lab Facilities</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-2" style="margin-top: 3rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <span>🎯</span>
+                            <span>Our Mission</span>
+                        </div>
+                        <div class="card-body">
+                            <p>To provide world-class education in physics while fostering critical thinking, scientific inquiry, and research excellence. We prepare students for careers in academia, industry, and research institutions.</p>
+                        </div>
+                    </div>
+                   <div class="card" onclick="navigate('research')" style="cursor: pointer; border: 1px solid rgba(0, 136, 255, 0.4);">
+                        <div class="card-header">
+                            <span>🔬</span>
+                            <span>Research Areas</span>
+                        </div>
+                        <div class="card-body">
+                            <p>Our department teachers are involved in cutting-edge research in quantum mechanics, condensed matter physics, particle physics, astrophysics, and computational physics with state-of-the-art facilities.</p>
+                            <p style="color: var(--primary); margin-top: 15px; font-weight: 600; font-size: 0.9rem;">
+                                👉 Click here to view publications and ongoing projects
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span>📚</span>
+                            <span>Academic Programs</span>
+                        </div>
+                        <div class="card-body">
+                            <p>Comprehensive undergraduate programs designed to build strong theoretical foundations and practical laboratory skills in all areas of physics.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span>🌟</span>
+                            <span>Student Activities</span>
+                        </div>
+                        <div class="card-body">
+                            <p>Regular seminars, workshops, science fairs, and collaborative research projects provide students with opportunities to engage with the broader scientific community.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function renderFaculty() {
+            document.getElementById('app').innerHTML = `
+                <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; color: var(--primary);">👨‍🏫 Our Faculty</h2>
+                <div id="faculty-loader" class="text-center" style="color: var(--primary);">Loading dynamic profiles...</div>
+                <div id="faculty-grid" class="faculty-grid hidden"></div>
+            `;
+
+            try {
+                const res = await fetch(`${API_URL}/faculty`);
+                const facultyData = await res.json();
+                const container = document.getElementById('faculty-grid');
+                
+                document.getElementById('faculty-loader').classList.add('hidden');
+                container.classList.remove('hidden');
+
+                if (facultyData.length === 0) {
+                    container.innerHTML = `<p class="text-center" style="color: var(--text-dim); grid-column: 1/-1;">No faculty members registered yet.</p>`;
+                    return;
+                }
+
+                container.innerHTML = facultyData.map(f => `
+                    <div class="card faculty-card" style="border-top: 4px solid var(--secondary);">
+                        
+                        ${f.profilePicture 
+                            ? `<img src="http://localhost:5001/${f.profilePicture}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 3px solid var(--primary); box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);">` 
+                            : `<div class="faculty-avatar" style="font-size: 5rem; margin-bottom: 1rem;">🧑‍🏫</div>`
+                        }
+                        
+                        <h3 style="color: white; margin-bottom: 0.5rem; font-size: 1.4rem;">${f.name}</h3>
+                        <p style="color: var(--primary); margin-bottom: 0.5rem; font-weight: bold; letter-spacing: 0.05em;">${f.designation || 'Faculty Member'}</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 1rem; color: var(--accent);">${f.qualifications || 'Qualifications pending'}</p>
+                        
+                        <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);">
+                            <p style="font-size: 0.85rem; color: var(--text-main); line-height: 1.6; font-style: italic;">"${f.bio}"</p>
+                        </div>
+                        
+                        <a href="mailto:${f.username}@avcollege.ac.in" class="btn btn-outline btn-sm" style="width: 100%; border-color: rgba(255,255,255,0.2); color: var(--text-dim);">✉️ Contact Faculty</a>
+                    </div>
+                `).join('');
+            } catch (err) {
+                document.getElementById('faculty-loader').innerHTML = "Server Offline";
+            }
+        }
+
+        async function renderMagazines() {
+            document.getElementById('app').innerHTML = `
+                <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">Departmental Magazines</h2>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="mag-cover">🎨</div>
+                        <h3 style="color: var(--text-main); margin-bottom: 0.5rem;">Kalavatika (Wall Magazine)</h3>
+                        <p style="color: var(--text-tertiary); font-size: 0.875rem; margin-bottom: 1rem;">Student creativity showcase</p>
+                        <div id="kalavatika-list" style="color: var(--text-dim);">Loading issues...</div>
+                    </div>
+                    <div class="card">
+                        <div class="mag-cover">📖</div>
+                        <h3 style="color: var(--text-main); margin-bottom: 0.5rem;">Annual Department Magazine</h3>
+                        <p style="color: var(--text-tertiary); font-size: 0.875rem; margin-bottom: 1rem;">Yearly publication highlights</p>
+                        <div id="annual-list" style="color: var(--text-dim);">Loading issues...</div>
+                    </div>
+                </div>
+            `;
+
+            try {
+                const userRole = currentUser ? currentUser.role : 'outsider';
+                const res = await fetch(`${API_URL}/resources?role=${userRole}`);
+                const files = await res.json();
+                
+                const kFiles = files.filter(f => f.type === 'Kalavatika');
+                const aFiles = files.filter(f => f.type === 'Annual');
+
+                const createLink = (f) => `<a href="http://localhost:5001/${f.filePath}" target="_blank" class="btn btn-outline btn-sm" style="display:block; margin-top:0.75rem; text-align: left;">📄 ${f.title}</a>`;
+
+                document.getElementById('kalavatika-list').innerHTML = kFiles.length ? kFiles.map(createLink).join('') : '<p style="color: var(--text-tertiary); font-size: 0.875rem;">No issues available yet.</p>';
+                document.getElementById('annual-list').innerHTML = aFiles.length ? aFiles.map(createLink).join('') : '<p style="color: var(--text-tertiary); font-size: 0.875rem;">No issues available yet.</p>';
+            } catch (err) { 
+                console.error(err);
+                document.getElementById('kalavatika-list').innerHTML = '<p style="color: var(--error);">Server offline</p>';
+                document.getElementById('annual-list').innerHTML = '<p style="color: var(--error);">Server offline</p>';
+            }
+        }
+
+        function renderResources() {
+            if (!currentUser) {
+                document.getElementById('app').innerHTML = `
+                    <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">Study Resources</h2>
+                    <div class="card text-center" style="padding: 4rem 2rem;">
+                        <h1 style="font-size: 4rem; margin-bottom: 1rem; text-shadow: none;">🔒</h1>
+                        <h2 style="color: var(--error);">Access Restricted</h2>
+                        <p style="color: var(--text-dim); margin-top: 1rem;">Academic notes are exclusively available to Arya Vidyapeeth College students and faculty.</p>
+                        <p style="color: var(--text-dim);">Outsiders may still freely view our Blogs, Magazines, and Achievements.</p>
+                        <button onclick="navigate('login')" class="btn btn-primary mt-4">Login with Student ID</button>
+                    </div>
+                `;
+                return;
+            }
+
+            document.getElementById('app').innerHTML = `
+                <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">Study Resources</h2>
+                <div class="card">
+                    <div class="card-header">Available Downloads</div>
+                    <div class="card-body" id="resources-list">
+                        <p style="color: var(--text-dim);">Loading resources...</p>
+                    </div>
+                </div>
+            `;
+            loadFiles('resources-list');
+        }
+
+        function renderLogin() {
+            document.getElementById('app').innerHTML = `
+                <div style="max-width: 500px; margin: 4rem auto;">
+                    <div id="login-form" class="card">
+                        <div class="card-header" style="border: none; padding-bottom: 0.5rem; justify-content: center;">
+                            <h2 style="font-size: 1.5rem; color: var(--text-main); text-shadow: 0 0 10px rgba(0,136,255,0.3);">PORTAL LOGIN</h2>
+                        </div>
+                        <div class="card-body">
+                            <form onsubmit="handleLogin(event)">
+                                <label>Username</label>
+                                <input type="text" id="username" required>
+                                <label>Password</label>
+                                <input type="password" id="password" required>
+                                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">ENTER PORTAL</button>
+                            </form>
+                            <p class="text-center mt-4 text-sm" style="color: var(--text-dim);">
+                                New here? <a onclick="toggleForms()" style="color: var(--primary); font-weight: 600; cursor:pointer; text-decoration: none; text-shadow: 0 0 8px rgba(0,136,255,0.3);">Initialize Account</a>
+                            </p>
+                        </div>
+                    </div>
+        
+                    <div id="signup-form" class="card hidden">
+                        <div class="card-header" style="border: none; padding-bottom: 0.5rem; justify-content: center;">
+                            <h2 style="font-size: 1.5rem; color: var(--success); text-shadow: 0 0 10px rgba(16,185,129,0.3);">REGISTER</h2>
+                        </div>
+                        <div class="card-body">
+                            <form onsubmit="handleRegister(event)">
+                                <label>Full Name</label>
+                                <input type="text" name="name" placeholder="e.g. Rahul Sharma" required>
+                                
+                                <label>Role</label>
+                                <select name="role" id="roleSelect" onchange="toggleRoleFields()">
+                                    <option value="student">Student</option>
+                                    <option value="teacher">Teacher</option>
+                                </select>
+
+                                <div id="student-fields">
+                                    <label>12-Digit Roll Number</label>
+                                    <input type="text" name="rollNumber" placeholder="e.g. 123456789012" minlength="12" maxlength="12">
+                                    
+                                    <label>Semester</label>
+                                    <input type="text" name="semester" placeholder="e.g. 4th Semester">
+                                </div>
+                                
+                                <div id="teacher-fields" class="hidden">
+                                    <label>Choose Username</label>
+                                    <input type="text" name="username" placeholder="e.g. prof_subir">
+
+                                    <label>Designation</label>
+                                    <input type="text" name="designation" placeholder="e.g. Assistant Professor">
+                                    
+                                    <label style="color: var(--accent);">🔒 Teacher Secret Code</label>
+                                    <input type="password" name="adminCode" placeholder="Required for Teachers">
+                                </div>
+
+                                <label>Choose Password</label>
+                                <input type="password" name="password" placeholder="Strong Password" required>
+
+                                <button type="submit" class="btn btn-success" style="width: 100%; margin-top: 1rem;">CREATE ACCOUNT</button>
+                            </form>
+                            <p class="text-center mt-4 text-sm" style="color: var(--text-dim);">
+                                Has account? <a onclick="toggleForms()" style="color: var(--primary); font-weight: 600; cursor:pointer;">Login</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } 
+
+        // --- AUTHENTICATION FUNCTIONS ---
+        async function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+                if (res.ok) {
+                    currentUser = await res.json();
+                    alert(`✅ Welcome ${currentUser.name}`);
+                    if (currentUser.role === 'teacher') renderTeacherDash(); else renderStudentDash();
+                } else { alert("❌ Invalid Credentials"); }
+            } catch (err) { alert("Server Error"); }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const form = e.target;
+            const role = form.role.value;
+            const userData = {
+                name: form.name.value,
+                password: form.password.value,
+                role: role,
+                semester: form.semester ? form.semester.value : '',
+                rollNumber: form.rollNumber ? form.rollNumber.value : '',
+                username: form.username ? form.username.value : '',
+                designation: form.designation ? form.designation.value : '',
+                adminCode: form.adminCode ? form.adminCode.value : ''
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData)
+                });
+                const data = await res.json();
+                if (res.ok) { 
+                    if (role === 'student') {
+                        alert(`✅ Registration Sent!\n\nYour Official Username is:\n👉 ${data.generatedUsername} 👈\n\nPlease save this! You can login once a teacher approves your account.`);
+                    } else {
+                        alert(`✅ Teacher Account Created! Please Login.`);
+                    }
+                    toggleForms(); 
+                    form.reset();
+                } else { alert("❌ Failed: " + data.message); }
+            } catch (err) { alert("Server Error"); }
+        }
+
+        function toggleForms() {
+            document.getElementById('login-form').classList.toggle('hidden');
+            document.getElementById('signup-form').classList.toggle('hidden');
+        }
+
+        function toggleRoleFields() {
+            const role = document.getElementById('roleSelect').value;
+            if(role === 'teacher') { 
+                document.getElementById('teacher-fields').classList.remove('hidden'); 
+                document.getElementById('student-fields').classList.add('hidden'); 
+            } else { 
+                document.getElementById('teacher-fields').classList.add('hidden'); 
+                document.getElementById('student-fields').classList.remove('hidden'); 
+            }
+        }
+
+        // --- DASHBOARDS ---
+        function renderTeacherDash() {
+            document.getElementById('app').innerHTML = `
+                <div class="dashboard-layout">
+                    <aside class="sidebar">
+                        <div class="card text-center" style="margin-bottom: 1.5rem;">
+                            <div class="faculty-avatar" style="margin: 0 auto 1rem;">👨‍🏫</div>
+                            <h4 style="margin-bottom: 0.5rem;">${currentUser.name}</h4>
+                            <p class="text-sm" style="color: var(--text-dim);">${currentUser.designation}</p>
+                            <span style="display:inline-block; margin-top: 0.75rem; background: rgba(0, 136, 255, 0.15); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">Teacher</span>
+                        </div>
+                        <nav>
+                            <div class="menu-item active" onclick="switchTab('t-upload')">📁 Repository</div>
+                            <div class="menu-item" onclick="switchTab('t-blog')">✍️ Blog Writer</div>
+                            <div class="menu-item" onclick="switchTab('t-approve'); loadPendingStudents();">👥 Approvals</div>
+                            <div class="menu-item" onclick="switchTab('t-notice')">📢 Post Notice</div> 
+                            <div class="menu-item" onclick="switchTab('t-research')">🔬 Share Research</div>
+                            <div class="menu-item" onclick="switchTab('t-profile')">⚙️ Profile Settings</div>
+                        </nav>
+                    </aside>
+                    <section class="content-area">
+                              <div id="t-profile" class="tab-content hidden">
+                              <h2 class="mb-4" style="color: var(--primary);">Update Your Profile</h2>
+                              <div class="card">
+                                   <form onsubmit="handleProfileUpdate(event)">
+                                       <div style="text-align: center; margin-bottom: 2rem; padding: 20px; background: rgba(0, 217, 255, 0.05); border-radius: 10px; border: 1px dashed var(--primary);">
+                                          <p style="color: var(--text-main); margin-bottom: 10px; font-weight: bold;">Upload Professional Headshot</p>
+                                       <input type="file" name="profilePic" accept="image/*" style="max-width: 300px; margin: 0 auto; display: block;">
+                                       </div>
+                                           <label class="text-sm">Highest Qualifications</label>
+                                           <input type="text" name="qualifications" placeholder="e.g. M.Sc, PhD in Particle Physics" value="${currentUser.qualifications || ''}">
+            
+                                     <label class="text-sm">Short Bio</label>
+                                   <textarea name="bio" rows="4" placeholder="write about yourself, academic journey,research interests, and teaching experience...">${currentUser.bio || ''}</textarea>
+            
+                                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">💾 Save Profile Updates</button>
+                                 </form>
+                               </div>
+                            </div>
+                        <div id="t-research" class="tab-content hidden">
+                            <h2 class="mb-4">Post to Research Feed</h2>
+                            <div class="card">
+                                <form onsubmit="handleResearchPost(event)">
+                                    <div style="background: var(--surface-elevated); padding: 15px; border-radius: 8px; border: 1px dashed rgba(0, 136, 255, 0.5); margin-bottom: 20px;">
+                                        <p style="font-size: 0.85rem; color: var(--accent); margin-bottom: 10px;"><strong>Uploading for an Ex-Student?</strong> (Leave blank if posting for yourself)</p>
+                                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                                            <div>
+                                                <label>Credit Author Name</label>
+                                                <input type="text" name="customAuthor" placeholder="e.g. Rahul Sharma (Alumni)">
+                                            </div>
+                                            <div>
+                                                <label>Role</label>
+                                                <select name="customRole">
+                                                    <option value="Faculty">Faculty (Me)</option>
+                                                    <option value="Alumni">Alumni / Ex-Student</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label>Research Title</label>
+                                    <input type="text" name="title" placeholder="e.g. Quantum Entanglement Study" required>
+                                    <label>Caption / Summary</label>
+                                    <textarea name="caption" rows="4" placeholder="Talk about the lab work, patent, or project..." required></textarea>
+                                    <label style="color: var(--accent); margin-top: 10px;">Cover Photo (Optional Image)</label>
+                                    <input type="file" name="photo" accept="image/*">
+                                    <label style="color: var(--success); margin-top: 10px;">Research Document (Optional PDF)</label>
+                                    <input type="file" name="document" accept=".pdf,.doc,.docx">
+                                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Publish to Feed</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="t-notice" class="tab-content hidden">
+                            <h2 class="mb-4">Broadcast Notice</h2>
+                            <div class="card">
+                                <form onsubmit="handleNoticePost(event)">
+                                    <label>Notice Title</label>
+                                    <input type="text" name="title" placeholder="e.g. End Semester Exam Schedule" required>
+                                    <label>Description / Details</label>
+                                    <textarea name="content" rows="4" placeholder="Write the announcement details here..."></textarea>
+                                    <label>Attach File (Optional PDF/Image)</label>
+                                    <input type="file" name="file">
+                                    <button type="submit" class="btn btn-primary" style="background: var(--accent); width: 100%; margin-top: 1rem;">Broadcast to Notice Board</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="t-approve" class="tab-content hidden">
+                          <h2 class="mb-4">Student Approvals</h2>
+                           <div class="card">
+                               <div class="card-header">Pending Requests</div>
+                               <div class="card-body" id="pending-list">Loading...</div>
+                          </div>
+                        </div>
+
+                        <div id="t-upload" class="tab-content">
+                            <h2 class="mb-4">Repository Manager</h2>
+                            <div class="card mb-4">
+                                <div class="card-header">Upload File</div>
+                                <div class="card-body">
+                                    <form onsubmit="handleUpload(event, 'teacher')">
+                                        <label>File Title</label>
+                                        <input type="text" name="title" placeholder="e.g. Quantum Mechanics Notes" required>
+                                        <label>Category</label>
+                                        <select name="docType" required>
+                                            <option value="Resource">📚 Study Resource (Notes)</option>
+                                            <option value="Kalavatika">🎨 Kalavatika Magazine</option>
+                                            <option value="Annual">📖 Annual Magazine</option>
+                                        </select>
+                                        <label>Select File</label>
+                                        <input type="file" name="file" required>
+                                        <button type="submit" class="btn btn-primary" style="margin-top:10px; width: 100%;">Upload File</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">Uploaded Files</div>
+                                <div class="card-body" id="teacher-file-list">Loading...</div>
+                            </div>
+                        </div>
+
+                        <div id="t-blog" class="tab-content hidden">
+                            <h2 class="mb-4">Department Blog</h2>
+                            <div class="card">
+                                <label>Blog Title</label>
+                                <input type="text" id="blogTitle" placeholder="Blog Title">
+                                <label>Content</label>
+                                <textarea id="blogContent" rows="6" placeholder="Write your blog content here..."></textarea>
+                                <button onclick="handleBlog()" class="btn btn-primary" style="width: 100%;">Publish Blog</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+            loadFiles('teacher-file-list');
+        }
+
+        function renderStudentDash() {
+            document.getElementById('app').innerHTML = `
+                <div class="dashboard-layout">
+                    <aside class="sidebar">
+                        <div class="card text-center" style="margin-bottom: 1.5rem;">
+                            <div class="faculty-avatar" style="margin: 0 auto 1rem;">🎓</div>
+                            <h4 style="margin-bottom: 0.5rem;">${currentUser.name}</h4>
+                            <p class="text-sm" style="color: var(--text-dim);">${currentUser.semester}</p>
+                            <span style="display:inline-block; margin-top: 0.75rem; background: rgba(16, 185, 129, 0.15); color: var(--success); padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">Student</span>
+                        </div>
+                        <nav>
+                            <div class="menu-item active" onclick="switchTab('s-overview')">📊 Attendance</div>
+                            <div class="menu-item" onclick="switchTab('s-resources')">📥 Downloads</div>
+                            <div class="menu-item" onclick="switchTab('s-research')">🔬 Share Research</div>
+                        </nav>
+                    </aside>
+                    <section class="content-area">
+                        <div id="s-research" class="tab-content hidden">
+                            <h2 class="mb-4">Share Your Research</h2>
+                            <div class="card">
+                                <form onsubmit="handleResearchPost(event)">
+                                    <label>Research Title</label>
+                                    <input type="text" name="title" placeholder="e.g. My Final Year Physics Project" required>
+                                    <label>Caption / Summary</label>
+                                    <textarea name="caption" rows="4" placeholder="Talk about your project or upload your paper..." required></textarea>
+                                    <label style="color: var(--accent); margin-top: 10px;">Cover Photo (Optional Image)</label>
+                                    <input type="file" name="photo" accept="image/*">
+                                    <label style="color: var(--success); margin-top: 10px;">Research Document (Optional PDF)</label>
+                                    <input type="file" name="document" accept=".pdf,.doc,.docx">
+                                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Publish to Feed</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="s-overview" class="tab-content">
+                            <h2 class="mb-4">Attendance Overview</h2>
+                            <div class="grid grid-2">
+                                <div class="card text-center">
+                                    <div class="card-header" style="justify-content: center;">January 2026</div>
+                                    <div class="card-body">
+                                        <p style="font-size: 2rem; font-weight: 700; color: var(--primary); line-height: 1; text-shadow: 0 0 10px rgba(0,136,255,0.3);">${currentUser.attendance?.jan?.attended || 0} / ${currentUser.attendance?.jan?.total || 0}</p>
+                                        <p style="color: var(--text-dim); font-size: 0.875rem; margin-top: 0.5rem; text-transform: uppercase;">Classes Attended</p>
+                                    </div>
+                                </div>
+                                <div class="card text-center">
+                                    <div class="card-header" style="justify-content: center;">February 2026</div>
+                                    <div class="card-body">
+                                        <p style="font-size: 2rem; font-weight: 700; color: var(--primary); line-height: 1; text-shadow: 0 0 10px rgba(0,136,255,0.3);">${currentUser.attendance?.feb?.attended || 0} / ${currentUser.attendance?.feb?.total || 0}</p>
+                                        <p style="color: var(--text-dim); font-size: 0.875rem; margin-top: 0.5rem; text-transform: uppercase;">Classes Attended</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="s-resources" class="tab-content hidden">
+                            <h2 class="mb-4">Available Resources</h2>
+                            <div class="card">
+                                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Files</span>
+                                    <button class="btn btn-sm btn-outline" onclick="loadFiles('student-file-list')">🔄 Refresh</button>
+                                </div>
+                                <div class="card-body" id="student-file-list">Loading...</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+            loadFiles('student-file-list');
+        }
+
+        // --- BACKEND LOGIC ---
+        async function handleUpload(e, role) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData();
+            const type = form.docType ? form.docType.value : 'Resource';
+
+            formData.append('title', form.title.value);
+            formData.append('type', type);
+            formData.append('uploader', currentUser.name);
+            formData.append('role', role);
+            formData.append('file', form.querySelector('input[type="file"]').files[0]);
+
+            try {
+                const res = await fetch(`${API_URL}/upload`, { method: 'POST', body: formData });
+                if (res.ok) {
+                    alert(`✅ Upload Successful! Added to ${type}`);
+                    form.reset();
+                    if (role === 'teacher') loadFiles('teacher-file-list');
+                } else { alert("❌ Upload Failed"); }
+            } catch (err) { alert("⚠️ Server Error - Please check if backend is running"); }
+        }
+
+        async function handleNoticePost(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData();
+            
+            formData.append('title', form.title.value);
+            formData.append('content', form.content.value);
+            formData.append('author', currentUser.name);
+            formData.append('role', currentUser.role);
+            
+            const fileInput = form.querySelector('input[type="file"]');
+            if (fileInput.files.length > 0) {
+                formData.append('file', fileInput.files[0]);
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/notices`, { method: 'POST', body: formData });
+                if (res.ok) {
+                    alert("📢 Notice Broadcasted Successfully!");
+                    form.reset();
+                    renderNotices(); 
+                    updateNav('notices');
+                } else { alert("❌ Failed to post notice."); }
+            } catch (err) { alert("Server Error"); }
+        }
+
+        async function handleResearchPost(e) {
+            e.preventDefault(); 
+            const form = e.target;
+            const formData = new FormData();
+            
+            const customAuthor = form.customAuthor ? form.customAuthor.value.trim() : "";
+            const finalAuthor = customAuthor !== "" ? customAuthor : currentUser.name;
+            const finalRole = form.customRole ? form.customRole.value : currentUser.role;
+
+            formData.append('title', form.title.value);
+            formData.append('caption', form.caption.value);
+            formData.append('author', finalAuthor); 
+            formData.append('role', finalRole); 
+            
+            const photoInput = form.querySelector('input[name="photo"]');
+            if (photoInput && photoInput.files.length > 0) {
+                formData.append('photo', photoInput.files[0]);
+            }
+
+            const docInput = form.querySelector('input[name="document"]');
+            if (docInput && docInput.files.length > 0) {
+                formData.append('document', docInput.files[0]);
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/research-feed`, { method: 'POST', body: formData });
+                if (res.ok) {
+                    alert("✅ Research Published Successfully!");
+                    form.reset(); 
+                    navigate('research'); 
+                } else { alert("❌ Failed to publish post."); }
+            } catch (err) { alert("⚠️ Server Error - Make sure your backend is running."); }
+        }
+
+        async function handleBlog() {
+            const title = document.getElementById('blogTitle').value;
+            const content = document.getElementById('blogContent').value;
+            
+            if (!title || !content) {
+                alert("⚠️ Please fill in both title and content!");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/blogs`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title: title, content: content, author: currentUser.name })
+                });
+
+                if (res.ok) {
+                    alert("✅ Blog Published Successfully!");
+                    document.getElementById('blogTitle').value = '';
+                    document.getElementById('blogContent').value = '';
+                    renderBlogs(); 
+                } else { alert("❌ Failed to publish. Check console for details."); }
+            } catch (err) { alert("⚠️ Server Error - Is the backend running?"); }
+        }
+
+        async function loadFiles(elementId) {
+            try {
+                const userRole = currentUser ? currentUser.role : 'outsider';
+                const res = await fetch(`${API_URL}/resources?role=${userRole}`);
+                const files = await res.json();
+                const container = document.getElementById(elementId);
+                
+                if (files.length === 0) { 
+                    container.innerHTML = "<p style='color: var(--text-dim);'>No files found.</p>"; 
+                    return; 
+                }
+        
+                const isTeacher = currentUser && currentUser.role === 'teacher';
+        
+                container.innerHTML = `<table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Action</th>
+                            ${isTeacher ? '<th>Admin</th>' : ''} 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${files.map(f => `
+                            <tr>
+                                <td style="color: var(--text-main); font-weight: 500;">${f.title}</td>
+                                <td><span style="background: rgba(0, 136, 255, 0.15); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">${f.type}</span></td>
+                                <td><a href="http://localhost:5001/${f.filePath}" target="_blank" class="btn btn-sm btn-outline">⬇️ Download</a></td>
+                                ${isTeacher ? `<td><button onclick="deleteItem('${f._id}', 'resources')" class="btn btn-sm" style="background:var(--error); color:white; border:none; padding:5px 10px;">🗑️</button></td>` : ''}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>`;
+            } catch (err) { document.getElementById(elementId).innerHTML = "<p style='color: var(--error);'>Unable to load files.</p>"; }
+        }
+
+        async function renderNotices() {
+            document.getElementById('app').innerHTML = `
+                <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">📢 Digital Notice Board</h2>
+                <div id="notice-loader" class="text-center" style="color: var(--text-dim);">Loading notices...</div>
+                <div id="notice-container" class="grid grid-2 hidden"></div>
+            `;
+            
+            try {
+                const res = await fetch(`${API_URL}/notices`);
+                const notices = await res.json();
+                const container = document.getElementById('notice-container');
+                document.getElementById('notice-loader').classList.add('hidden');
+                container.classList.remove('hidden');
+
+                if (notices.length === 0) {
+                    container.innerHTML = `<div class="card text-center" style="grid-column:1/-1"><p style="color:var(--text-dim);">No active notices at this time.</p></div>`;
+                    return;
+                }
+
+                const isTeacher = currentUser && currentUser.role === 'teacher';
+
+                container.innerHTML = notices.map(n => `
+                    <div class="card" style="border-left: 4px solid var(--accent);">
+                        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; border:none; padding-bottom: 0;">
+                            <span style="color: var(--text-main); font-size: 1.1rem;">${n.title}</span>
+                            ${isTeacher ? `<button onclick="deleteItem('${n._id}', 'notices')" class="btn btn-sm" style="background:var(--error); padding:2px 8px; color: white;">🗑️</button>` : ''}
+                        </div>
+                        <div class="card-body" style="padding-top: 0.5rem;">
+                            <p style="font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 1rem;">
+                                Posted by ${n.author} • ${new Date(n.date).toLocaleDateString()}
+                            </p>
+                            <p style="white-space: pre-wrap; margin-bottom: 1rem; color: var(--text-dim);">${n.content || ''}</p>
+                            ${n.filePath ? `<a href="http://localhost:5001/${n.filePath}" target="_blank" class="btn btn-sm btn-outline">📎 View Attachment</a>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) { document.getElementById('notice-loader').innerHTML = "Server Offline"; }
+        }
+
+        async function renderBlogs() {
+            document.getElementById('app').innerHTML = `
+                <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">Department Blogs</h2>
+                <div id="blog-loader" class="text-center" style="color: var(--text-dim);">Loading posts...</div>
+                <div id="blog-container" class="grid grid-2 hidden"></div>
+            `;
+        
+            try {
+                const res = await fetch(`${API_URL}/blogs`);
+                const blogs = await res.json();
+                const container = document.getElementById('blog-container');
+                const loader = document.getElementById('blog-loader');
+                
+                const isTeacher = currentUser && currentUser.role === 'teacher';
+        
+                loader.classList.add('hidden');
+                container.classList.remove('hidden');
+        
+                if (blogs.length === 0) {
+                    container.innerHTML = `<div class="card text-center" style="grid-column:1/-1"><h3 style="color: var(--text-dim);">No Blogs Yet</h3></div>`;
+                    return;
+                }
+        
+                container.innerHTML = blogs.map(b => {
+                    let seoBox = "";
+                    if (!b.content.includes('<img')) {
+                        seoBox = `
+                        <div class='infographic-placeholder' style='
+                            background: var(--surface-elevated); 
+                            padding: 1.25rem; 
+                            border-left: 4px solid var(--primary); 
+                            margin-top: 1.5rem; 
+                            border-radius: 8px;'>
+                            <h4 style='margin:0 0 0.5rem 0; color:var(--text-main); font-size:1.05rem;'>
+                                📌 Infographic Summary: ${b.title}
+                            </h4>
+                            <p style='margin:0; font-size:0.85rem; color:var(--text-dim);'>
+                                (Visual summary automatically generated for SEO optimization)
+                            </p>
+                        </div>`;
+                    }
+        
+                    return `
+                    <div class="card">
+                        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span>${b.title}</span>
+                            ${isTeacher ? `<button onclick="deleteItem('${b._id}', 'blogs')" style="background:none; border:none; color: var(--error); cursor:pointer; font-size:1.2rem;">🗑️</button>` : ''}
+                        </div>
+                        <div class="card-body">
+                            <p style="font-size: 0.85rem; color: var(--success); margin-bottom: 1rem;">
+                                By ${b.author} • ${new Date(b.date).toLocaleDateString()}
+                            </p>
+                            <div style="line-height: 1.8; color: var(--text-main); white-space: pre-wrap;">${b.content}</div>
+                            ${seoBox}
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+        
+            } catch (err) { loader.innerHTML = "<p>Server Offline</p>"; }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        navigate('home');
+    
+        async function deleteItem(id, type) {
+            if (!currentUser || currentUser.role !== 'teacher') {
+                alert("⛔ ACCESS DENIED: Only teachers can delete items.");
+                return; 
+            }
+            if (!confirm("⚠️ Are you sure you want to delete this? This cannot be undone.")) return;
+
+            try {
+                const res = await fetch(`${API_URL}/${type}/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    alert("✅ Deleted Successfully");
+                    if (type === 'resources') {
+                        if (document.getElementById('teacher-file-list')) loadFiles('teacher-file-list');
+                        if (document.getElementById('resources-list')) loadFiles('resources-list');
+                    } else if (type === 'research-feed') {
+                        renderResearch();
+                    } else if (type === 'notices') {
+                        renderNotices();
+                    } else {
+                        renderBlogs();
+                    }
+                } else { alert("❌ Failed to delete."); }
+            } catch (err) { alert("Server Error"); }
+        }
+
+        async function loadPendingStudents() {
+            try {
+                const res = await fetch(`${API_URL}/students/pending`);
+                const students = await res.json();
+                const container = document.getElementById('pending-list');
+                
+                if (students.length === 0) { 
+                    container.innerHTML = "<p style='color: var(--text-dim);'>No pending approvals.</p>"; 
+                    return; 
+                }
+
+                container.innerHTML = `<table>
+                    <thead><tr><th>Name</th><th>Roll Number</th><th>Action</th></tr></thead>
+                    <tbody>
+                        ${students.map(s => `
+                            <tr>
+                                <td style="color: var(--text-main);">${s.name}</td>
+                                <td>${s.rollNumber}</td>
+                                <td><button onclick="approveStudent('${s._id}')" class="btn btn-sm btn-success">✅ Approve</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>`;
+            } catch (err) { container.innerHTML = "<p style='color: var(--error);'>Unable to load.</p>"; }
+        }
+
+        async function approveStudent(id) {
+            try {
+                const res = await fetch(`${API_URL}/students/approve/${id}`, { method: 'PUT' });
+                if (res.ok) {
+                    alert("✅ Student Approved!");
+                    loadPendingStudents(); 
+                } else { alert("❌ Failed to approve."); }
+            } catch (err) { alert("Server Error"); }
+        }
+
+        async function renderResearch() {
+            document.getElementById('app').innerHTML = `
+                <h2 class="text-center" style="margin: 3rem 0 1rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">🔬 Research Portfolio</h2>
+                <p class="text-center" style="color: var(--text-dim); margin-bottom: 3rem;">A live feed of publications, lab work, and innovations from our students and faculty.</p>
+                <div id="research-loader" class="text-center" style="color: var(--text-dim);">Loading feed...</div>
+                <div id="research-container" style="max-width: 700px; margin: 0 auto;" class="hidden"></div>
+            `;
+
+            try {
+                const res = await fetch(`${API_URL}/research-feed`);
+                const posts = await res.json();
+                const container = document.getElementById('research-container');
+                document.getElementById('research-loader').classList.add('hidden');
+                container.classList.remove('hidden');
+
+                if (posts.length === 0) {
+                    container.innerHTML = `<div class="card text-center"><p style="color: var(--text-dim);">No research posted yet. Be the first to share!</p></div>`;
+                    return;
+                }
+
+                const isTeacher = currentUser && currentUser.role === 'teacher';
+
+                container.innerHTML = posts.map(p => `
+                    <div class="card" style="margin-bottom: 2rem; padding: 0; overflow: hidden;">
+                        <div style="padding: 1.5rem 1.5rem 1rem 1.5rem; display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <h3 style="color: var(--text-main); margin-bottom: 0.3rem;">${p.title}</h3>
+                                <p style="font-size: 0.85rem; color: var(--text-dim);">
+                                    <strong style="color: var(--primary);">${p.author}</strong> (${p.role}) • ${new Date(p.date).toLocaleDateString()}
+                                </p>
+                            </div>
+                            ${isTeacher ? `<button onclick="deleteItem('${p._id}', 'research-feed')" class="btn btn-sm" style="background:var(--error); color: white; padding:4px 10px;">🗑️</button>` : ''}
+                        </div>
+
+                        ${p.imagePath ? `
+                            <div style="width: 100%; background: var(--bg-deep);">
+                                <img src="http://localhost:5001/${p.imagePath}" style="width: 100%; max-height: 500px; object-fit: contain; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);" alt="Research Photo">
+                            </div>
+                        ` : ''}
+
+                        <div style="padding: 1.5rem;">
+                            <p style="color: var(--text-dim); line-height: 1.6; white-space: pre-wrap;">${p.caption}</p>
+                        </div>
+
+                        ${p.documentPath ? `
+                            <div style="padding: 0 1.5rem 1.5rem 1.5rem;">
+                                <a href="http://localhost:5001/${p.documentPath}" target="_blank" class="btn btn-outline" style="width: 100%; text-align: center; display: block; color: var(--text-main);">
+                                    📄 Read Research Document
+                                </a>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+            } catch (err) { 
+                document.getElementById('research-loader').innerHTML = "Server Offline"; 
+            }
+        }
+
+        async function handleProfileUpdate(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData();
+            
+            if (form.qualifications.value) formData.append('qualifications', form.qualifications.value);
+            if (form.bio.value) formData.append('bio', form.bio.value);
+            
+            const picInput = form.querySelector('input[name="profilePic"]');
+            if (picInput.files.length > 0) {
+                formData.append('profilePic', picInput.files[0]);
+            }
+
+            try {
+                // Send update request to the specific teacher's username
+                const res = await fetch(`${API_URL}/profile/${currentUser.username}`, {
+                    method: 'PUT',
+                    body: formData
+                });
+                
+                if (res.ok) {
+                    const updatedUser = await res.json();
+                    
+                    // Update Local Storage so the session remembers the new data!
+                    localStorage.setItem('physicaUser', JSON.stringify(updatedUser));
+                    currentUser = updatedUser; 
+                    
+                    alert("✅ Profile Updated Successfully!");
+                    navigate('faculty'); // Instantly take them to the Faculty page to see it!
+                } else {
+                    alert("❌ Failed to update profile.");
+                }
+            } catch (err) {
+                alert("Server Error.");
+            }
+        }
+    </script>
+</body>
+</html>
