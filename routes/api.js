@@ -97,7 +97,17 @@ router.post('/register', async (req, res) => {
         res.status(500).json({ message: "Server Error or Duplicate Roll Number" });
     }
 });
-
+// Get all pending students for the Teacher Dashboard
+router.get('/students/pending', async (req, res) => {
+    try {
+        // Find all users who are students AND are still pending
+        const pendingStudents = await User.find({ role: 'student', status: 'pending' }).select('-password');
+        res.status(200).json(pendingStudents);
+    } catch (err) {
+        console.error("Error fetching pending students:", err);
+        res.status(500).json({ message: "Failed to load pending students." });
+    }
+});
 // Approve a specific student
 router.put('/students/approve/:id', async (req, res) => {
     try {
