@@ -165,7 +165,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             type: req.body.type,
             uploader: req.body.uploader,
             role: req.body.role,
-            // 🔴 NEW: Catch the academic tags (or leave blank if it's a magazine)
+           
             semester: req.body.semester || '',
             subject: req.body.subject || '',
             topic: req.body.topic || '',
