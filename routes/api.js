@@ -16,56 +16,35 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-// --- 2.  SECURE LOGIN ROUTE ---
+// --- SECURE LOGIN ROUTE ---
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-
-        // A. Find the user by username ONLY
+        
+        // 1. Find the user in the database
         const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(400).json({ message: "User not found" });
-        }
+        if (!user) return res.status(400).json({ message: "Invalid Username or Password" });
 
-        // B.  Compare the "123" with the "Hashed JUNK" in the database
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: "Invalid Password" });
-        }
-
-        // C. Send back user info (but NOT the password)
-        res.json({
-            _id: user._id,
-            name: user.name,
-            username: user.username,
-            role: user.role,
-            designation: user.designation,
-            semester: user.semester,
-            attendance: user.attendance
-        });
-
-    } catch (err) { res.status(500).json(err); }
-});
-
-// --- a. UPDATED LOGIN ROUTE ---
-router.post('/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const user = await User.findOne({ username });
-
-        if (!user) return res.status(400).json({ message: "User not found" });
-
-        //  STOP PENDING STUDENTS
+        // 2. THE BOUNCER: Stop Pending Students
         if (user.role === 'student' && user.status === 'pending') {
             return res.status(403).json({ message: "Access Denied: Your account is waiting for Teacher Approval." });
         }
 
+        // 3. Check the password
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ message: "Invalid Password" });
+        if (!isMatch) return res.status(400).json({ message: "Invalid Username or Password" });
 
-        const userProfile = { id: user._id, name: user.name, role: user.role, semester: user.semester };
-        res.status(200).json(userProfile);
+        // 4. Send user data to frontend (Login Success)
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            role: user.role,
+            semester: user.semester,
+            status: user.status
+        });
+
     } catch (err) {
+        console.error("Login Error:", err);
         res.status(500).json({ message: "Server Error" });
     }
 });
@@ -76,37 +55,35 @@ router.post('/register', async (req, res) => {
     try {
         const { password, role, name, designation, semester, rollNumber, adminCode } = req.body;
         
-        let status = 'approved'; 
+        // 🔒 Start everyone as 'pending' by default for safety
+        let status = 'pending'; 
         let finalUsername = req.body.username; 
-
-        //  TEACHER LOGIC
-        if (role === 'teacher') {
-            if (adminCode !== 'PHYSICA2026') return res.status(403).json({ message: "Invalid Teacher Code" });
-        } 
         
-        // 🎓 STUDENT LOGIC
-        else if (role === 'student') {
+        // Convert role to lowercase to match logic exactly
+        const lowerRole = role.toLowerCase();
+
+        if (lowerRole === 'teacher') {
+            if (adminCode !== 'PHYSICA2026') return res.status(403).json({ message: "Invalid Teacher Code" });
+            status = 'approved'; // Teachers bypass the wait
+        } 
+        else if (lowerRole === 'student') {
             if (!rollNumber || rollNumber.length !== 12) {
-                return res.status(400).json({ message: "Roll Number must be exactly 12 digits." });
+                return res.status(400).json({ message: "Roll Number must be 12 digits." });
             }
-            
-            // Generate Official Username: Name (no spaces, lowercase) + Last 4 of Roll No.
             const cleanName = name.replace(/\s+/g, '').toLowerCase();
             const last4 = rollNumber.slice(-4);
             finalUsername = `${cleanName}_${last4}`;
-            
-            status = 'pending'; // MUST be approved by teacher
+            // status remains 'pending'
         }
 
-        const bcrypt = require('bcryptjs');
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = new User({
             username: finalUsername,
             password: hashedPassword,
-            role,
-            status,
+            role: lowerRole,
+            status, // This explicitly saves 'pending' to the DB for students
             name,
             rollNumber,
             designation,
@@ -115,28 +92,9 @@ router.post('/register', async (req, res) => {
         });
 
         await newUser.save();
-        
-        res.status(201).json({ 
-            message: "Account Created", 
-            generatedUsername: finalUsername,
-            status: status 
-        });
-
+        res.status(201).json({ message: "Account Created", generatedUsername: finalUsername, status });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ message: "Server Error or Duplicate Roll Number" });
-    }
-});
-
-
-// --- 3. NEW ROUTES FOR TEACHERS TO APPROVE STUDENTS ---
-// Get all pending students
-router.get('/students/pending', async (req, res) => {
-    try {
-        const pendingStudents = await User.find({ role: 'student', status: 'pending' });
-        res.status(200).json(pendingStudents);
-    } catch (err) {
-        res.status(500).json({ message: "Error fetching pending students" });
     }
 });
 

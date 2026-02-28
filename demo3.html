@@ -19,6 +19,7 @@
             --accent-glow: rgba(14, 165, 233, 0.4);
             --success: #10b981;
             --warning: #f59e0b;
+            --tartiary: #FFD700;
             --error: #ef4444;
             --bg-deep: #050810; 
             --bg-space: #0a0e1a;
@@ -675,19 +676,11 @@
 
     <script>
         // --- CONFIGURATION ---
-        const API_URL = "http://localhost:5001/api";
+        const API_URL = "https://physica-portal.onrender.com/api";
 
         // --- DATA STORE ---
         const STATIC_DATA = {
-            faculty: [
-                { name: 'Dr. Subir Sarkar', designation: 'Associate Professor &', qualification: 'M.Sc, PhD', email: 'subir@avcollege.ac.in', image: '👨‍🏫', pdf:'https://drive.google.com/file/d/17BxaOcQsYW_I2yPXG03WSiDI7Vp7i5Rt/view?usp=drive_link' },
-                { name: 'Dr. Apurba Kumar Das', designation: 'Assistant Professor & HoD', qualification: 'M.Sc, PhD', email: 'apurba@avcollege.ac.in', image: '👨‍🔬', pdf:'https://drive.google.com/file/d/12QQGOdejGWG6Qx7Nw5vsvFL-M7o5TC9o/view?usp=drive_link' },
-                { name: 'Dr. Bhupali Sharma', designation: 'Assistant Professor', qualification: 'M.Sc, PhD', email: 'bhupali@avcollege.ac.in', image: '👩‍🏫', pdf:'https://drive.google.com/file/d/1fXVDslvCRy0sn_FfKh-TxhR7W28UvrLb/view?usp=drive_link'},
-                { name: 'Dr. Anupama Devi', designation: 'Assistant Professor', qualification: 'M.Sc, PhD', email: 'bhupali@avcollege.ac.in', image: '👩‍🔬', pdf:'https://drive.google.com/file/d/18bjhndTC8s_nohIs8hH-_8yxBZMMEUfC/view?usp=drive_link' },
-                { name: 'Dr. Krishna Kingkar Pathak', designation: 'Assistant Professor', qualification: 'M.Sc, PhD', email: 'bhupali@avcollege.ac.in', image: '👨‍🏫', pdf:'https://drive.google.com/file/d/1Oxt6Pl9lfNJ5rK9UgSiq2Re9ntZeb69i/view?usp=drive_link' },
-                { name: 'Nayan Narayan Das', designation: 'Assistant Professor', qualification: 'M.Sc', email: 'bhupali@avcollege.ac.in', image: '👨‍🔬', pdf:'https://drive.google.com/file/d/1jiptm-ANpnFTNKWIrPWd0SnrSW-miacL/view?usp=drive_link' },
-                { name: 'Dr. Deepak Mazumdar', designation: 'Assistant Professor', qualification: 'M.Sc, PhD', email: 'bhupali@avcollege.ac.in', image: '👨‍🏫', pdf:'https://drive.google.com/file/d/1X2_PmVr3KvlHU1iDTv1fgE53DHIhtxny/view?usp=drive_link' }
-            ],
+
             magazines: {
                 kalavatika: {
                     title: "🎨 Kalavatika",
@@ -711,7 +704,9 @@
             resources: renderResources,
             login: renderLogin,
             notices: renderNotices,
-            research: renderResearch
+            research: renderResearch,
+            gallery: renderGallery,
+            dashboard: goToDashboard
         };
 
         // --- NAVIGATION ---
@@ -727,15 +722,16 @@
             
             const nav = document.getElementById('mainNav');
             nav.innerHTML = pages.map(p => 
-                `<li><a class="nav-link ${p === activePage ? 'active' : ''}" onclick="navigate('${p}')">${p.toUpperCase()}</a></li>`
+                `<li><a class="nav-link ${p === activePage ? 'active' : ''}" onclick="navigate('${p}')" style="cursor: pointer;">${p.toUpperCase()}</a></li>`
             ).join('');
 
             if (currentUser) {
-                nav.innerHTML += `<li><a class="nav-link" onclick="logout()">LOGOUT</a></li>`;
-                nav.innerHTML += `<li><a class="nav-link" onclick="goToDashboard()">DASHBOARD</a></li>`;
+                nav.innerHTML += `<li><a class="nav-link" onclick="logout()" style="cursor: pointer; color: var(--error);">LOGOUT</a></li>`;
+                
+                // 🔴 FIX: Added the active class check and changed onclick to navigate('dashboard')
+                nav.innerHTML += `<li><a class="nav-link ${activePage === 'dashboard' ? 'active' : ''}" onclick="navigate('dashboard')" style="cursor: pointer;">DASHBOARD</a></li>`;
             }
         }
-
         function goToDashboard() {
             if (currentUser.role === 'teacher') renderTeacherDash();
             else renderStudentDash();
@@ -771,45 +767,51 @@
                         <div class="stat-label">Lab Facilities</div>
                     </div>
                 </div>
-                
+  
                 <div class="grid grid-2" style="margin-top: 3rem;">
-                    <div class="card">
-                        <div class="card-header">
-                            <span>🎯</span>
-                            <span>Our Mission</span>
+                    <div class="card" onclick="navigate('gallery')"style="cursor: pointer; transition: all 0.2s; border: 1px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='transparent';">
+                        <div class="card-header" style="display: flex; gap: 10px; align-items: center;">
+                            <span style="font-size: 1.5rem;">📸</span>
+                             <span>Departmental Events & Gallery</span>
                         </div>
                         <div class="card-body">
-                            <p>To provide world-class education in physics while fostering critical thinking, scientific inquiry, and research excellence. We prepare students for careers in academia, industry, and research institutions.</p>
+                            <p>The department organizes society connects (picnics) and multiple academic visits. We also commemorate the birth anniversaries of Albert Einstein, Vikram Sarabhai, and other distinguished physicists, while actively supporting numerous academic and co-curricular events.</p>
+                            <p style="color: var(--success); margin-top: 15px; font-weight: 600; font-size: 0.9rem;">
+                                👉 Click here to view the Photo Archive
+                            </p>
                         </div>
                     </div>
-                   <div class="card" onclick="navigate('research')" style="cursor: pointer; border: 1px solid rgba(0, 136, 255, 0.4);">
-                        <div class="card-header">
+                   <div class="card" onclick="navigate('research')" style="cursor: pointer; transition: all 0.2s; border: 1px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='transparent';">   
+                    <div class="card-header">
                             <span>🔬</span>
-                            <span>Research Areas</span>
+                            <span>Research and Innovation</span>
                         </div>
                         <div class="card-body">
-                            <p>Our department teachers are involved in cutting-edge research in quantum mechanics, condensed matter physics, particle physics, astrophysics, and computational physics with state-of-the-art facilities.</p>
+                            <p>Students and faculty of the department collaborate closely, fostering innovation through the development of scientific models, posters, research prototypes, and patentable inventions, thereby cultivating a dynamic environment of creativity and academic excellence.</p>
                             <p style="color: var(--primary); margin-top: 15px; font-weight: 600; font-size: 0.9rem;">
                                 👉 Click here to view publications and ongoing projects
                             </p>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card" style="cursor: pointer; transition: all 0.2s; border: 1px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='transparent';" onclick="openAchievementFeed('academic', '📚 Academic Programs & Excellence')">
                         <div class="card-header">
                             <span>📚</span>
-                            <span>Academic Programs</span>
+                            <span>Academic Programs and excellence </span>
                         </div>
                         <div class="card-body">
-                            <p>Comprehensive undergraduate programs designed to build strong theoretical foundations and practical laboratory skills in all areas of physics.</p>
+                            <p>Comprehensive undergraduate programs designed to build strong theoretical foundations and practical laboratory skills in all areas of physics. Click to view our students excelling in IIT JAM, CUET, NCC, and National seminars.</p>
+                            <span style="display:inline-block; margin-top:10px; color:var(--tartiary); font-size:0.85rem; font-weight:bold;">👉 Click to view Student Portfolio</span>
                         </div>
                     </div>
-                    <div class="card">
+
+                    <div class="card" style="cursor: pointer; transition: all 0.2s; border: 1px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='transparent';" onclick="openAchievementFeed('activity', '🌟 Student Activities & Achievements')">
                         <div class="card-header">
                             <span>🌟</span>
-                            <span>Student Activities</span>
+                            <span>Student Activities and Achievments </span>
                         </div>
                         <div class="card-body">
-                            <p>Regular seminars, workshops, science fairs, and collaborative research projects provide students with opportunities to engage with the broader scientific community.</p>
+                            <p>Students participate in regular seminars, workshops, science fairs, debate competitions, inter-college poster competitions, and collaborative research projects. Click to view the gallery!</p>
+                            <span style="display:inline-block; margin-top:10px; color:var(--warning); font-size:0.85rem; font-weight:bold;">👉 Click to view Activities Gallery</span>
                         </div>
                     </div>
                 </div>
@@ -864,18 +866,46 @@
             document.getElementById('app').innerHTML = `
                 <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">Departmental Magazines</h2>
                 <div class="grid grid-2">
-                    <div class="card">
-                        <div class="mag-cover">🎨</div>
-                        <h3 style="color: var(--text-main); margin-bottom: 0.5rem;">Kalavatika (Wall Magazine)</h3>
-                        <p style="color: var(--text-tertiary); font-size: 0.875rem; margin-bottom: 1rem;">Student creativity showcase</p>
-                        <div id="kalavatika-list" style="color: var(--text-dim);">Loading issues...</div>
+                    
+                    <div class="card" style="padding: 0; overflow: hidden; border: 1px solid rgba(0, 136, 255, 0.2);">
+                        <div style="background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(0, 136, 255, 0.1)); padding: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="width: 55px; height: 55px; background: rgba(0,0,0,0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 136, 255, 0.3); box-shadow: 0 4px 15px rgba(0, 136, 255, 0.2); flex-shrink: 0;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="13.5" cy="5.5" r="2.5"/>
+                                    <circle cx="18.5" cy="10.5" r="2.5"/>
+                                    <circle cx="8.5" cy="8.5" r="2.5"/>
+                                    <circle cx="10.5" cy="14.5" r="2.5"/>
+                                    <path d="M21.5 16.5C21.5 19.5 19.5 21.5 16.5 21.5C13.5 21.5 10.5 18.5 7.5 15.5C4.5 12.5 2.5 9.5 2.5 6.5C2.5 3.5 4.5 2.5 7.5 2.5C10.5 2.5 13.5 5.5 16.5 8.5C19.5 11.5 21.5 13.5 21.5 16.5Z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 style="color: white; margin-bottom: 0.2rem; font-size: 1.4rem;">Kalavatika</h3>
+                                <p style="color: var(--text-tertiary); font-size: 0.85rem; margin: 0; line-height: 1.4;">Student creativity showcase through poems, blogs, and visual art.</p>
+                            </div>
+                        </div>
+                        <div style="padding: 1.5rem;" id="kalavatika-list">
+                            <p style="color: var(--text-dim); text-align: center;">Loading issues...</p>
+                        </div>
                     </div>
-                    <div class="card">
-                        <div class="mag-cover">📖</div>
-                        <h3 style="color: var(--text-main); margin-bottom: 0.5rem;">Annual Department Magazine</h3>
-                        <p style="color: var(--text-tertiary); font-size: 0.875rem; margin-bottom: 1rem;">Yearly publication highlights</p>
-                        <div id="annual-list" style="color: var(--text-dim);">Loading issues...</div>
+
+                    <div class="card" style="padding: 0; overflow: hidden; border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1)); padding: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="width: 55px; height: 55px; background: rgba(0,0,0,0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(16, 185, 129, 0.3); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); flex-shrink: 0;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 style="color: white; margin-bottom: 0.2rem; font-size: 1.4rem;">Annual Magazine</h3>
+                                <p style="color: var(--text-tertiary); font-size: 0.85rem; margin: 0; line-height: 1.4;">Departmental highlights blending science with creativity.</p>
+                            </div>
+                        </div>
+                        <div style="padding: 1.5rem;" id="annual-list">
+                            <p style="color: var(--text-dim); text-align: center;">Loading issues...</p>
+                        </div>
                     </div>
+
                 </div>
             `;
 
@@ -887,14 +917,26 @@
                 const kFiles = files.filter(f => f.type === 'Kalavatika');
                 const aFiles = files.filter(f => f.type === 'Annual');
 
-                const createLink = (f) => `<a href="http://localhost:5001/${f.filePath}" target="_blank" class="btn btn-outline btn-sm" style="display:block; margin-top:0.75rem; text-align: left;">📄 ${f.title}</a>`;
+                // Upgraded beautiful file rows
+                const createLink = (f) => `
+                    <a href="http://localhost:5001/${f.filePath}" target="_blank" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 0.75rem; text-decoration: none; transition: all 0.2s; color: var(--text-main);" onmouseover="this.style.background='rgba(0,136,255,0.05)'; this.style.borderColor='rgba(0,136,255,0.3)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.05)';">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                            <span style="font-weight: 500;">${f.title}</span>
+                        </div>
+                        <span style="display: flex; align-items: center; gap: 6px; color: var(--accent); font-size: 0.85rem; font-weight: 600;">
+                            Download 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        </span>
+                    </a>
+                `;
 
-                document.getElementById('kalavatika-list').innerHTML = kFiles.length ? kFiles.map(createLink).join('') : '<p style="color: var(--text-tertiary); font-size: 0.875rem;">No issues available yet.</p>';
-                document.getElementById('annual-list').innerHTML = aFiles.length ? aFiles.map(createLink).join('') : '<p style="color: var(--text-tertiary); font-size: 0.875rem;">No issues available yet.</p>';
+                document.getElementById('kalavatika-list').innerHTML = kFiles.length ? kFiles.map(createLink).join('') : '<p style="color: var(--text-tertiary); font-size: 0.875rem; text-align: center; padding: 1rem 0;">No issues available yet.</p>';
+                document.getElementById('annual-list').innerHTML = aFiles.length ? aFiles.map(createLink).join('') : '<p style="color: var(--text-tertiary); font-size: 0.875rem; text-align: center; padding: 1rem 0;">No issues available yet.</p>';
             } catch (err) { 
                 console.error(err);
-                document.getElementById('kalavatika-list').innerHTML = '<p style="color: var(--error);">Server offline</p>';
-                document.getElementById('annual-list').innerHTML = '<p style="color: var(--error);">Server offline</p>';
+                document.getElementById('kalavatika-list').innerHTML = '<p style="color: var(--error); text-align: center;">Server offline</p>';
+                document.getElementById('annual-list').innerHTML = '<p style="color: var(--error); text-align: center;">Server offline</p>';
             }
         }
 
@@ -905,6 +947,7 @@
                     <div class="card text-center" style="padding: 4rem 2rem;">
                         <h1 style="font-size: 4rem; margin-bottom: 1rem; text-shadow: none;">🔒</h1>
                         <h2 style="color: var(--error);">Access Restricted</h2>
+                        <p class="text-secondary">Download lecture notes, assignments, and study materials uploaded by faculty.</p>
                         <p style="color: var(--text-dim); margin-top: 1rem;">Academic notes are exclusively available to Arya Vidyapeeth College students and faculty.</p>
                         <p style="color: var(--text-dim);">Outsiders may still freely view our Blogs, Magazines, and Achievements.</p>
                         <button onclick="navigate('login')" class="btn btn-primary mt-4">Login with Student ID</button>
@@ -1005,48 +1048,24 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username: u, password: p })
                 });
+                
+                const data = await res.json(); // 🔴 Get the data first
+
                 if (res.ok) {
-                    currentUser = await res.json();
-                    alert(`✅ Welcome ${currentUser.name}`);
-                    if (currentUser.role === 'teacher') renderTeacherDash(); else renderStudentDash();
-                } else { alert("❌ Invalid Credentials"); }
-            } catch (err) { alert("Server Error"); }
-        }
-
-        async function handleRegister(e) {
-            e.preventDefault();
-            const form = e.target;
-            const role = form.role.value;
-            const userData = {
-                name: form.name.value,
-                password: form.password.value,
-                role: role,
-                semester: form.semester ? form.semester.value : '',
-                rollNumber: form.rollNumber ? form.rollNumber.value : '',
-                username: form.username ? form.username.value : '',
-                designation: form.designation ? form.designation.value : '',
-                adminCode: form.adminCode ? form.adminCode.value : ''
-            };
-
-            try {
-                const res = await fetch(`${API_URL}/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(userData)
-                });
-                const data = await res.json();
-                if (res.ok) { 
-                    if (role === 'student') {
-                        alert(`✅ Registration Sent!\n\nYour Official Username is:\n👉 ${data.generatedUsername} 👈\n\nPlease save this! You can login once a teacher approves your account.`);
-                    } else {
-                        alert(`✅ Teacher Account Created! Please Login.`);
+                    // Check if the server sent an approved status
+                    if (data.role === 'student' && data.status === 'pending') {
+                        alert("❌ Access Denied: Your account is waiting for Teacher Approval.");
+                        return;
                     }
-                    toggleForms(); 
-                    form.reset();
-                } else { alert("❌ Failed: " + data.message); }
+                    
+                    currentUser = data;
+                    alert(`✅ Welcome ${currentUser.name}`);
+                    navigate('dashboard'); 
+                } else { 
+                    alert(`❌ ${data.message || "Invalid Credentials"}`); 
+                }
             } catch (err) { alert("Server Error"); }
         }
-
         function toggleForms() {
             document.getElementById('login-form').classList.toggle('hidden');
             document.getElementById('signup-form').classList.toggle('hidden');
@@ -1063,13 +1082,52 @@
             }
         }
 
+        async function handleRegister(e) {
+            e.preventDefault();
+            const form = e.target;
+            
+            const role = form.role.value.toLowerCase(); 
+            const userData = {
+                name: form.name.value,
+                password: form.password.value,
+                role: role,
+                // ... rest of your existing code ...,
+                semester: form.semester ? form.semester.value : '',
+                rollNumber: form.rollNumber ? form.rollNumber.value : '',
+                username: form.username ? form.username.value : '', // Only teachers use this
+                designation: form.designation ? form.designation.value : '',
+                adminCode: form.adminCode ? form.adminCode.value : ''
+            };
+        
+            try {
+                const res = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData)
+                });
+                
+                const data = await res.json();
+        
+                if (res.ok) { 
+                    if (role === 'student') {
+                        alert(`✅ Registration Sent!\n\nYour Official Username is:\n👉 ${data.generatedUsername} 👈\n\nPlease save this! You can login once a teacher approves your account.`);
+                    } else {
+                        alert(`✅ Teacher Account Created! Please Login.`);
+                    }
+                    toggleForms(); 
+                    form.reset();
+                } 
+                else { alert("❌ Failed: " + data.message); }
+            } catch (err) { alert("Server Error"); }
+        }
+
         // --- DASHBOARDS ---
         function renderTeacherDash() {
             document.getElementById('app').innerHTML = `
                 <div class="dashboard-layout">
                     <aside class="sidebar">
                         <div class="card text-center" style="margin-bottom: 1.5rem;">
-                            <div class="faculty-avatar" style="margin: 0 auto 1rem;">👨‍🏫</div>
+                            <div class="faculty-avatar" style="margin: 0 auto 1rem;">🧑🏻‍🏫</div>
                             <h4 style="margin-bottom: 0.5rem;">${currentUser.name}</h4>
                             <p class="text-sm" style="color: var(--text-dim);">${currentUser.designation}</p>
                             <span style="display:inline-block; margin-top: 0.75rem; background: rgba(0, 136, 255, 0.15); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">Teacher</span>
@@ -1077,31 +1135,106 @@
                         <nav>
                             <div class="menu-item active" onclick="switchTab('t-upload')">📁 Repository</div>
                             <div class="menu-item" onclick="switchTab('t-blog')">✍️ Blog Writer</div>
-                            <div class="menu-item" onclick="switchTab('t-approve'); loadPendingStudents();">👥 Approvals</div>
+                            <div class="menu-item" onclick="switchTab('t-approve'); loadPendingStudents(); loadPendingBlogs();">👥 Approvals</div>
                             <div class="menu-item" onclick="switchTab('t-notice')">📢 Post Notice</div> 
                             <div class="menu-item" onclick="switchTab('t-research')">🔬 Share Research</div>
                             <div class="menu-item" onclick="switchTab('t-profile')">⚙️ Profile Settings</div>
+                            <div class="menu-item" onclick="switchTab('t-gallery'); loadHighlightsDropdown('t-highlight-select');">📸 Event Gallery</div>
+                            <div class="menu-item" onclick="switchTab('t-achievement')">🏆 Post Achievement</div>
                         </nav>
                     </aside>
                     <section class="content-area">
-                              <div id="t-profile" class="tab-content hidden">
-                              <h2 class="mb-4" style="color: var(--primary);">Update Your Profile</h2>
-                              <div class="card">
-                                   <form onsubmit="handleProfileUpdate(event)">
-                                       <div style="text-align: center; margin-bottom: 2rem; padding: 20px; background: rgba(0, 217, 255, 0.05); border-radius: 10px; border: 1px dashed var(--primary);">
-                                          <p style="color: var(--text-main); margin-bottom: 10px; font-weight: bold;">Upload Professional Headshot</p>
-                                       <input type="file" name="profilePic" accept="image/*" style="max-width: 300px; margin: 0 auto; display: block;">
-                                       </div>
-                                           <label class="text-sm">Highest Qualifications</label>
-                                           <input type="text" name="qualifications" placeholder="e.g. M.Sc, PhD in Particle Physics" value="${currentUser.qualifications || ''}">
-            
-                                     <label class="text-sm">Short Bio</label>
-                                   <textarea name="bio" rows="4" placeholder="write about yourself, academic journey,research interests, and teaching experience...">${currentUser.bio || ''}</textarea>
-            
-                                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">💾 Save Profile Updates</button>
-                                 </form>
-                               </div>
+                        
+                        <div id="t-upload" class="tab-content">
+                            <h2 class="mb-4">Repository Manager</h2>
+                            <div class="card mb-4" style="border-left: 4px solid var(--primary);">
+                                <div class="card-header">Upload File</div>
+                                <div class="card-body">
+                                    <form onsubmit="handleUpload(event, 'teacher')">
+                                        <label>File Title</label>
+                                        <input type="text" name="title" placeholder="e.g. Quantum Mechanics Notes" required>
+                                        
+                                        <label>Category</label>
+                                        <select name="docType" required onchange="document.getElementById('academic-fields').style.display = this.value === 'Resource' ? 'block' : 'none';" style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text-main); margin-bottom: 1rem;">
+                                            <option value="Resource">📚 Study Resource (Notes)</option>
+                                            <option value="Kalavatika">🎨 Kalavatika Magazine</option>
+                                            <option value="Annual">📖 Annual Magazine</option>
+                                        </select>
+                                        
+                                        <div id="academic-fields">
+                                            <div class="grid grid-2" style="gap: 1rem;">
+                                                <div>
+                                                    <label>Semester</label>
+                                                    <input type="text" name="semester" placeholder="e.g., 3rd Semester">
+                                                </div>
+                                                <div>
+                                                    <label>Subject</label>
+                                                    <input type="text" name="subject" placeholder="e.g., Quantum Physics">
+                                                </div>
+                                            </div>
+                                            <label style="margin-top: 10px;">Topic / Tags</label>
+                                            <input type="text" name="topic" placeholder="e.g., Wave Functions, Schrödinger">
+                                        </div>
+                                        
+                                        <label style="margin-top: 1rem; color: var(--success);">Select File</label>
+                                        <input type="file" name="file" required>
+                                        
+                                        <button type="submit" class="btn btn-primary" style="margin-top:1rem; width: 100%;">📤 Upload File</button>
+                                    </form>
+                                </div>
                             </div>
+                        </div>
+
+                        <div id="t-blog" class="tab-content hidden">
+                            <h2 class="mb-4">Department Blog Writer</h2>
+                            <div class="card" style="border-left: 4px solid var(--primary);">
+                                <form id="blog-upload-form" onsubmit="handleBlog(event)">
+                                    <label>Blog Title</label>
+                                    <input type="text" name="title" id="blogTitle" placeholder="e.g. The Future of Quantum Computing" required>
+                                    
+                                    <label style="color: var(--accent);">Cover Image / SEO Infographic (Optional)</label>
+                                    <input type="file" name="image" id="blogImage" accept="image/*">
+                                    
+                                    <label style="color: var(--success);">Upload Manuscript (Word Doc / PDF - Optional)</label>
+                                    <input type="file" name="document" id="blogDocument" accept=".doc,.docx,.pdf">
+                                    
+                                    <label>Blog Content / Summary</label>
+                                    <textarea name="content" id="blogContent" rows="6" placeholder="Write your blog content here, or write a short summary if you attached a Word Document..."></textarea>
+                                    
+                                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">🚀 Publish Blog</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="t-approve" class="tab-content hidden">
+                            <h2 class="mb-4">Dashboard Approvals</h2>
+                            
+                            <div class="card mb-4" style="border-left: 4px solid var(--primary);">
+                                <div class="card-header">Pending Student Accounts</div>
+                                <div class="card-body" id="pending-list">Loading...</div>
+                            </div>
+
+                            <div class="card" style="border-left: 4px solid var(--warning);">
+                                <div class="card-header">Pending Student Articles</div>
+                                <div class="card-body" id="pending-blogs-list">Loading...</div>
+                            </div>
+                        </div>
+
+                        <div id="t-notice" class="tab-content hidden">
+                            <h2 class="mb-4">Broadcast Notice</h2>
+                            <div class="card">
+                                <form onsubmit="handleNoticePost(event)">
+                                    <label>Notice Title</label>
+                                    <input type="text" name="title" placeholder="e.g. End Semester Exam Schedule" required>
+                                    <label>Description / Details</label>
+                                    <textarea name="content" rows="4" placeholder="Write the announcement details here..."></textarea>
+                                    <label>Attach File (Optional PDF/Image)</label>
+                                    <input type="file" name="file">
+                                    <button type="submit" class="btn btn-primary" style="background: var(--accent); width: 100%; margin-top: 1rem;">Broadcast to Notice Board</button>
+                                </form>
+                            </div>
+                        </div>
+
                         <div id="t-research" class="tab-content hidden">
                             <h2 class="mb-4">Post to Research Feed</h2>
                             <div class="card">
@@ -1135,69 +1268,86 @@
                             </div>
                         </div>
 
-                        <div id="t-notice" class="tab-content hidden">
-                            <h2 class="mb-4">Broadcast Notice</h2>
+                        <div id="t-profile" class="tab-content hidden">
+                            <h2 class="mb-4" style="color: var(--primary);">Update Your Profile</h2>
                             <div class="card">
-                                <form onsubmit="handleNoticePost(event)">
-                                    <label>Notice Title</label>
-                                    <input type="text" name="title" placeholder="e.g. End Semester Exam Schedule" required>
-                                    <label>Description / Details</label>
-                                    <textarea name="content" rows="4" placeholder="Write the announcement details here..."></textarea>
-                                    <label>Attach File (Optional PDF/Image)</label>
-                                    <input type="file" name="file">
-                                    <button type="submit" class="btn btn-primary" style="background: var(--accent); width: 100%; margin-top: 1rem;">Broadcast to Notice Board</button>
+                                <form onsubmit="handleProfileUpdate(event)">
+                                    <div style="text-align: center; margin-bottom: 2rem; padding: 20px; background: rgba(0, 217, 255, 0.05); border-radius: 10px; border: 1px dashed var(--primary);">
+                                        <p style="color: var(--text-main); margin-bottom: 10px; font-weight: bold;">Upload Professional Headshot</p>
+                                        <input type="file" name="profilePic" accept="image/*" style="max-width: 300px; margin: 0 auto; display: block;">
+                                    </div>
+                                    <label class="text-sm">Highest Qualifications</label>
+                                    <input type="text" name="qualifications" placeholder="e.g. M.Sc, PhD in Particle Physics" value="${currentUser.qualifications || ''}">
+            
+                                    <label class="text-sm">Short Bio</label>
+                                    <textarea name="bio" rows="4" placeholder="write about yourself, academic journey, research interests, and teaching experience...">${currentUser.bio || ''}</textarea>
+            
+                                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">💾 Save Profile Updates</button>
                                 </form>
                             </div>
                         </div>
 
-                        <div id="t-approve" class="tab-content hidden">
-                          <h2 class="mb-4">Student Approvals</h2>
-                           <div class="card">
-                               <div class="card-header">Pending Requests</div>
-                               <div class="card-body" id="pending-list">Loading...</div>
-                          </div>
-                        </div>
-
-                        <div id="t-upload" class="tab-content">
-                            <h2 class="mb-4">Repository Manager</h2>
-                            <div class="card mb-4">
-                                <div class="card-header">Upload File</div>
-                                <div class="card-body">
-                                    <form onsubmit="handleUpload(event, 'teacher')">
-                                        <label>File Title</label>
-                                        <input type="text" name="title" placeholder="e.g. Quantum Mechanics Notes" required>
-                                        <label>Category</label>
-                                        <select name="docType" required>
-                                            <option value="Resource">📚 Study Resource (Notes)</option>
-                                            <option value="Kalavatika">🎨 Kalavatika Magazine</option>
-                                            <option value="Annual">📖 Annual Magazine</option>
-                                        </select>
-                                        <label>Select File</label>
-                                        <input type="file" name="file" required>
-                                        <button type="submit" class="btn btn-primary" style="margin-top:10px; width: 100%;">Upload File</button>
-                                    </form>
-                                </div>
+                        <div id="t-gallery" class="tab-content hidden">
+                            <h2 class="mb-4">Department Event Gallery</h2>
+                            <div class="card mb-4" style="border-left: 4px solid var(--warning);">
+                                <h3 style="margin-bottom: 1rem; color: var(--warning);">1. Create New Highlight Category</h3>
+                                <form onsubmit="handleCreateHighlight(event)">
+                                    <label>Category Name</label>
+                                    <input type="text" name="title" placeholder="e.g. Society Connects, Seminars, Farewell" required>
+                                    <button type="submit" class="btn btn-primary" style="background: var(--warning); color: #000; font-weight: bold;">➕ Create Category</button>
+                                </form>
                             </div>
-                            <div class="card">
-                                <div class="card-header">Uploaded Files</div>
-                                <div class="card-body" id="teacher-file-list">Loading...</div>
+                            <div class="card" style="border-left: 4px solid var(--success);">
+                                <h3 style="margin-bottom: 1rem; color: var(--success);">2. Upload Event Album</h3>
+                                <form onsubmit="handleGalleryUpload(event)">
+                                    <label>Select Category</label>
+                                    <select name="highlightId" id="t-highlight-select" required>
+                                        <option value="">Loading categories...</option>
+                                    </select>
+            
+                                    <label>Album Title</label>
+                                    <input type="text" name="title" placeholder="e.g. Annual Picnic 2024" required>
+            
+                                    <label>Caption / Details</label>
+                                    <textarea name="caption" rows="3" placeholder="Tell us about this event..." required></textarea>
+            
+                                    <label style="color: var(--accent);">Select Multiple Photos (Hold Ctrl/Cmd to select many)</label>
+                                    <input type="file" name="photos" accept="image/*" multiple required>
+                                    <button type="submit" class="btn btn-success" style="width: 100%; margin-top: 1rem;">🚀 Publish Album</button>
+                                </form>
                             </div>
                         </div>
 
-                        <div id="t-blog" class="tab-content hidden">
-                            <h2 class="mb-4">Department Blog</h2>
-                            <div class="card">
-                                <label>Blog Title</label>
-                                <input type="text" id="blogTitle" placeholder="Blog Title">
-                                <label>Content</label>
-                                <textarea id="blogContent" rows="6" placeholder="Write your blog content here..."></textarea>
-                                <button onclick="handleBlog()" class="btn btn-primary" style="width: 100%;">Publish Blog</button>
+                        <div id="t-achievement" class="tab-content hidden">
+                            <h2 class="mb-4">Post Student Achievement</h2>
+                            <div class="card" style="border-left: 4px solid var(--warning);">
+                                <form onsubmit="handleAchievement(event)">
+                                    <label>Select Feed Category</label>
+                                    <select name="category" required style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text-main); margin-bottom: 1rem;">
+                                        <option value="" disabled selected>-- Choose Category --</option>
+                                        <option value="academic">📚 Academic Programs & Excellence</option>
+                                        <option value="activity">🌟 Student Activities & Achievements</option>
+                                    </select>
+                                    
+                                    <label>Students Involved / Featured</label>
+                                    <input type="text" name="studentsInvolved" placeholder="e.g., Rahul, Shibom, and the Quiz Team" required>
+                                    
+                                    <label>Description / Caption</label>
+                                    <textarea name="description" rows="4" placeholder="Share the details of this achievement..." required></textarea>
+                                    
+                                    <label style="color: var(--accent);">Select Photos (Hold Ctrl/Cmd to select multiple)</label>
+                                    <input type="file" name="photos" accept="image/*" multiple required>
+                                    
+                                    <button type="submit" class="btn" style="background: var(--warning); color: #000; font-weight: bold; width: 100%; margin-top: 1rem;">🚀 Publish Post</button>
+                                </form>
                             </div>
                         </div>
+
                     </section>
                 </div>
             `;
-            loadFiles('teacher-file-list');
+            // Initialize anything needed on load
+
         }
 
         function renderStudentDash() {
@@ -1214,9 +1364,55 @@
                             <div class="menu-item active" onclick="switchTab('s-overview')">📊 Attendance</div>
                             <div class="menu-item" onclick="switchTab('s-resources')">📥 Downloads</div>
                             <div class="menu-item" onclick="switchTab('s-research')">🔬 Share Research</div>
+                            <div class="menu-item" onclick="switchTab('s-gallery'); loadHighlightsDropdown('s-highlight-select');">📸 Event Gallery</div>
+                            <div class="menu-item" onclick="switchTab('s-blog')">✍️ Submit Article</div>
+                            <div class="menu-item" onclick="switchTab('s-achievement')">🏆 Post Achievement</div>
                         </nav>
                     </aside>
                     <section class="content-area">
+                           <div id="s-blog" class="tab-content hidden">
+                            <h2 class="mb-4">Submit to Department Journal</h2>
+                            <div class="card" style="border-left: 4px solid var(--success);">
+                                <p style="color: var(--text-dim); margin-bottom: 1.5rem;">Submit your writing or research. Once a teacher approves it, it will be published on the main public Journal!</p>
+                                <form onsubmit="handleBlog(event)">
+                                    <label>Article Title</label>
+                                    <input type="text" name="title" placeholder="e.g. My Experience at the Science Seminar" required>
+                                    
+                                    <label style="color: var(--accent);">Cover Image (Optional)</label>
+                                    <input type="file" name="image" accept="image/*">
+                                    
+                                    <label style="color: var(--success);">Upload Manuscript (Word Doc / PDF - Optional)</label>
+                                    <input type="file" name="document" accept=".doc,.docx,.pdf">
+                                    
+                                    <label>Content / Summary</label>
+                                    <textarea name="content" rows="6" placeholder="Write your article here..."></textarea>
+                                    
+                                    <button type="submit" class="btn btn-success" style="width: 100%; margin-top: 1rem;">📤 Submit for Review</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="s-gallery" class="tab-content hidden">
+                         <h2 class="mb-4">Upload Event Photos</h2>
+                         <div class="card" style="border-left: 4px solid var(--success);">
+                         <form onsubmit="handleGalleryUpload(event)">
+                             <label>Select Event Category</label>
+                              <select name="highlightId" id="s-highlight-select" required>
+                                 <option value="">Loading categories...</option>
+                                 </select>
+            
+                            <label>Album Title</label>
+                            <input type="text" name="title" placeholder="e.g. Freshers Party 2025" required>
+            
+                            <label>Caption / Details</label>
+                            <textarea name="caption" rows="3" placeholder="Share your memories from this event..." required></textarea>
+            
+                            <label style="color: var(--accent);">Select Multiple Photos (Hold Ctrl/Cmd to select many)</label>
+                            <input type="file" name="photos" accept="image/*" multiple required>
+            
+                           <button type="submit" class="btn btn-success" style="width: 100%; margin-top: 1rem;">🚀 Publish Album</button>
+                          </form>
+                        </div>
+                       </div>
                         <div id="s-research" class="tab-content hidden">
                             <h2 class="mb-4">Share Your Research</h2>
                             <div class="card">
@@ -1262,6 +1458,30 @@
                                 <div class="card-body" id="student-file-list">Loading...</div>
                             </div>
                         </div>
+                        <div id="s-achievement" class="tab-content hidden">
+                            <h2 class="mb-4">Post an Achievement</h2>
+                            <div class="card" style="border-left: 4px solid var(--primary);">
+                                <form onsubmit="handleAchievement(event)">
+                                    <label>Select Feed Category</label>
+                                    <select name="category" required style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text-main); margin-bottom: 1rem;">
+                                        <option value="" disabled selected>-- Choose Category --</option>
+                                        <option value="academic">📚 Academic Programs & Excellence</option>
+                                        <option value="activity">🌟 Student Activities & Achievements</option>
+                                    </select>
+                                    
+                                    <label>Students Involved / Featured</label>
+                                    <input type="text" name="studentsInvolved" placeholder="e.g.,name" required>
+                                    
+                                    <label>Description / Caption</label>
+                                    <textarea name="description" rows="4" placeholder="Share the details of this achievement..." required></textarea>
+                                    
+                                    <label style="color: var(--accent);">Select Photos (Hold Ctrl/Cmd to select multiple)</label>
+                                    <input type="file" name="photos" accept="image/*" multiple required>
+                                    
+                                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">🚀 Publish Post</button>
+                                </form>
+                            </div>
+                        </div>
                     </section>
                 </div>
             `;
@@ -1280,17 +1500,24 @@
             formData.append('uploader', currentUser.name);
             formData.append('role', role);
             formData.append('file', form.querySelector('input[type="file"]').files[0]);
+            
+            if (form.semester) formData.append('semester', form.semester.value);
+            if (form.subject) formData.append('subject', form.subject.value);
+            if (form.topic) formData.append('topic', form.topic.value);
 
             try {
                 const res = await fetch(`${API_URL}/upload`, { method: 'POST', body: formData });
                 if (res.ok) {
                     alert(`✅ Upload Successful! Added to ${type}`);
                     form.reset();
+                    // display logic just in case
+                    const academicFields = document.getElementById('academic-fields');
+                    if(academicFields) academicFields.style.display = 'block';
+                    
                     if (role === 'teacher') loadFiles('teacher-file-list');
                 } else { alert("❌ Upload Failed"); }
             } catch (err) { alert("⚠️ Server Error - Please check if backend is running"); }
         }
-
         async function handleNoticePost(e) {
             e.preventDefault();
             const form = e.target;
@@ -1351,67 +1578,171 @@
             } catch (err) { alert("⚠️ Server Error - Make sure your backend is running."); }
         }
 
-        async function handleBlog() {
-            const title = document.getElementById('blogTitle').value;
-            const content = document.getElementById('blogContent').value;
+        async function handleBlog(e) {
+            if (e) e.preventDefault();
+            const form = e.target;
+            const formData = new FormData();
             
-            if (!title || !content) {
-                alert("⚠️ Please fill in both title and content!");
-                return;
-            }
+            formData.append('title', form.title.value);
+            formData.append('content', form.content.value || "Please download the attached manuscript to read the full article.");
+            formData.append('author', currentUser.name);
+            formData.append('role', currentUser.role); // 🔴 Tells backend if it should be pending or live
+            
+            const imgInput = form.querySelector('input[name="image"]');
+            if (imgInput && imgInput.files.length > 0) formData.append('image', imgInput.files[0]);
+            
+            const docInput = form.querySelector('input[name="document"]');
+            if (docInput && docInput.files.length > 0) formData.append('document', docInput.files[0]);
 
             try {
-                const res = await fetch(`${API_URL}/blogs`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title: title, content: content, author: currentUser.name })
-                });
-
+                const res = await fetch(`${API_URL}/blogs`, { method: 'POST', body: formData });
                 if (res.ok) {
-                    alert("✅ Blog Published Successfully!");
-                    document.getElementById('blogTitle').value = '';
-                    document.getElementById('blogContent').value = '';
-                    renderBlogs(); 
-                } else { alert("❌ Failed to publish. Check console for details."); }
+                    if (currentUser.role === 'student') {
+                        alert("✅ Article Submitted! It will appear on the portal once a teacher approves it.");
+                        form.reset();
+                    } else {
+                        alert("✅ Blog Published Successfully!");
+                        form.reset();
+                        navigate('blogs'); 
+                    }
+                } else { alert("❌ Failed to publish. Check backend console."); }
             } catch (err) { alert("⚠️ Server Error - Is the backend running?"); }
         }
 
-        async function loadFiles(elementId) {
+        // --- 📝 BLOG APPROVAL LOGIC ---
+        async function loadPendingBlogs() {
             try {
-                const userRole = currentUser ? currentUser.role : 'outsider';
-                const res = await fetch(`${API_URL}/resources?role=${userRole}`);
-                const files = await res.json();
-                const container = document.getElementById(elementId);
+                const res = await fetch(`${API_URL}/blogs/pending`);
+                const blogs = await res.json();
+                const container = document.getElementById('pending-blogs-list');
                 
-                if (files.length === 0) { 
-                    container.innerHTML = "<p style='color: var(--text-dim);'>No files found.</p>"; 
+                if (blogs.length === 0) { 
+                    container.innerHTML = "<p style='color: var(--text-dim);'>No articles pending review.</p>"; 
                     return; 
                 }
-        
-                const isTeacher = currentUser && currentUser.role === 'teacher';
-        
+
                 container.innerHTML = `<table>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Action</th>
-                            ${isTeacher ? '<th>Admin</th>' : ''} 
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Title</th><th>Author</th><th>Action</th></tr></thead>
                     <tbody>
-                        ${files.map(f => `
+                        ${blogs.map(b => `
                             <tr>
-                                <td style="color: var(--text-main); font-weight: 500;">${f.title}</td>
-                                <td><span style="background: rgba(0, 136, 255, 0.15); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">${f.type}</span></td>
-                                <td><a href="http://localhost:5001/${f.filePath}" target="_blank" class="btn btn-sm btn-outline">⬇️ Download</a></td>
-                                ${isTeacher ? `<td><button onclick="deleteItem('${f._id}', 'resources')" class="btn btn-sm" style="background:var(--error); color:white; border:none; padding:5px 10px;">🗑️</button></td>` : ''}
+                                <td style="color: var(--text-main); font-weight: 500;">${b.title}</td>
+                                <td>${b.author}</td>
+                                <td style="display: flex; gap: 8px;">
+                                    <button onclick="approveBlog('${b._id}')" class="btn btn-sm btn-success" style="padding: 4px 8px;">✅ Approve</button>
+                                    <button onclick="deleteItem('${b._id}', 'blogs'); setTimeout(loadPendingBlogs, 500);" class="btn btn-sm" style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 8px;">Reject & Delete</button>
+                                </td>
                             </tr>
                         `).join('')}
                     </tbody>
                 </table>`;
-            } catch (err) { document.getElementById(elementId).innerHTML = "<p style='color: var(--error);'>Unable to load files.</p>"; }
+            } catch (err) { container.innerHTML = "<p style='color: var(--error);'>Unable to load.</p>"; }
         }
+
+        async function approveBlog(id) {
+            try {
+                const res = await fetch(`${API_URL}/blogs/approve/${id}`, { method: 'PUT' });
+                if (res.ok) {
+                    alert("✅ Article Approved and Published to the public Journal!");
+                    loadPendingBlogs(); // Refresh the table
+                } else { alert("❌ Failed to approve."); }
+            } catch (err) { alert("Server Error"); }
+        }
+
+       // 🔴 1. Global array to hold files so the search bar works instantly without lagging
+       let allResources = []; 
+
+       async function loadFiles(elementId) {
+           const container = document.getElementById(elementId);
+           container.innerHTML = "<p style='color: var(--text-dim); text-align: center;'>Loading digital library...</p>";
+           
+           try {
+               const userRole = currentUser ? currentUser.role : 'outsider';
+               const res = await fetch(`${API_URL}/resources?role=${userRole}`);
+               const rawFiles = await res.json();
+               
+               // Keep ONLY normal resources (banish magazines)
+               allResources = rawFiles.filter(f => f.type !== 'Kalavatika' && f.type !== 'Annual');
+               
+               const isTeacher = currentUser && currentUser.role === 'teacher';
+               
+               // 🔴 2. Inject the Search Bar and the empty Grid Container
+               container.innerHTML = `
+                   <div style="margin-bottom: 2rem;">
+                       <input type="text" id="resource-search-input" placeholder="🔍 Search files by name, semester, subject, or topic..." 
+                              onkeyup="filterResources('${elementId}', ${isTeacher})" 
+                              style="width: 100%; padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 1rem; transition: border-color 0.2s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);">
+                   </div>
+                   <div id="resource-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+                       </div>
+               `;
+               
+               // Draw the files for the first time
+               filterResources(elementId, isTeacher); 
+               
+           } catch (err) {
+               container.innerHTML = "<p style='color: var(--error);'>Unable to load files.</p>";
+           }
+       }
+
+       // 🔴 3. The logic that draws the sleek cards, shows tags, and handles live searching
+       function filterResources(elementId, isTeacher) {
+           const query = document.getElementById('resource-search-input').value.toLowerCase();
+           const grid = document.getElementById('resource-grid');
+           
+           // Filter the files based on what the user typed
+           const filtered = allResources.filter(f => 
+               f.title.toLowerCase().includes(query) || 
+               (f.semester && f.semester.toLowerCase().includes(query)) ||
+               (f.subject && f.subject.toLowerCase().includes(query)) ||
+               (f.topic && f.topic.toLowerCase().includes(query)) ||
+               (f.type && f.type.toLowerCase().includes(query))
+           );
+
+           if (filtered.length === 0) {
+               grid.innerHTML = "<div class='card text-center' style='grid-column: 1 / -1;'><p style='color: var(--text-dim);'>No files match your search.</p></div>";
+               return;
+           }
+
+           // Draw the modern File Cards
+           grid.innerHTML = filtered.map(f => {
+               // Generate the little tag pills if the teacher filled them out
+               let tagsHtml = '';
+               if (f.semester) tagsHtml += `<span style="background: rgba(138, 43, 226, 0.15); color: var(--accent); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; margin-right: 6px; display: inline-block; margin-bottom: 6px; border: 1px solid rgba(138, 43, 226, 0.3);">Sem: ${f.semester}</span>`;
+               if (f.subject) tagsHtml += `<span style="background: rgba(0, 136, 255, 0.15); color: var(--primary); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; margin-right: 6px; display: inline-block; margin-bottom: 6px; border: 1px solid rgba(0, 136, 255, 0.3);">${f.subject}</span>`;
+               if (f.topic) tagsHtml += `<span style="background: rgba(16, 185, 129, 0.15); color: var(--success); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-block; margin-bottom: 6px; border: 1px solid rgba(16, 185, 129, 0.3);">${f.topic}</span>`;
+               
+               // Fallback tag if no special tags exist
+               if (!tagsHtml) tagsHtml = `<span style="background: rgba(0, 136, 255, 0.15); color: var(--accent); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-block; margin-bottom: 6px; border: 1px solid rgba(0, 136, 255, 0.3);">${f.type}</span>`;
+
+               return `
+               <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); border-top: 3px solid var(--primary); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);" onmouseover="this.style.transform='translateY(-6px)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 10px 25px rgba(0, 136, 255, 0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.boxShadow='none';">
+                   
+                   ${isTeacher ? `
+                   <button onclick="deleteItem('${f._id}', 'resources'); setTimeout(() => loadFiles('${elementId}'), 500);" class="btn btn-sm" style="position: absolute; top: 1rem; right: 1rem; background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239,68,68,0.3); padding: 6px; cursor: pointer; border-radius: 6px; transition: all 0.2s; z-index: 10;" onmouseover="this.style.background='var(--error)'; this.style.color='white';" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='var(--error)';" title="Delete File">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                   </button>
+                   ` : ''}
+
+                   <div>
+                       <div style="width: 48px; height: 48px; background: rgba(0, 136, 255, 0.1); border: 1px solid rgba(0, 136, 255, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem; color: var(--primary);">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                       </div>
+                       <h3 style="color: var(--text-main); font-size: 1.15rem; margin-bottom: 1rem; line-height: 1.4; padding-right: 2rem; font-weight: 600;">${f.title}</h3>
+                       
+                       <div style="margin-bottom: 1.5rem; display: flex; flex-wrap: wrap;">
+                           ${tagsHtml}
+                       </div>
+                   </div>
+                   
+                   <a href="http://localhost:5001/${f.filePath}" target="_blank" class="btn btn-outline" style="width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                       Download Resource
+                   </a>
+               </div>
+               `;
+           }).join('');
+       }
 
         async function renderNotices() {
             document.getElementById('app').innerHTML = `
@@ -1438,7 +1769,16 @@
                     <div class="card" style="border-left: 4px solid var(--accent);">
                         <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; border:none; padding-bottom: 0;">
                             <span style="color: var(--text-main); font-size: 1.1rem;">${n.title}</span>
-                            ${isTeacher ? `<button onclick="deleteItem('${n._id}', 'notices')" class="btn btn-sm" style="background:var(--error); padding:2px 8px; color: white;">🗑️</button>` : ''}
+                            ${isTeacher ? `
+                            <button onclick="deleteItem('${n._id}', 'notices')" class="btn btn-sm" style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 8px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='var(--error)'; this.style.color='white';" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='var(--error)';" title="Delete Notice">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                            </button>
+                            ` : ''}
                         </div>
                         <div class="card-body" style="padding-top: 0.5rem;">
                             <p style="font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 1rem;">
@@ -1454,66 +1794,102 @@
 
         async function renderBlogs() {
             document.getElementById('app').innerHTML = `
-                <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">Department Blogs</h2>
-                <div id="blog-loader" class="text-center" style="color: var(--text-dim);">Loading posts...</div>
-                <div id="blog-container" class="grid grid-2 hidden"></div>
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <h2 class="text-center" style="margin: 3rem 0 1rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">Department Journal</h2>
+                    <p class="text-center" style="color: var(--text-dim); margin-bottom: 3rem;">Insights, articles, and updates from the Department of Physics.</p>
+                    <div id="blog-loader" class="text-center" style="color: var(--text-dim);">Loading posts...</div>
+                    <div id="blog-container" class="hidden"></div>
+                </div>
             `;
+        
+            // 🔴 FIX: Define variables securely OUTSIDE the try block!
+            const container = document.getElementById('blog-container');
+            const loader = document.getElementById('blog-loader');
+            const isTeacher = currentUser && currentUser.role === 'teacher';
         
             try {
                 const res = await fetch(`${API_URL}/blogs`);
                 const blogs = await res.json();
-                const container = document.getElementById('blog-container');
-                const loader = document.getElementById('blog-loader');
                 
-                const isTeacher = currentUser && currentUser.role === 'teacher';
-        
                 loader.classList.add('hidden');
                 container.classList.remove('hidden');
         
                 if (blogs.length === 0) {
-                    container.innerHTML = `<div class="card text-center" style="grid-column:1/-1"><h3 style="color: var(--text-dim);">No Blogs Yet</h3></div>`;
+                    container.innerHTML = `<div class="card text-center"><h3 style="color: var(--text-dim);">No Articles Published Yet</h3></div>`;
                     return;
                 }
         
                 container.innerHTML = blogs.map(b => {
+                    // WordPress-style SEO Infographic Block (Fallback)
                     let seoBox = "";
-                    if (!b.content.includes('<img')) {
+                    if (!b.imagePath && !b.content.includes('<img')) {
                         seoBox = `
-                        <div class='infographic-placeholder' style='
-                            background: var(--surface-elevated); 
-                            padding: 1.25rem; 
-                            border-left: 4px solid var(--primary); 
-                            margin-top: 1.5rem; 
-                            border-radius: 8px;'>
-                            <h4 style='margin:0 0 0.5rem 0; color:var(--text-main); font-size:1.05rem;'>
-                                📌 Infographic Summary: ${b.title}
-                            </h4>
-                            <p style='margin:0; font-size:0.85rem; color:var(--text-dim);'>
-                                (Visual summary automatically generated for SEO optimization)
-                            </p>
-                        </div>`;
+                        <figure style='background: rgba(0, 136, 255, 0.05); padding: 2rem; border: 1px dashed rgba(0, 136, 255, 0.3); margin: 2.5rem 0 1rem 0; border-radius: 12px; text-align: center;'>
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">📊</div>
+                            <h4 style='margin:0 0 0.5rem 0; color:var(--text-main); font-size:1.1rem;'>Infographic Summary for SEO</h4>
+                            <figcaption style='margin:0; font-size:0.9rem; color:var(--text-dim); font-style: italic;'>Visual data summary automatically generated.</figcaption>
+                        </figure>`;
                     }
         
                     return `
-                    <div class="card">
-                        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
-                            <span>${b.title}</span>
-                            ${isTeacher ? `<button onclick="deleteItem('${b._id}', 'blogs')" style="background:none; border:none; color: var(--error); cursor:pointer; font-size:1.2rem;">🗑️</button>` : ''}
-                        </div>
-                        <div class="card-body">
-                            <p style="font-size: 0.85rem; color: var(--success); margin-bottom: 1rem;">
-                                By ${b.author} • ${new Date(b.date).toLocaleDateString()}
-                            </p>
-                            <div style="line-height: 1.8; color: var(--text-main); white-space: pre-wrap;">${b.content}</div>
-                            ${seoBox}
-                        </div>
-                    </div>
+                    <article class="card" style="margin-bottom: 3rem; padding: 3rem; border-top: none; border-left: 5px solid var(--primary); border-radius: 12px; position: relative; overflow: hidden;">
+                        
+                        ${isTeacher ? `
+                        <button onclick="deleteItem('${b._id}', 'blogs')" class="btn btn-sm" style="position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10; background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 8px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='var(--error)'; this.style.color='white';" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='var(--error)';" title="Delete Article">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                        </button>
+                        ` : ''}
+
+                        <header style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border);">
+                            <h1 style="font-size: 2.2rem; font-weight: 800; color: white; line-height: 1.3; margin-bottom: 1.5rem; padding-right: 3rem;">${b.title}</h1>
+                            <div style="display: flex; align-items: center; gap: 12px; color: var(--text-dim); font-size: 0.95rem;">
+                                <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; font-weight: bold;">
+                                    ${b.author.charAt(0).toUpperCase()}
+                                </div>
+                                <div style="line-height: 1.4;">
+                                    <strong style="color: var(--text-main); font-size: 1.05rem;">${b.author}</strong><br>
+                                    ${new Date(b.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                                </div>
+                            </div>
+                        </header>
+
+                        ${b.imagePath ? `
+                            <div style="margin-bottom: 2rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);">
+                                <img src="http://localhost:5001/${b.imagePath}" style="width: 100%; max-height: 450px; object-fit: cover;" alt="Blog Cover">
+                            </div>
+                        ` : ''}
+                        
+                        <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dim); white-space: pre-wrap; font-family: 'Inter', sans-serif;">${b.content}</div>
+                        
+                        ${seoBox}
+
+                        ${b.documentPath ? `
+                            <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                                <a href="http://localhost:5001/${b.documentPath}" target="_blank" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 8px; color: var(--success); border-color: rgba(16, 185, 129, 0.3);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                    Read Full Manuscript (Word/PDF)
+                                </a>
+                            </div>
+                        ` : ''}
+                    </article>
                     `;
                 }).join('');
-        
-            } catch (err) { loader.innerHTML = "<p>Server Offline</p>"; }
+            } catch (err) { 
+                if (loader) loader.innerHTML = "<p style='color: var(--error);'>Server Offline or Network Error</p>"; 
+                console.error("Failed to render blogs:", err);
+            }
         }
-
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
@@ -1607,17 +1983,25 @@
                 const isTeacher = currentUser && currentUser.role === 'teacher';
 
                 container.innerHTML = posts.map(p => `
-                    <div class="card" style="margin-bottom: 2rem; padding: 0; overflow: hidden;">
-                        <div style="padding: 1.5rem 1.5rem 1rem 1.5rem; display: flex; justify-content: space-between; align-items: flex-start;">
-                            <div>
-                                <h3 style="color: var(--text-main); margin-bottom: 0.3rem;">${p.title}</h3>
-                                <p style="font-size: 0.85rem; color: var(--text-dim);">
-                                    <strong style="color: var(--primary);">${p.author}</strong> (${p.role}) • ${new Date(p.date).toLocaleDateString()}
-                                </p>
-                            </div>
-                            ${isTeacher ? `<button onclick="deleteItem('${p._id}', 'research-feed')" class="btn btn-sm" style="background:var(--error); color: white; padding:4px 10px;">🗑️</button>` : ''}
+                <div class="card" style="margin-bottom: 2rem; padding: 0; overflow: hidden;">
+                    <div style="padding: 1.5rem 1.5rem 1rem 1.5rem; display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 style="color: var(--text-main); margin-bottom: 0.3rem;">${p.title}</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-dim);">
+                                <strong style="color: var(--primary);">${p.author}</strong> (${p.role}) • ${new Date(p.date).toLocaleDateString()}
+                            </p>
                         </div>
-
+                        ${isTeacher ? `
+                        <button onclick="deleteItem('${p._id}', 'research-feed')" class="btn btn-sm" style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 8px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='var(--error)'; this.style.color='white';" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='var(--error)';" title="Delete Post">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                        </button>
+                        ` : ''}
+                    </div>
                         ${p.imagePath ? `
                             <div style="width: 100%; background: var(--bg-deep);">
                                 <img src="http://localhost:5001/${p.imagePath}" style="width: 100%; max-height: 500px; object-fit: contain; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);" alt="Research Photo">
@@ -1678,6 +2062,362 @@
                 alert("Server Error.");
             }
         }
+        async function renderGallery() {
+            document.getElementById('app').innerHTML = `
+                <h2 class="text-center" style="margin: 3rem 0 1rem; font-size: 2.5rem; color: var(--success);"> Event Highlights</h2>
+                <div id="gallery-loader" class="text-center" style="color: var(--success);">Loading categories...</div>
+                <div id="gallery-container" class="grid grid-2 hidden"></div>
+            `;
+
+            try {
+                const res = await fetch(`${API_URL}/events/highlights`);
+                const highlights = await res.json();
+                const container = document.getElementById('gallery-container');
+                document.getElementById('gallery-loader').classList.add('hidden');
+                container.classList.remove('hidden');
+
+                if (highlights.length === 0) {
+                    container.innerHTML = `<div class="card text-center" style="grid-column:1/-1"><p>No event categories created yet.</p></div>`;
+                    return;
+                }
+
+                container.innerHTML = highlights.map(h => `
+                    <div class="card text-center" onclick="renderHighlightPosts('${h._id}', '${h.title}')" style="cursor: pointer; transition: transform 0.3s; border-top: 4px solid var(--success);">
+                        <div style="font-size: 3.5rem; margin-bottom: 1rem;">📁</div>
+                        <h3 style="color: white; margin-bottom: 0.5rem; font-size: 1.5rem;">${h.title}</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-dim);">Created by ${h.createdBy}</p>
+                    </div>
+                `).join('');
+            } catch (err) { document.getElementById('gallery-loader').innerHTML = "Server Offline"; }
+        }
+        async function renderHighlightPosts(highlightId, highlightTitle) {
+            document.getElementById('app').innerHTML = `
+                <div style="margin: 2rem 0; display: flex; justify-content: space-between; align-items: center;">
+                    <button class="btn btn-outline btn-sm" style="display: flex; align-items: center; gap: 6px;" onclick="navigate('gallery')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                   <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back </button>
+                    ${currentUser && currentUser.role === 'teacher' ? `
+<button class="btn btn-sm" style="background: var(--warning); color: black; font-weight: bold; display: flex; align-items: center; gap: 6px;" onclick="editCategory('${highlightId}', '${highlightTitle}')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+    </svg>
+    Rename </button>` : ''}
+                </div>
+                <h2 class="text-center" style="margin: 1rem 0 2rem; font-size: 2.5rem; color: var(--success);">${highlightTitle}</h2>
+                <div id="posts-loader" class="text-center" style="color: var(--success);">Loading albums...</div>
+                
+                <div id="posts-container" style="max-width: 600px; margin: 0 auto;" class="hidden"></div>
+            `;
+
+            try {
+                const res = await fetch(`${API_URL}/events/posts/${highlightId}`);
+                const posts = await res.json();
+                const container = document.getElementById('posts-container');
+                document.getElementById('posts-loader').classList.add('hidden');
+                container.classList.remove('hidden');
+
+                if (posts.length === 0) {
+                    container.innerHTML = `<div class="card text-center"><p>No photos uploaded to this category yet.</p></div>`;
+                    return;
+                }
+
+                const isTeacher = currentUser && currentUser.role === 'teacher';
+
+                container.innerHTML = posts.map(p => {
+                    // 1. Build the HTML for multiple images WITH A DOWNLOAD BUTTON OVERLAY
+                    const imagesHtml = p.imagePaths.map(imgPath => `
+                        <div style="position: relative; flex: 0 0 100%; scroll-snap-align: start;">
+                            <img src="http://localhost:5001/${imgPath}" style="width: 100%; height: 400px; object-fit: cover;" alt="Event Photo">
+                            
+                            <a href="http://localhost:5001/${imgPath}" download="Event_Photo" class="btn btn-sm" style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(5px); text-decoration: none;">
+                                 Download
+                            </a>
+                        </div>
+                    `).join('');
+
+                    return`
+                    <div class="card" style="margin-bottom: 2rem; padding: 0; overflow: hidden; border: 1px solid var(--border);">
+                        <div style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <h3 style="color: white; margin-bottom: 0.3rem;">${p.title}</h3>
+                                <p style="font-size: 0.85rem; color: var(--text-dim);">
+                                    <strong style="color: var(--primary);">${p.author}</strong> (${p.role}) • ${new Date(p.date).toLocaleDateString()}
+                                </p>
+                            </div>
+                            ${isTeacher ? `
+                            <div style="display: flex; gap: 5px;">
+                                <button onclick="editAlbum('${p._id}', '${p.title}', '${p.caption}', '${highlightId}', '${highlightTitle}')" class="btn btn-sm" style="background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); padding: 6px 10px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='var(--warning)'; this.style.color='black';" onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'; this.style.color='var(--warning)';" title="Edit">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                     </svg>
+                                          </button>
+                                <button onclick="deleteItem('${p._id}', 'events/post')" class="btn btn-sm" style="background:var(--error); color: white; padding:6px 10px; display:flex; align-items:center; justify-content:center;" title="Delete Album">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                                   <line x1="14" y1="11" x2="14" y2="17"></line>
+                                      </svg>
+                                     </button>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        <div style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; background: #000; -webkit-overflow-scrolling: touch;">
+                            ${imagesHtml}
+                        </div>
+                        ${p.imagePaths.length > 1 ? `<p style="text-align:center; font-size:0.8rem; color:var(--text-dim); padding: 8px 0; background: #111; margin:0; border-bottom: 1px solid rgba(255,255,255,0.05);">👈 Swipe to view all ${p.imagePaths.length} photos 👉</p>` : ''}
+
+                        <div style="padding: 1.5rem;">
+                            <p style="color: var(--text-main); line-height: 1.6; white-space: pre-wrap;">${p.caption}</p>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            } catch (err) { document.getElementById('posts-loader').innerHTML = "Server Offline"; }
+        }
+        // ---  GALLERY UPLOAD LOGIC ---
+
+        // 1. Fetch categories to populate the dropdowns
+        async function loadHighlightsDropdown(selectId) {
+            try {
+                const res = await fetch(`${API_URL}/events/highlights`);
+                const highlights = await res.json();
+                const selectEl = document.getElementById(selectId);
+                
+                if (highlights.length === 0) {
+                    selectEl.innerHTML = '<option value="">No categories available yet.</option>';
+                    return;
+                }
+                
+                selectEl.innerHTML = '<option value="" disabled selected>-- Select a Category --</option>' + 
+                    highlights.map(h => `<option value="${h._id}">${h.title}</option>`).join('');
+            } catch (err) { console.error("Failed to load categories."); }
+        }
+
+        // 2. Teacher creating a new Category
+        async function handleCreateHighlight(e) {
+            e.preventDefault();
+            const title = e.target.title.value;
+            try {
+                const res = await fetch(`${API_URL}/events/highlight`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, role: currentUser.role, author: currentUser.name })
+                });
+                
+                if (res.ok) {
+                    alert("✅ New Category Created!");
+                    e.target.reset();
+                    loadHighlightsDropdown('t-highlight-select'); // Instantly update the dropdown
+                } else { alert("❌ Failed to create category. Does it already exist?"); }
+            } catch (err) { alert("Server Error"); }
+        }
+
+        // 3. Uploading an Album with Multiple Photos
+        async function handleGalleryUpload(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData();
+            
+            formData.append('highlightId', form.highlightId.value);
+            formData.append('title', form.title.value);
+            formData.append('caption', form.caption.value);
+            formData.append('author', currentUser.name);
+            formData.append('role', currentUser.role);
+            
+            // LOOP: Grab ALL selected photos and add them to the package
+            const photoInput = form.querySelector('input[name="photos"]');
+            for (let i = 0; i < photoInput.files.length; i++) {
+                formData.append('photos', photoInput.files[i]);
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/events/post`, { method: 'POST', body: formData });
+                
+                if (res.ok) {
+                    alert("✅ Album Uploaded Successfully!");
+                    form.reset();
+                    navigate('gallery'); // Instantly jump to the public gallery to view it!
+                } else { alert("❌ Failed to upload album."); }
+            } catch (err) { alert("Server Error"); }
+        }
+        // --- ✏️ RE-EDIT LOGIC ---
+
+        // 1. Rename the Category (e.g., "Picnics" -> "Annual Picnics")
+        async function editCategory(categoryId, oldTitle) {
+            const newTitle = prompt("Enter new category name:", oldTitle);
+            if (!newTitle || newTitle === oldTitle) return; // Cancelled or unchanged
+
+            try {
+                const res = await fetch(`${API_URL}/events/highlight/${categoryId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title: newTitle })
+                });
+                
+                if (res.ok) {
+                    alert("✅ Category Renamed!");
+                    navigate('gallery'); // Refresh gallery to see the new name
+                } else { alert("❌ Failed to rename."); }
+            } catch (err) { alert("Server Error"); }
+        }
+
+        // 2. Edit Album Title & Caption
+        async function editAlbum(postId, oldTitle, oldCaption, highlightId, highlightTitle) {
+            const newTitle = prompt("Edit Album Title:", oldTitle);
+            if (!newTitle) return; // Cancelled
+            
+            const newCaption = prompt("Edit Caption:", oldCaption);
+            if (!newCaption) return; // Cancelled
+
+            try {
+                const res = await fetch(`${API_URL}/events/post/${postId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title: newTitle, caption: newCaption })
+                });
+                
+                if (res.ok) {
+                    alert("✅ Album Updated Successfully!");
+                    // Refresh the current album page to show changes instantly
+                    renderHighlightPosts(highlightId, highlightTitle); 
+                } else { alert("❌ Update failed."); }
+            } catch (err) { alert("Server Error"); }
+        }
+    // ---  ACHIEVEMENT FEED ---
+    async function openAchievementFeed(category, pageTitle) {
+        document.getElementById('app').innerHTML = `
+            <div style="max-width: 700px; margin: 0 auto; padding-top: 2rem;">   
+                    <button class="btn btn-outline btn-sm mb-4" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 14px; border-radius: 8px; font-weight: 500; transition: all 0.2s;" onclick="renderHome()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        Back
+                    </button>
+                <h2 class="text-center" style="margin-bottom: 2rem; font-size: 2rem; color: var(--text-main);">${pageTitle}</h2>
+                <div id="achievement-loader" class="text-center" style="color: var(--text-dim);">Loading portfolio...</div>
+                <div id="achievement-container" class="hidden"></div>
+            </div>
+        `;
+
+        try {
+            const res = await fetch(`${API_URL}/achievements/${category}`);
+            const posts = await res.json();
+            const container = document.getElementById('achievement-container');
+            document.getElementById('achievement-loader').classList.add('hidden');
+            container.classList.remove('hidden');
+
+            if (posts.length === 0) {
+                container.innerHTML = `<div class="card text-center"><p style="color:var(--text-dim);">No posts yet.</p></div>`;
+                return;
+            }
+
+            const isTeacher = currentUser && currentUser.role === 'teacher';
+
+            container.innerHTML = posts.map(p => {
+                // Render multiple images if they exist
+                const imagesHtml = p.imagePaths.map(imgPath => `
+                    <div style="flex: 0 0 100%; scroll-snap-align: start;">
+                        <img src="http://localhost:5001/${imgPath}" style="width: 100%; max-height: 500px; object-fit: contain; background: #000;" alt="Achievement Photo">
+                    </div>
+                `).join('');
+
+                return `
+                <div class="card" style="margin-bottom: 2rem; padding: 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;">
+                    
+                    <div style="padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; font-weight: bold;">
+                                ${p.author.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <h3 style="color: var(--text-main); font-size: 1.1rem; margin: 0;">${p.author} <span style="font-weight: normal; font-size: 0.85rem; color: var(--text-dim);">(${p.authorRole})</span></h3>
+                                <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">${new Date(p.date).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                        ${isTeacher || (currentUser && currentUser.name === p.author) ? `
+                            <button onclick="deleteItem('${p._id}', 'achievements'); setTimeout(()=>openAchievementFeed('${category}', '${pageTitle}'), 500);" class="btn btn-sm" style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 8px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='var(--error)'; this.style.color='white';" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='var(--error)';" title="Delete Achievement">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                            </button>
+                            ` : ''}</div>
+
+                    <div style="padding: 1rem 1.5rem 0.5rem; background: rgba(0, 136, 255, 0.05);">
+                        <span style="font-size: 0.9rem; color: var(--text-main);"><strong>🏆 Featuring:</strong> <span style="color: var(--accent);">${p.studentsInvolved}</span></span>
+                    </div>
+
+                    <div style="padding: 1rem 1.5rem 1.5rem;">
+                        <p style="color: var(--text-main); line-height: 1.6; margin: 0; white-space: pre-wrap;">${p.description}</p>
+                    </div>
+
+                    ${p.imagePaths.length > 0 ? `
+                    <div style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; background: #000; border-top: 1px solid rgba(255,255,255,0.05);">
+                        ${imagesHtml}
+                    </div>
+                    ${p.imagePaths.length > 1 ? `<p style="text-align:center; font-size:0.75rem; color:var(--text-dim); padding: 8px 0; background: #111; margin:0;">Swipe to view all ${p.imagePaths.length} photos</p>` : ''}
+                    ` : ''}
+                </div>
+                `;
+            }).join('');
+        } catch (err) { document.getElementById('achievement-loader').innerHTML = "Server Offline"; }
+    }
+// --- 🏆 ACHIEVEMENT UPLOAD LOGIC ---
+// --- 🏆 ACHIEVEMENT UPLOAD LOGIC ---
+async function handleAchievement(e) {
+    e.preventDefault(); // Stop page refresh!
+    const form = e.target;
+    const formData = new FormData();
+    
+    const category = form.category.value;
+    
+    // Append all text fields
+    formData.append('category', category);
+    formData.append('studentsInvolved', form.studentsInvolved.value);
+    formData.append('description', form.description.value);
+    formData.append('author', currentUser.name);
+    formData.append('authorRole', currentUser.role); // Keeps track of who posted it
+    
+    // 🔴 MAGIC LOOP: Grab ALL selected photos and add them
+    const photoInput = form.querySelector('input[name="photos"]');
+    if (photoInput && photoInput.files.length > 0) {
+        for (let i = 0; i < photoInput.files.length; i++) {
+            formData.append('photos', photoInput.files[i]);
+        }
+    } else {
+        alert("Please select at least one photo.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/achievements`, { method: 'POST', body: formData });
+        
+        if (res.ok) {
+            alert("✅ Achievement Published Successfully!");
+            form.reset();
+            
+            // Immediately jump to the feed they just posted to!
+            const pageTitle = category === 'academic' 
+                ? '📚 Academic Programs & Excellence' 
+                : '🌟 Student Activities & Achievements';
+            openAchievementFeed(category, pageTitle);
+        } else { 
+            alert("❌ Failed to publish post. Check backend server."); 
+        }
+    } catch (err) { 
+        alert("⚠️ Server Error - Is the backend running?"); 
+    }
+}
     </script>
 </body>
 </html>
