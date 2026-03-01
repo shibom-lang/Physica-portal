@@ -118,11 +118,9 @@ router.put('/students/approve/:id', async (req, res) => {
     }
 });
 
-// ==========================================
-// 👨‍🏫 DYNAMIC FACULTY PROFILES
-// ==========================================
 
-// 1. Get all Teachers for the Public Faculty Page
+// FACULTY PROFILES
+//  Get all Teachers for the Public Faculty Page
 router.get('/faculty', async (req, res) => {
     try {
         // Fetch users who are teachers. We use .select('-password') to keep passwords completely hidden!
@@ -133,7 +131,7 @@ router.get('/faculty', async (req, res) => {
     }
 });
 
-// 2. Update Teacher Profile (Accepts Profile Picture Upload)
+//  Update Teacher Profile Accepts Profile Picture Upload)
 router.put('/profile/:username', upload.single('profilePic'), async (req, res) => {
     try {
         const { qualifications, bio } = req.body;
@@ -387,7 +385,7 @@ router.get('/events/highlights', async (req, res) => {
     }
 });
 
-// --- 🖼️ EVENT ALBUM POSTS ---
+// ---  EVENT ALBUM POSTS ---
 
 // 3. Create a New Album Post (Upload MULTIPLE photos at once)
 router.post('/events/post', upload.array('photos', 20), async (req, res) => {
@@ -453,7 +451,31 @@ router.put('/events/post/:id', async (req, res) => {
         res.status(200).json(updatedPost);
     } catch (err) { res.status(500).json({ message: "Failed to update album" }); }
 });
-// --- 🏆 ACHIEVEMENTS & PORTFOLIO API ---
+
+// 7. Delete an Event Album (Gallery Post)
+router.delete('/events/post/:id', async (req, res) => {
+    try {
+        const post = await EventPost.findById(req.params.id);
+        if (!post) return res.status(404).json({ message: "Album not found" });
+
+        // Step 1: Delete all the actual image files from the server's uploads folder
+        if (post.imagePaths && post.imagePaths.length > 0) {
+            post.imagePaths.forEach(imgPath => {
+                fs.unlink(imgPath, (err) => {
+                    if (err) console.error("Failed to delete local image:", err);
+                });
+            });
+        }
+
+        // Step 2: Delete the album from the database
+        await EventPost.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "Album deleted successfully" });
+    } catch (err) {
+        console.error("Delete Album Error:", err);
+        res.status(500).json({ message: "Failed to delete album" });
+    }
+});
+// ---  ACHIEVEMENTS & PORTFOLIO API ---
 
 // 1. Post a new Achievement (Supports Multiple Images)
 router.post('/achievements', upload.array('photos', 10), async (req, res) => {

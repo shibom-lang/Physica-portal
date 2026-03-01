@@ -1917,12 +1917,14 @@
                         renderResearch();
                     } else if (type === 'notices') {
                         renderNotices();
+                    } else if (type === 'events/post') {
+                        navigate('gallery'); // 🔴 NEW: Takes you back to the gallery safely
                     } else {
                         renderBlogs();
                     }
                 } else { alert("❌ Failed to delete."); }
             } catch (err) { alert("Server Error"); }
-        }
+        }git 
 
         async function loadPendingStudents() {
             try {
