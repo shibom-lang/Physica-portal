@@ -694,8 +694,7 @@
                 }
             }
         };
-
-        let currentUser = null;
+        let currentUser = JSON.parse(localStorage.getItem('physicaUser')) || null;
         const routes = {
             home: renderHome,
             faculty: renderFaculty,
@@ -739,6 +738,7 @@
 
         function logout() {
             currentUser = null;
+            localStorage.removeItem('physicaUser'); 
             navigate('home');
         }
 
@@ -1059,8 +1059,8 @@
                     }
                     
                     currentUser = data;
+                    localStorage.setItem('physicaUser', JSON.stringify(currentUser)); 
                     alert(`✅ Welcome ${currentUser.name}`);
-                    navigate('dashboard'); 
                 } else { 
                     alert(`❌ ${data.message || "Invalid Credentials"}`); 
                 }

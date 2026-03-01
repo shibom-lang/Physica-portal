@@ -35,8 +35,10 @@ router.post('/login', async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: "Invalid Username or Password" });
 
         // 4. Send user data to frontend (Login Success)
+        // 4. Send user data to frontend (Login Success)
         res.status(200).json({
             _id: user._id,
+            username: user.username, 
             name: user.name,
             role: user.role,
             semester: user.semester,
