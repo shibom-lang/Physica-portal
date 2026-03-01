@@ -841,10 +841,10 @@
                 container.innerHTML = facultyData.map(f => `
                     <div class="card faculty-card" style="border-top: 4px solid var(--secondary);">
                         
-                        ${f.profilePicture 
-                            ? `<img src="https://physica-portal.onrender.com/${f.profilePicture}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 3px solid var(--primary); box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);">` 
-                            : `<div class="faculty-avatar" style="font-size: 5rem; margin-bottom: 1rem;">🧑‍🏫</div>`
-                        }
+                       ${f.profilePicture 
+    ? `<img src="https://physica-portal.onrender.com/${f.profilePicture.replace(/\\/g, '/')}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 3px solid var(--primary); box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);">` 
+    : `<div class="faculty-avatar" style="font-size: 5rem; margin-bottom: 1rem;">🧑‍🏫</div>`
+}
                         
                         <h3 style="color: white; margin-bottom: 0.5rem; font-size: 1.4rem;">${f.name}</h3>
                         <p style="color: var(--primary); margin-bottom: 0.5rem; font-weight: bold; letter-spacing: 0.05em;">${f.designation || 'Faculty Member'}</p>
