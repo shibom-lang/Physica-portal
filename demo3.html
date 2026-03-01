@@ -842,9 +842,9 @@
                     <div class="card faculty-card" style="border-top: 4px solid var(--secondary);">
                         
                        ${f.profilePicture 
-    ? `<img src="https://physica-portal.onrender.com/${f.profilePicture.replace(/\\/g, '/')}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 3px solid var(--primary); box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);">` 
-    : `<div class="faculty-avatar" style="font-size: 5rem; margin-bottom: 1rem;">🧑‍🏫</div>`
-}
+                         ? `<img src="https://physica-portal.onrender.com/${f.profilePicture.replace(/\\/g, '/')}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 3px solid var(--primary); box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);">` 
+                        : `<div class="faculty-avatar" style="font-size: 5rem; margin-bottom: 1rem;">🧑‍🏫</div>`
+                          }
                         
                         <h3 style="color: white; margin-bottom: 0.5rem; font-size: 1.4rem;">${f.name}</h3>
                         <p style="color: var(--primary); margin-bottom: 0.5rem; font-weight: bold; letter-spacing: 0.05em;">${f.designation || 'Faculty Member'}</p>
@@ -1127,7 +1127,11 @@
                 <div class="dashboard-layout">
                     <aside class="sidebar">
                         <div class="card text-center" style="margin-bottom: 1.5rem;">
-                            <div class="faculty-avatar" style="margin: 0 auto 1rem;">🧑🏻‍🏫</div>
+                                                   
+                            ${currentUser.profilePicture 
+                            ? `<img src="https://physica-portal.onrender.com/${currentUser.profilePicture.replace(/\\/g, '/')}" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; border: 2px solid var(--primary);">` 
+                           : `<div class="faculty-avatar" style="margin: 0 auto 1rem;">🧑🏻‍🏫</div>`
+                             }
                             <h4 style="margin-bottom: 0.5rem;">${currentUser.name}</h4>
                             <p class="text-sm" style="color: var(--text-dim);">${currentUser.designation}</p>
                             <span style="display:inline-block; margin-top: 0.75rem; background: rgba(0, 136, 255, 0.15); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">Teacher</span>
