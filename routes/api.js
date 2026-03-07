@@ -34,15 +34,18 @@ router.post('/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Invalid Username or Password" });
 
-        // 4. Send user data to frontend (Login Success)
-        // 4. Send user data to frontend (Login Success)
+        //  (Login Success)  
         res.status(200).json({
             _id: user._id,
             username: user.username, 
             name: user.name,
             role: user.role,
             semester: user.semester,
-            status: user.status
+            status: user.status,
+            profilePicture: user.profilePicture,
+            designation: user.designation,
+            qualifications: user.qualifications,
+            bio: user.bio
         });
 
     } catch (err) {
