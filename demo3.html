@@ -1054,15 +1054,17 @@
                 if (res.ok) {
                     // Check if the server sent an approved status
                     if (data.role === 'student' && data.status === 'pending') {
-                        alert("❌ Access Denied: Your account is waiting for Teacher Approval.");
+                        alert(" Access Denied: Your account is waiting for Teacher Approval.");
                         return;
                     }
                     
                     currentUser = data;
                     localStorage.setItem('physicaUser', JSON.stringify(currentUser)); 
                     alert(`✅ Welcome ${currentUser.name}`);
+                    navigate('dashboard'); 
+                    
                 } else { 
-                    alert(`❌ ${data.message || "Invalid Credentials"}`); 
+                    alert(` ${data.message || "Invalid Credentials"}`); 
                 }
             } catch (err) { alert("Server Error"); }
         }
