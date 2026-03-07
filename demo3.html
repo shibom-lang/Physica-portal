@@ -943,14 +943,32 @@
         function renderResources() {
             if (!currentUser) {
                 document.getElementById('app').innerHTML = `
-                    <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">Study Resources</h2>
-                    <div class="card text-center" style="padding: 4rem 2rem;">
-                        <h1 style="font-size: 4rem; margin-bottom: 1rem; text-shadow: none;">🔒</h1>
-                        <h2 style="color: var(--error);">Access Restricted</h2>
-                        <p class="text-secondary">Download lecture notes, assignments, and study materials uploaded by faculty.</p>
-                        <p style="color: var(--text-dim); margin-top: 1rem;">Academic notes are exclusively available to Arya Vidyapeeth College students and faculty.</p>
-                        <p style="color: var(--text-dim);">Outsiders may still freely view our Blogs, Magazines, and Achievements.</p>
-                        <button onclick="navigate('login')" class="btn btn-primary mt-4">Login with Student ID</button>
+                    <div style="max-width: 600px; margin: 4rem auto; position: relative;">
+                        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 150px; height: 150px; background: var(--primary); filter: blur(90px); opacity: 0.3; z-index: 0; pointer-events: none;"></div>
+                        
+                        <div class="card text-center" style="padding: 4rem 3rem; border-top: 4px solid var(--primary); background: linear-gradient(180deg, rgba(0, 136, 255, 0.05) 0%, var(--surface) 100%); position: relative; z-index: 1; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+                            
+                            <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: rgba(0, 136, 255, 0.1); border: 1px solid rgba(0, 136, 255, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(0, 136, 255, 0.2);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px var(--primary-glow));">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+
+                            <h2 style="font-size: 2rem; color: var(--text-main); margin-bottom: 0.5rem; letter-spacing: -0.02em;">Secure Repository</h2>
+                            <div style="width: 40px; height: 3px; background: var(--primary); margin: 0 auto 1.5rem; border-radius: 2px; box-shadow: 0 0 10px var(--primary-glow);"></div>
+                            
+                            <p style="color: var(--text-dim); font-size: 1.05rem; margin-bottom: 0.5rem; line-height: 1.6;">
+                                Academic resources and lecture notes are exclusively available to authorized personnel and enrolled students.
+                            </p>
+                            <p style="color: var(--text-tertiary); font-size: 0.9rem; margin-bottom: 2.5rem;">
+                                Guests may freely explore our public Research Portfolio, Event Gallery, and Department Journal.
+                            </p>
+                            
+                            <button onclick="navigate('login')" class="btn btn-primary" style="padding: 0.8rem 2.5rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(255,255,255,0.2);">
+                                Authenticate to Access
+                            </button>
+                        </div>
                     </div>
                 `;
                 return;
@@ -1049,7 +1067,7 @@
                     body: JSON.stringify({ username: u, password: p })
                 });
                 
-                const data = await res.json(); // 🔴 Get the data first
+                const data = await res.json(); //  Get the data first
 
                 if (res.ok) {
                     // Check if the server sent an approved status
