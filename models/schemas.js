@@ -35,13 +35,13 @@ const ResourceSchema = new mongoose.Schema({
     filePath: String,
     date: { type: Date, default: Date.now }
 });
-
 // 3. Blog Schema (SEO Optimized)
 const BlogSchema = new mongoose.Schema({
     title: { type: String, required: true },
     content: { type: String },
     author: { type: String },
     imagePath: { type: String },
+    infographicPath: { type: String },
     documentPath: { type: String },
     status: { type: String, default: 'approved' }, 
     date: { type: Date, default: Date.now }
@@ -66,12 +66,8 @@ const ResearchPostSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now }
 });
 
-
-// =============================
-// 📸 ADVANCED EVENT GALLERY
-// =============================
-
-// 8. Event Highlight Schema (The Category "Folder", e.g., "Picnics")
+// EVENT GALLERY
+// 8. Event Highlight Schema 
 const EventHighlightSchema = new mongoose.Schema({
     title: { type: String, required: true, unique: true }, // e.g., "Society Connects"
     createdBy: { type: String } // Teacher who made the category

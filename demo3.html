@@ -1169,6 +1169,7 @@
                     </aside>
                     <section class="content-area">
                         
+                        
                         <div id="t-upload" class="tab-content">
                             <h2 class="mb-4">Repository Manager</h2>
                             <div class="card mb-4" style="border-left: 4px solid var(--primary);">
@@ -1220,10 +1221,31 @@
                                     <input type="file" name="image" id="blogImage" accept="image/*">
                                     
                                     <label style="color: var(--success);">Upload Manuscript (Word Doc / PDF - Optional)</label>
-                                    <input type="file" name="document" id="blogDocument" accept=".doc,.docx,.pdf">
-                                    
-                                    <label>Blog Content / Summary</label>
-                                    <textarea name="content" id="blogContent" rows="6" placeholder="Write your blog content here, or write a short summary if you attached a Word Document..."></textarea>
+                                   <input type="file" name="document" id="blogDocument" accept=".doc,.docx,.pdf">
+    
+                                 <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+                                  <label style="display: block; color: var(--text-main); font-weight: 600; margin-bottom: 0.5rem; font-size: 0.95rem;"> 
+                                 📊 SEO Infographic 
+                                  <span style="color: var(--tartiary); font-size: 0.8rem; font-weight: normal; margin-left: 8px;">(Auto-inserts into the middle of your text)</span>
+                               </label>
+        
+                               <div style="position: relative; border: 2px dashed rgba(0, 136, 255, 0.3); border-radius: 12px; background: rgba(0, 136, 255, 0.02); padding: 2rem 1rem; text-align: center; transition: all 0.3s ease; cursor: pointer; overflow: hidden;" 
+                                    onmouseover="this.style.borderColor='var(--primary)'; this.style.background='rgba(0, 136, 255, 0.08)'; this.style.boxShadow='0 0 20px rgba(0, 136, 255, 0.15)';" 
+                                      onmouseout="this.style.borderColor='rgba(0, 136, 255, 0.3)'; this.style.background='rgba(0, 136, 255, 0.02)'; this.style.boxShadow='none';">
+                             <input type="file" name="infographic" id="blogInfographic" accept="image/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10;">
+                             <div style="pointer-events: none;">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 0.75rem; filter: drop-shadow(0 0 8px var(--primary-glow));">
+                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                             <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <p style="color: var(--primary); font-weight: 600; margin-bottom: 0.2rem; font-size: 1.05rem;">Click to upload visual data</p>
+                           <p style="color: var(--text-dim); font-size: 0.85rem; margin: 0;">Supports JPG, PNG, or WebP</p>
+                    </div>
+                 </div>
+                 </div>
+                <label>Blog Content / Summary</label>
+                                <textarea name="content" id="blogContent" rows="6" placeholder="Write your blog content here, or write a short summary if you attached a Word Document..."></textarea>
                                     
                                     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">🚀 Publish Blog</button>
                                 </form>
@@ -1405,11 +1427,32 @@
                                     <label style="color: var(--accent);">Cover Image (Optional)</label>
                                     <input type="file" name="image" accept="image/*">
                                     
-                                    <label style="color: var(--success);">Upload Manuscript (Word Doc / PDF - Optional)</label>
-                                    <input type="file" name="document" accept=".doc,.docx,.pdf">
-                                    
-                                    <label>Content / Summary</label>
-                                    <textarea name="content" rows="6" placeholder="Write your article here..."></textarea>
+                                   <label style="color: var(--success);">Upload Manuscript (Word Doc / PDF - Optional)</label>
+                               <input type="file" name="document" accept=".doc,.docx,.pdf">
+    
+                           <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+                        <label style="display: block; color: var(--text-main); font-weight: 600; margin-bottom: 0.5rem; font-size: 0.95rem;">
+                      📊 SEO Infographic 
+                   <span style="color: var(--tartiary); font-size: 0.8rem; font-weight: normal; margin-left: 8px;">(Auto-inserts into the middle of your text)</span>
+                            </label>
+        
+                      <div style="position: relative; border: 2px dashed rgba(0, 136, 255, 0.3); border-radius: 12px; background: rgba(0, 136, 255, 0.02); padding: 2rem 1rem; text-align: center; transition: all 0.3s ease; cursor: pointer; overflow: hidden;" 
+                     onmouseover="this.style.borderColor='var(--primary)'; this.style.background='rgba(0, 136, 255, 0.08)'; this.style.boxShadow='0 0 20px rgba(0, 136, 255, 0.15)';" 
+                     onmouseout="this.style.borderColor='rgba(0, 136, 255, 0.3)'; this.style.background='rgba(0, 136, 255, 0.02)'; this.style.boxShadow='none';">
+                    <input type="file" name="infographic" accept="image/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10;">
+                        <div style="pointer-events: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 0.75rem; filter: drop-shadow(0 0 8px var(--primary-glow));">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <p style="color: var(--primary); font-weight: 600; margin-bottom: 0.2rem; font-size: 1.05rem;">Click to upload visual data</p>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin: 0;">Supports JPG, PNG, or WebP</p>
+            </div>
+        </div>
+    </div>
+    <label>Content / Summary</label>
+    <textarea name="content" rows="6" placeholder="Write your article here..."></textarea>
                                     
                                     <button type="submit" class="btn btn-success" style="width: 100%; margin-top: 1rem;">📤 Submit for Review</button>
                                 </form>
@@ -1610,10 +1653,13 @@
             formData.append('title', form.title.value);
             formData.append('content', form.content.value || "Please download the attached manuscript to read the full article.");
             formData.append('author', currentUser.name);
-            formData.append('role', currentUser.role); // 🔴 Tells backend if it should be pending or live
+            formData.append('role', currentUser.role);
             
             const imgInput = form.querySelector('input[name="image"]');
             if (imgInput && imgInput.files.length > 0) formData.append('image', imgInput.files[0]);
+            // 📊 SEO Infographic Upload Logic
+             const infoInput = form.querySelector('input[name="infographic"]');
+            if (infoInput && infoInput.files.length > 0) formData.append('infographic', infoInput.files[0]);   
             
             const docInput = form.querySelector('input[name="document"]');
             if (docInput && docInput.files.length > 0) formData.append('document', docInput.files[0]);
@@ -1826,7 +1872,6 @@
                 </div>
             `;
         
-            // 🔴 FIX: Define variables securely OUTSIDE the try block!
             const container = document.getElementById('blog-container');
             const loader = document.getElementById('blog-loader');
             const isTeacher = currentUser && currentUser.role === 'teacher';
@@ -1888,7 +1933,28 @@
                             </div>
                         ` : ''}
                         
-                        <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dim); white-space: pre-wrap; font-family: 'Inter', sans-serif;">${b.content}</div>
+                        <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-dim); font-family: 'Inter', sans-serif;">
+                            ${(() => {
+                                if (!b.infographicPath) return `<p style="white-space: pre-wrap; margin: 0;">${b.content}</p>`;
+                                const halfway = Math.floor(b.content.length / 2);
+                                const splitIndex = b.content.indexOf(' ', halfway);
+                                const firstHalf = splitIndex === -1 ? b.content : b.content.substring(0, splitIndex);
+                                const secondHalf = splitIndex === -1 ? '' : b.content.substring(splitIndex);
+
+                                return `
+                                    <p style="white-space: pre-wrap; margin: 0;">${firstHalf}</p>
+                                    
+                                    <figure style="margin: 3rem 0; text-align: center; background: rgba(0, 136, 255, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px dashed rgba(0, 136, 255, 0.3);">
+                                        <img src="https://physica-portal.onrender.com/${b.infographicPath.replace(/\\/g, '/')}" alt="Data Infographic for ${b.title}" style="max-width: 100%; border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);">
+                                        <figcaption style="color: var(--primary); font-size: 0.95rem; margin-top: 1.2rem; font-weight: 500;">
+                                            📊 Visual Data: <span style="color: var(--text-dim); font-weight: normal;">Key insights from this section</span>
+                                        </figcaption>
+                                    </figure>
+
+                                    <p style="white-space: pre-wrap; margin: 0;">${secondHalf}</p>
+                                `;
+                            })()}
+                        </div>
                         
                         ${seoBox}
 

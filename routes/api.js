@@ -59,8 +59,7 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         const { password, role, name, designation, semester, rollNumber, adminCode } = req.body;
-        
-        // 🔒 Start everyone as 'pending' by default for safety
+
         let status = 'pending'; 
         let finalUsername = req.body.username; 
         
@@ -199,21 +198,24 @@ router.get('/resources', async (req, res) => {
     }
 });
 // --- 6. BLOG ROUTE (CLEAN & SAFE) ---
-// --- ✍️ DEPARTMENT BLOG API ---
+// ---   BLOG API ---
 
 // 1. Post a new Blog (If Student = Pending, If Teacher = Approved)
-router.post('/blogs', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'document', maxCount: 1 }]), async (req, res) => {
+router.post('/blogs', upload.fields([
+    { name: 'image', maxCount: 1 }, 
+    { name: 'infographic', maxCount: 1 }, 
+    { name: 'document', maxCount: 1 }
+]), async (req, res) => {
     try {
         const { title, content, author, role } = req.body;
         
         let imagePath = req.files && req.files['image'] ? req.files['image'][0].path : null;
+        let infographicPath = req.files && req.files['infographic'] ? req.files['infographic'][0].path : null;
         let documentPath = req.files && req.files['document'] ? req.files['document'][0].path : null;
 
-        // 🔴 Magic Logic: Students go to pending, Teachers go live immediately
         const status = role === 'student' ? 'pending' : 'approved';
 
-        const newBlog = new Blog({ title, content, author, imagePath, documentPath, status });
-        
+        const newBlog = new Blog({ title, content, author, imagePath, infographicPath, documentPath, status }); 
         await newBlog.save();
         res.status(201).json(newBlog);
     } catch (err) { res.status(500).json({ message: "Failed to publish blog." }); }
