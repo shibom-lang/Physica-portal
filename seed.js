@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs'); // 🔒 Added bcrypt
+const bcrypt = require('bcryptjs'); 
 const { User } = require('./models/schemas');
+require('dotenv').config(); 
 
-const DB_URI = "mongodb+srv://shibomdas80_db_user:c4qP14vWWBCVfchy@cluster0.swcunv4.mongodb.net/physicaDB?retryWrites=true&w=majority&appName=Cluster0";
-
-mongoose.connect(DB_URI)
+mongoose.connect(process.env.MONGODB_URI)
     .then(async () => {
-        console.log("☁️ Connected to MongoDB Atlas Cloud...");
+        console.log("☁️ Connected to MongoDB Atlas Cloud securely...");
 
         await User.deleteMany({ username: "teacher1" });
         await User.deleteMany({ username: "student1" });

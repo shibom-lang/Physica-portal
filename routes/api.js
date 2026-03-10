@@ -67,9 +67,9 @@ router.post('/register', async (req, res) => {
         const lowerRole = role.toLowerCase();
 
         if (lowerRole === 'teacher') {
-            if (adminCode !== 'PHYSICA2026') return res.status(403).json({ message: "Invalid Teacher Code" });
-            status = 'approved'; // Teachers bypass the wait
-        } 
+            if (adminCode !== process.env.TEACHER_SECRET_CODE) return res.status(403).json({ message: "Invalid Teacher Code" });
+            status = 'approved'; 
+        }
         else if (lowerRole === 'student') {
             if (!rollNumber || rollNumber.length !== 12) {
                 return res.status(400).json({ message: "Roll Number must be 12 digits." });
