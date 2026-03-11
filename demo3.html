@@ -653,7 +653,25 @@
             <div class="particle"></div>
         </div>
     </div>
+    <div style="background: rgba(0, 10, 30, 0.8); border-bottom: 1px solid rgba(0, 136, 255, 0.2); padding: 0.4rem 5%; display: flex; justify-content: space-between; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; backdrop-filter: blur(10px); position: relative; z-index: 1000;">
+        
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: pulse-green 2s infinite;"></div>
+            <span style="color: var(--accent);">Live Campus Traffic: <strong id="activeVisitors" style="color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5);">--</strong> Online</span>
+        </div>
 
+        <div id="liveClock" style="color: var(--text-dim); letter-spacing: 0.05em; font-weight: 500;">
+            Initializing Time Protocol...
+        </div>
+    </div>
+
+    <style>
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+    </style>
     <header>
         <div class="container flex justify-between items-center">
             <div class="logo">
@@ -2510,6 +2528,52 @@ async function handleAchievement(e) {
         alert("⚠️ Server Error - Is the backend running?"); 
     }
 }
+// ==========================================
+    // ⏱️ LIVE CLOCK & TRAFFIC LOGIC
+    // ==========================================
+
+    function startSystemStatus() {
+        // 1. Live Clock Logic (Formats to Indian Standard Time)
+        const clockElement = document.getElementById('liveClock');
+        if (clockElement) {
+            setInterval(() => {
+                const now = new Date();
+                
+                // Format: Thu, 12 Mar 2026
+                const dateStr = now.toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+                // Format: 04:15:30 AM
+                const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                
+                clockElement.innerHTML = `<span style="color: var(--primary);">📅</span> ${dateStr} &nbsp;&nbsp;|&nbsp;&nbsp; <span style="color: var(--tartiary);">⏱️</span> <span style="color: #fff;">${timeStr}</span>`;
+            }, 1000); // Updates every 1 second
+        }
+
+        // 2. Real-Time Visitor Simulation
+        // For the presentation, this algorithm creates realistic fluctuating campus web traffic
+        const visitorElement = document.getElementById('activeVisitors');
+        if (visitorElement) {
+            // Start with a random number of students between 8 and 18
+            let currentVisitors = Math.floor(Math.random() * (18 - 8 + 1)) + 8; 
+            visitorElement.innerText = currentVisitors;
+
+            setInterval(() => {
+                // 30% chance the number changes slightly every 4 seconds to look highly active
+                if (Math.random() > 0.7) {
+                    const change = Math.random() > 0.5 ? 1 : -1;
+                    currentVisitors += change;
+                    
+                    // Keep it realistic for a single college department
+                    if (currentVisitors < 4) currentVisitors = 4;
+                    if (currentVisitors > 35) currentVisitors = 35;
+                    
+                    visitorElement.innerText = currentVisitors;
+                }
+            }, 4000);
+        }
+    }
+
+    // Boot up the status bar as soon as the page loads
+    window.addEventListener('DOMContentLoaded', startSystemStatus);
     </script>
 </body>
 </html>
