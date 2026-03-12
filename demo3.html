@@ -2547,13 +2547,14 @@ async function handleAchievement(e) {
         }
         const visitorElement = document.getElementById('activeVisitors');
         if (visitorElement && typeof io !== 'undefined') {
-        
-             const currentDomain = window.location.hostname;
-             const backendUrl = (currentDomain === 'localhost' || currentDomain === '127.0.0.1') 
-                    ? "http://localhost:5001" 
-                    : "https://physica-portal.onrender.com";
+    
+            const currentDomain = window.location.hostname;
+            
+            const backendUrl = (currentDomain === 'localhost' || currentDomain === '127.0.0.1' || currentDomain === '') 
+                ? "http://localhost:5001" 
+                : "https://physica-portal.onrender.com";
 
-             const socket = io(backendUrl);
+            const socket = io(backendUrl);
             
             // Whenever the server broadcasts a new count, update the screen instantly!
             socket.on('visitorCountUpdate', (realCount) => {
