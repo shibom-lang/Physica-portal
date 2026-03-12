@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.11/dist/dotlottie-wc.js" type="module"></script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.11/dist/dotlottie-wc.js" type="module"></script>
+    
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
     
     <style>
         /* === PROFESSIONAL THEME === */
@@ -2519,8 +2522,8 @@ async function handleAchievement(e) {
             
             // Immediately jump to the feed they just posted to!
             const pageTitle = category === 'academic' 
-                ? '📚 Academic Programs & Excellence' 
-                : '🌟 Student Activities & Achievements';
+                ? ' Academic Programs & Excellence' 
+                : 'Student Activities & Achievements';
             openAchievementFeed(category, pageTitle);
         } else { 
             alert("❌ Failed to publish post. Check backend server."); 
@@ -2529,51 +2532,35 @@ async function handleAchievement(e) {
         alert("⚠️ Server Error - Is the backend running?"); 
     }
 }
-// ==========================================
     // ⏱️ LIVE CLOCK & TRAFFIC LOGIC
-    // ==========================================
 
     function startSystemStatus() {
-        // 1. Live Clock Logic (Formats to Indian Standard Time)
         const clockElement = document.getElementById('liveClock');
         if (clockElement) {
             setInterval(() => {
                 const now = new Date();
-                
-                // Format: Thu, 12 Mar 2026
                 const dateStr = now.toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
-                // Format: 04:15:30 AM
                 const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 
-                clockElement.innerHTML = `<span style="color: var(--primary);">📅</span> ${dateStr} &nbsp;&nbsp;|&nbsp;&nbsp; <span style="color: var(--tartiary);">⏱️</span> <span style="color: #fff;">${timeStr}</span>`;
-            }, 1000); // Updates every 1 second
+                clockElement.innerHTML = `<span style="color: var(--primary);"></span> ${dateStr} &nbsp;&nbsp;|&nbsp;&nbsp; <span style="color: var(--tartiary);">⏱️</span> <span style="color: #fff;">${timeStr}</span>`;
+            }, 1000); 
         }
-
-        // 2. Real-Time Visitor Simulation
-        // For the presentation, this algorithm creates realistic fluctuating campus web traffic
         const visitorElement = document.getElementById('activeVisitors');
-        if (visitorElement) {
-            // Start with a random number of students between 8 and 18
-            let currentVisitors = Math.floor(Math.random() * (18 - 8 + 1)) + 8; 
-            visitorElement.innerText = currentVisitors;
+        if (visitorElement && typeof io !== 'undefined') {
+        
+             const currentDomain = window.location.hostname;
+             const backendUrl = (currentDomain === 'localhost' || currentDomain === '127.0.0.1') 
+                    ? "http://localhost:5001" 
+                    : "https://physica-portal.onrender.com";
 
-            setInterval(() => {
-                // 30% chance the number changes slightly every 4 seconds to look highly active
-                if (Math.random() > 0.7) {
-                    const change = Math.random() > 0.5 ? 1 : -1;
-                    currentVisitors += change;
-                    
-                    // Keep it realistic for a single college department
-                    if (currentVisitors < 4) currentVisitors = 4;
-                    if (currentVisitors > 35) currentVisitors = 35;
-                    
-                    visitorElement.innerText = currentVisitors;
-                }
-            }, 4000);
+             const socket = io(backendUrl);
+            
+            // Whenever the server broadcasts a new count, update the screen instantly!
+            socket.on('visitorCountUpdate', (realCount) => {
+                visitorElement.innerText = realCount;
+            });
         }
     }
-
-    // Boot up the status bar as soon as the page loads
     window.addEventListener('DOMContentLoaded', startSystemStatus);
     </script>
 </body>

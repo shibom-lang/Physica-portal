@@ -7,7 +7,10 @@ require('dotenv').config(); // 🔒 Load the secret environment variables
 const apiRoutes = require('./routes/api');
 
 const app = express();
-// Use the PORT from .env, or fallback to 5001 if not found
+const http = require('http');
+const { Server } = require('socket.io');
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
 const PORT = process.env.PORT || 5001; 
 
 app.use(cors());
@@ -26,5 +29,23 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 app.use('/api', apiRoutes);
+// 🔌 REAL-TIME WEBSOCKETS (LIVE TRAFFIC)
+let activeUsers = 0;
 
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+io.on('connection', (socket) => {
+    // 1. A new user opened the website!
+    activeUsers++;
+    
+    // Broadcast the new total to EVERYONE currently on the website
+    io.emit('visitorCountUpdate', activeUsers);
+
+    // 2. The user closed the tab or lost internet
+    socket.on('disconnect', () => {
+        activeUsers--;
+        io.emit('visitorCountUpdate', activeUsers);
+    });
+});
+
+server.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT} with WebSockets enabled`);
+});
