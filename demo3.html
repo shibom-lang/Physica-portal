@@ -2687,16 +2687,12 @@ async function handleAchievement(e) {
                 clockElement.innerHTML = `<span style="color: var(--primary);"></span> ${dateStr} &nbsp;&nbsp;|&nbsp;&nbsp; <span style="color: var(--tartiary);">⏱️</span> <span style="color: #fff;">${timeStr}</span>`;
             }, 1000); 
         }
+        // 2. REAL-TIME WEBSOCKET VISITOR TRACKING
         const visitorElement = document.getElementById('activeVisitors');
         if (visitorElement && typeof io !== 'undefined') {
     
-            const currentDomain = window.location.hostname;
-            
-            const backendUrl = (currentDomain === 'localhost' || currentDomain === '127.0.0.1' || currentDomain === '') 
-                ? "http://localhost:5001" 
-                : "https://physica-portal.onrender.com"; // <-- Ensure this is your EXACT Render URL
+            const backendUrl = "https://physica-portal.onrender.com";
 
-            // 🔴 CLOUD UPGRADE: Forces Render to open the tunnel
             const socket = io(backendUrl, {
                 transports: ['websocket', 'polling'], 
                 secure: true
@@ -2706,7 +2702,6 @@ async function handleAchievement(e) {
                 visitorElement.innerText = realCount;
             });
 
-            // 🔴 DEBUGGER: If it fails, it will show on the screen instead of being stuck on '--'
             socket.on('connect_error', (error) => {
                 console.warn("WebSocket Connection Failed:", error.message);
                 visitorElement.innerText = "Err"; 
