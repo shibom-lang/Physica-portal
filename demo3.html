@@ -797,9 +797,25 @@
         function renderHome() {
             document.getElementById('app').innerHTML = `
                 <div class="hero">
-                    <h1>Welcome to the Physics Department</h1>
+                    <div style="display: inline-block; padding: 4px 12px; background: rgba(0, 136, 255, 0.1); border: 1px solid var(--primary); border-radius: 999px; font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; letter-spacing: 0.1em; text-transform: uppercase;">
+                        Estd. 1962
+                    </div>
+                    <h1>Department of Physics</h1>
+                    <h2 style="font-size: 1.5rem; color: var(--text-dim); margin-bottom: 1rem; font-weight: 500;">Arya Vidyapeeth College (Autonomous)</h2>
                     <p>Exploring the Universe from Quarks to Cosmos, one equation at a time</p>
                 </div>
+
+                <div class="card" style="margin-top: -2rem; margin-bottom: 3rem; border-left: 5px solid var(--tartiary); background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, transparent 100%);">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="font-size: 3rem; filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));">🏛️</div>
+                        <div>
+                            <h3 style="color: var(--tartiary); margin-bottom: 0.25rem;">Our Legacy</h3>
+                            <p style="font-size: 0.95rem; line-height: 1.5;">Rooted in excellence since <strong style="color: white;">1962</strong>, the Department of Physics at Arya Vidyapeeth College has been a cornerstone of scientific education in Northeast India for over six decades.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper heroSwiper mb-4" ... [Keep existing Swiper code here] ...
 
                 <div class="swiper heroSwiper mb-4" style="width: 100%; height: 450px; border-radius: 16px; overflow: hidden; box-shadow: 0 0 25px rgba(0, 136, 255, 0.15); border: 1px solid rgba(255,255,255,0.1); margin-top: -20px; margin-bottom: 3rem;">
                     <div class="swiper-wrapper" id="dynamic-slider-wrapper">
@@ -884,7 +900,7 @@
 
         async function renderFaculty() {
             document.getElementById('app').innerHTML = `
-                <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; color: var(--primary);">👨‍🏫 Our Faculty</h2>
+                <h2 class="text-center" style="margin: 3rem 0 2rem; font-size: 2.5rem; color: var(--primary);">Faculty</h2>
                 <div id="faculty-loader" class="text-center" style="color: var(--primary);">Loading dynamic profiles...</div>
                 <div id="faculty-grid" class="faculty-grid hidden"></div>
             `;
@@ -904,6 +920,7 @@
 
                 container.innerHTML = facultyData.map(f => `
                     <div class="card faculty-card" style="border-top: 4px solid var(--secondary);">
+                    
                         
                        ${f.profilePicture 
                          ? `<img src="https://physica-portal-production.up.railway.app/${f.profilePicture.replace(/\\/g, '/')}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 3px solid var(--primary); box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);">` 
