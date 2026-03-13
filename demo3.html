@@ -796,101 +796,77 @@
         // --- PAGE RENDERS ---
         function renderHome() {
             document.getElementById('app').innerHTML = `
-                <div class="hero">
-                    <div style="display: inline-block; padding: 4px 12px; background: rgba(0, 136, 255, 0.1); border: 1px solid var(--primary); border-radius: 999px; font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; letter-spacing: 0.1em; text-transform: uppercase;">
+                <div class="hero" style="padding: 5rem 0 3rem; position: relative;">
+                    <div style="display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px; background: rgba(0, 136, 255, 0.08); border: 1px solid rgba(0, 136, 255, 0.25); border-radius: 100px; font-size: 0.7rem; font-weight: 700; color: var(--primary); margin-bottom: 1.2rem; letter-spacing: 0.12em; text-transform: uppercase; backdrop-filter: blur(8px);">
+                        <span style="width: 5px; height: 5px; background: var(--primary); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--primary);"></span>
                         Estd. 1962
                     </div>
-                    <h1>Department of Physics</h1>
-                    <h2 style="font-size: 1.5rem; color: var(--text-dim); margin-bottom: 1rem; font-weight: 500;">Arya Vidyapeeth College (Autonomous)</h2>
-                    <p>Exploring the Universe from Quarks to Cosmos, one equation at a time</p>
+
+                    <h1 style="font-size: clamp(2.5rem, 8vw, 4rem); line-height: 1.1; margin-bottom: 0.5rem; background: linear-gradient(to bottom, #fff 60%, rgba(255,255,255,0.7)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Department of Physics</h1>
+                    <h2 style="font-size: 1.25rem; color: var(--text-dim); margin-bottom: 1.5rem; font-weight: 500; letter-spacing: 0.05em; font-family: 'IBM Plex Mono', monospace;">ARYA VIDYAPEETH COLLEGE (AUTONOMOUS)</h2>
+                    
+                    <p style="max-width: 650px; margin: 0 auto; font-size: 1.1rem; color: var(--text-tertiary); line-height: 1.6;">
+                        Exploring the Universe from <span style="color: var(--primary);">Quarks to Cosmos</span>, one equation at a time.
+                    </p>
                 </div>
 
-                <div class="card" style="margin-top: -2rem; margin-bottom: 3rem; border-left: 5px solid var(--tartiary); background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, transparent 100%);">
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        <div style="font-size: 3rem; filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));">🏛️</div>
-                        <div>
-                            <h3 style="color: var(--tartiary); margin-bottom: 0.25rem;">Our Legacy</h3>
-                            <p style="font-size: 0.95rem; line-height: 1.5;">Rooted in excellence since <strong style="color: white;">1962</strong>, the Department of Physics at Arya Vidyapeeth College has been a cornerstone of scientific education in Northeast India for over six decades.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="swiper heroSwiper mb-4" ... [Keep existing Swiper code here] ...
-
-                <div class="swiper heroSwiper mb-4" style="width: 100%; height: 450px; border-radius: 16px; overflow: hidden; box-shadow: 0 0 25px rgba(0, 136, 255, 0.15); border: 1px solid rgba(255,255,255,0.1); margin-top: -20px; margin-bottom: 3rem;">
+                <div class="swiper heroSwiper mb-4" style="width: 100%; height: 450px; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 4rem;">
                     <div class="swiper-wrapper" id="dynamic-slider-wrapper">
                         <div class="swiper-slide" style="background: #0a0e1a; display: flex; align-items: center; justify-content: center; color: var(--text-dim);">
                             Loading latest department highlights...
                         </div>
                     </div>
                     <div class="swiper-pagination"></div>
-                    <div class="swiper-button-next" style="color: var(--primary); text-shadow: 0 0 10px rgba(0,0,0,0.8);"></div>
-                    <div class="swiper-button-prev" style="color: var(--primary); text-shadow: 0 0 10px rgba(0,0,0,0.8);"></div>
+                    <div class="swiper-button-next" style="color: var(--primary);"></div>
+                    <div class="swiper-button-prev" style="color: var(--primary);"></div>
                 </div>
 
-                <div class="stats-grid">
-                    <div class="card stat-card">
+                <div class="stats-grid" style="margin-bottom: 4rem;">
+                    <div class="card stat-card" style="border-bottom: 3px solid var(--primary);">
                         <div class="stat-value">15+</div>
                         <div class="stat-label">Research Papers</div>
                     </div>
-                    <div class="card stat-card">
+                    <div class="card stat-card" style="border-bottom: 3px solid var(--warning);">
                         <div class="stat-value">7</div>
                         <div class="stat-label">Faculty Members</div>
                     </div>
-                    <div class="card stat-card">
+                    <div class="card stat-card" style="border-bottom: 3px solid var(--success);">
                         <div class="stat-value">120+</div>
                         <div class="stat-label">Students</div>
                     </div>
-                    <div class="card stat-card">
+                    <div class="card stat-card" style="border-bottom: 3px solid var(--tartiary);">
                         <div class="stat-value">3+</div>
                         <div class="stat-label">Lab Facilities</div>
                     </div>
                 </div>
   
-                <div class="grid grid-2" style="margin-top: 3rem;">
-                    <div class="card" onclick="navigate('gallery')"style="cursor: pointer; transition: all 0.2s; border: 1px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='transparent';">
-                        <div class="card-header" style="display: flex; gap: 10px; align-items: center;">
-                            <span style="font-size: 1.5rem;">📸</span>
-                             <span>Departmental Events & Gallery</span>
-                        </div>
+                <div class="grid grid-2">
+                    <div class="card" onclick="navigate('gallery')" style="cursor: pointer;">
+                        <div class="card-header"><span style="font-size: 1.5rem;">📸</span> <span>Events & Gallery</span></div>
                         <div class="card-body">
-                            <p>The department organizes society connects (picnics) and multiple academic visits. We also commemorate the birth anniversaries of Albert Einstein, Vikram Sarabhai, and other distinguished physicists, while actively supporting numerous academic and co-curricular events.</p>
-                            <p style="color: var(--success); margin-top: 15px; font-weight: 600; font-size: 0.9rem;">
-                                👉 Click here to view the Photo Archive
-                            </p>
+                            <p>From society picnics to birth anniversaries of legendary physicists, explore our vibrant campus life.</p>
+                            <p style="color: var(--success); margin-top: 15px; font-weight: 600; font-size: 0.9rem;">👉 View Photo Archive</p>
                         </div>
                     </div>
-                   <div class="card" onclick="navigate('research')" style="cursor: pointer; transition: all 0.2s; border: 1px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='transparent';">   
-                    <div class="card-header">
-                            <span>🔬</span>
-                            <span>Research and Innovation</span>
-                        </div>
+                    <div class="card" onclick="navigate('research')" style="cursor: pointer;">
+                        <div class="card-header"><span>🔬</span> <span>Research & Innovation</span></div>
                         <div class="card-body">
-                            <p>Students and faculty of the department collaborate closely, fostering innovation through the development of scientific models, posters, research prototypes, and patentable inventions, thereby cultivating a dynamic environment of creativity and academic excellence.</p>
-                            <p style="color: var(--primary); margin-top: 15px; font-weight: 600; font-size: 0.9rem;">
-                                👉 Click here to view publications and ongoing projects
-                            </p>
+                            <p>Explore our collaborative projects, scientific models, and innovations developed by students and faculty.</p>
+                            <p style="color: var(--primary); margin-top: 15px; font-weight: 600; font-size: 0.9rem;">👉 View Publications</p>
                         </div>
                     </div>
-                    <div class="card" style="cursor: pointer; transition: all 0.2s; border: 1px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='transparent';" onclick="openAchievementFeed('academic', '📚 Academic Programs & Excellence')">
-                        <div class="card-header">
-                            <span>📚</span>
-                            <span>Academic Programs and excellence </span>
-                        </div>
+                    <div class="card" style="cursor: pointer;" onclick="openAchievementFeed('academic', '📚 Academic Excellence')">
+                        <div class="card-header"><span>📚</span> <span>Academic Excellence</span></div>
                         <div class="card-body">
-                            <p>Comprehensive undergraduate programs designed to build strong theoretical foundations and practical laboratory skills in all areas of physics. Click to view our students excelling in IIT JAM, CUET, NCC, and National seminars.</p>
-                            <span style="display:inline-block; margin-top:10px; color:var(--tartiary); font-size:0.85rem; font-weight:bold;">👉 Click to view Student Portfolio</span>
+                            <p>Undergraduate programs built for theoretical mastery and lab skills. See our students excelling in IIT JAM, CUET, and NCC.</p>
+                            <span style="display:inline-block; margin-top:10px; color:var(--tartiary); font-size:0.85rem; font-weight:bold;">👉 Student Portfolio</span>
                         </div>
                     </div>
-
-                    <div class="card" style="cursor: pointer; transition: all 0.2s; border: 1px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='transparent';" onclick="openAchievementFeed('activity', '🌟 Student Activities & Achievements')">
-                        <div class="card-header">
-                            <span>🌟</span>
-                            <span>Student Activities and Achievments </span>
-                        </div>
+                    <div class="card" style="cursor: pointer;" onclick="openAchievementFeed('activity', '🌟 Student Activities')">
+                        <div class="card-header"><span>🌟</span> <span>Student Activities</span></div>
                         <div class="card-body">
-                            <p>Students participate in regular seminars, workshops, science fairs, debate competitions, inter-college poster competitions, and collaborative research projects. Click to view the gallery!</p>
-                            <span style="display:inline-block; margin-top:10px; color:var(--warning); font-size:0.85rem; font-weight:bold;">👉 Click to view Activities Gallery</span>
+                            <p>Regular seminars, workshops, and inter-college competitions. Join our dynamic environment of creativity.</p>
+                            <span style="display:inline-block; margin-top:10px; color:var(--warning); font-size:0.85rem; font-weight:bold;">👉 Activity Gallery</span>
                         </div>
                     </div>
                 </div>
