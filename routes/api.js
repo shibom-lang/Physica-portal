@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { User, Gallery, Carousel } = require('./schema');
 const bcrypt = require('bcryptjs'); //  SECURITY TOOL 
 const { User, Resource, Blog, Notice, ResearchPost, EventHighlight, EventPost, Achievement } = require('../models/schemas');
 // --- 1. FILE UPLOAD SETUP (Multer) ---
@@ -514,5 +515,33 @@ router.delete('/achievements/:id', async (req, res) => {
         res.status(200).json({ message: "Deleted" });
     } catch (err) { res.status(500).json({ message: "Failed to delete" }); }
 });
+// ==========================================
+// 🖼️ HOMEPAGE CAROUSEL ROUTES
+// ==========================================
 
+// Fetch the slides for the homepage
+router.get('/carousel', async (req, res) => {
+    try {
+        const slides = await Carousel.find().sort({ createdAt: -1 }).limit(5);
+        res.json(slides);
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch slides" });
+    }
+});
+
+// Upload a new banner from the Teacher Dashboard
+router.post('/carousel', upload.single('image'), async (req, res) => {
+    try {
+        const newSlide = new Carousel({
+            title: req.body.title,
+            imageUrl: '/uploads/' + req.file.filename, 
+            uploadedBy: req.body.uploaderName
+        });
+        await newSlide.save();
+        res.status(201).json({ message: "Slide added successfully", slide: newSlide });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to upload slide" });
+    }
+});
 module.exports = router;

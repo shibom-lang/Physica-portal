@@ -95,6 +95,15 @@ const AchievementSchema = new mongoose.Schema({
     authorRole: { type: String }, // 'teacher' or 'student'
     date: { type: Date, default: Date.now }
 });
+// ==========================================
+// 🖼️ HOMEPAGE CAROUSEL SCHEMA
+// ==========================================
+const carouselSchema = new mongoose.Schema({
+    title: String,
+    imageUrl: String,
+    uploadedBy: String,
+    createdAt: { type: Date, default: Date.now }
+});
 
 module.exports = {
     User: mongoose.model('User', UserSchema),
@@ -104,5 +113,8 @@ module.exports = {
     ResearchPost: mongoose.model('ResearchPost', ResearchPostSchema), 
     EventHighlight: mongoose.model('EventHighlight', EventHighlightSchema),
     EventPost: mongoose.model('EventPost', EventPostSchema),
-    Achievement: mongoose.model('Achievement', AchievementSchema)
+    Achievement: mongoose.model('Achievement', AchievementSchema),
+    Carousel: mongoose.model('Carousel', carouselSchema)
+
+
 };
