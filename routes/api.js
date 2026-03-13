@@ -3,9 +3,8 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { User, Gallery, Carousel } = require('./schema');
 const bcrypt = require('bcryptjs'); //  SECURITY TOOL 
-const { User, Resource, Blog, Notice, ResearchPost, EventHighlight, EventPost, Achievement } = require('../models/schemas');
+const { User, Resource, Blog, Notice, ResearchPost, EventHighlight, EventPost, Achievement, Carousel } = require('../models/schemas');
 // --- 1. FILE UPLOAD SETUP (Multer) ---
 const storage = multer.diskStorage({
     destination: './uploads/',

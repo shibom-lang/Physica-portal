@@ -2590,7 +2590,6 @@
         if (!wrapper) return;
 
         try {
-            // 🔴 CHANGED: Now uses the dynamic API_URL
             const res = await fetch(`${API_URL}/carousel`); 
             const slides = await res.json();
 
@@ -2601,7 +2600,6 @@
                 return;
             }
 
-            // 🔴 CHANGED: Automatically calculates the base server URL for the images
             const BASE_SERVER_URL = API_URL.replace('/api', '');
 
             slides.forEach(slide => {
