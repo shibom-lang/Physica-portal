@@ -543,4 +543,13 @@ router.post('/carousel', upload.single('image'), async (req, res) => {
         res.status(500).json({ error: "Failed to upload slide" });
     }
 });
+// Delete a homepage slider banner
+router.delete('/carousel/:id', async (req, res) => {
+    try {
+        await Carousel.findByIdAndDelete(req.params.id);
+        res.json({ message: "Slide deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to delete slide" });
+    }
+});
 module.exports = router;
