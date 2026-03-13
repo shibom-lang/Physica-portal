@@ -792,6 +792,10 @@
         }
     </style>
     <header>
+        <marquee id="live-ticker-text" style="color: var(--text-main); font-size: 0.9rem; margin-left: 15px; font-weight: 500;" scrollamount="5">
+            Loading live updates...
+        </marquee>
+        </div>
         <div class="header-container container flex justify-between items-center">
             <div class="college-branding" style="display: flex; align-items: center; gap: 15px;">
                 <img class="college-logo" src="https://aryavidyapeeth.webdcl.com/images/logo.png" alt="College logo" height="55px" width="55px" style="filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));">
@@ -886,6 +890,32 @@
             currentUser = null;
             localStorage.removeItem('physicaUser'); 
             navigate('home');
+        }
+        // 📢 FETCH LIVE NOTICES FOR THE TICKER
+        async function loadLiveTicker() {
+            const tickerEl = document.getElementById('live-ticker-text');
+            if (!tickerEl) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/notices`);
+                const notices = await res.json();
+                
+                // If there are no notices in the database
+                if (notices.length === 0) {
+                    tickerEl.innerHTML = "✨ Welcome to the Department of Physics, Arya Vidyapeeth College. No new updates at this time.";
+                    return;
+                }
+
+                // Grab the 5 most recent notices and format them
+                const latestNotices = notices.slice(0, 5).map(n => `🚨 <b>${new Date(n.date).toLocaleDateString('en-IN', {day: 'numeric', month: 'short'})}:</b> ${n.title}`);
+                
+                // Join them together with bullet points
+                tickerEl.innerHTML = latestNotices.join(' &nbsp;&nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp;&nbsp; ');
+
+            } catch (err) {
+                console.error("Ticker load failed:", err);
+                tickerEl.innerHTML = "Welcome to the Department of Physics Portal.";
+            }
         }
 
         // --- PAGE RENDERS ---
@@ -2840,7 +2870,10 @@ async function handleAchievement(e) {
             });
         }
     }
-    window.addEventListener('DOMContentLoaded', startSystemStatus);
+    window.addEventListener('DOMContentLoaded', () => {
+        startSystemStatus();
+        loadLiveTicker(); 
+    });
     </script>
 </body>
 </html>
