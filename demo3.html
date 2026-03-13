@@ -2694,13 +2694,22 @@ async function handleAchievement(e) {
             
             const backendUrl = (currentDomain === 'localhost' || currentDomain === '127.0.0.1' || currentDomain === '') 
                 ? "http://localhost:5001" 
-                : "https://physica-portal.onrender.com";
+                : "https://physica-portal.onrender.com"; // <-- Ensure this is your EXACT Render URL
 
-            const socket = io(backendUrl);
+            // 🔴 CLOUD UPGRADE: Forces Render to open the tunnel
+            const socket = io(backendUrl, {
+                transports: ['websocket', 'polling'], 
+                secure: true
+            });
             
-            // Whenever the server broadcasts a new count, update the screen instantly!
             socket.on('visitorCountUpdate', (realCount) => {
                 visitorElement.innerText = realCount;
+            });
+
+            // 🔴 DEBUGGER: If it fails, it will show on the screen instead of being stuck on '--'
+            socket.on('connect_error', (error) => {
+                console.warn("WebSocket Connection Failed:", error.message);
+                visitorElement.innerText = "Err"; 
             });
         }
     }
