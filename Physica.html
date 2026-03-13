@@ -891,30 +891,38 @@
             localStorage.removeItem('physicaUser'); 
             navigate('home');
         }
-        // 📢 FETCH LIVE NOTICES FOR THE TICKER
+        /// 📢 FETCH LIVE NOTICES FOR THE TICKER (36-HOUR EXPIRATION)
         async function loadLiveTicker() {
             const tickerEl = document.getElementById('live-ticker-text');
             if (!tickerEl) return;
+            
+            const baseMessage = "✨ Welcome to the Department of Physics, Arya Vidyapeeth College.";
             
             try {
                 const res = await fetch(`${API_URL}/notices`);
                 const notices = await res.json();
                 
-                // If there are no notices in the database
-                if (notices.length === 0) {
-                    tickerEl.innerHTML = "✨ Welcome to the Department of Physics, Arya Vidyapeeth College. No new updates at this time.";
+                // Calculate the exact timestamp for 36 hours ago
+                const thirtySixHoursAgo = new Date(Date.now() - (36 * 60 * 60 * 1000));
+
+                // Filter out any notices older than 36 hours
+                const recentNotices = notices.filter(n => new Date(n.date) >= thirtySixHoursAgo);
+
+                // If there are NO notices from the last 36 hours
+                if (recentNotices.length === 0) {
+                    tickerEl.innerHTML = `${baseMessage} No new updates at this time.`;
                     return;
                 }
 
-                // Grab the 5 most recent notices and format them
-                const latestNotices = notices.slice(0, 5).map(n => `🚨 <b>${new Date(n.date).toLocaleDateString('en-IN', {day: 'numeric', month: 'short'})}:</b> ${n.title}`);
+                // If there ARE new notices, format them with the "NEW" tag
+                const formattedNotices = recentNotices.slice(0, 5).map(n => `🚨 <b>NEW:</b> ${n.title}`);
                 
-                // Join them together with bullet points
-                tickerEl.innerHTML = latestNotices.join(' &nbsp;&nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp;&nbsp; ');
+                // Combine the base message with the new notices
+                tickerEl.innerHTML = `${baseMessage} &nbsp;&nbsp;&nbsp;&nbsp; ${formattedNotices.join(' &nbsp;&nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp;&nbsp; ')}`;
 
             } catch (err) {
                 console.error("Ticker load failed:", err);
-                tickerEl.innerHTML = "Welcome to the Department of Physics Portal.";
+                tickerEl.innerHTML = `${baseMessage} No new updates at this time.`;
             }
         }
 
