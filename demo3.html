@@ -1296,7 +1296,7 @@
                                 </form>
                             </div>
                         </div>
-                        
+
                         <div id="t-blog" class="tab-content hidden">
                             <h2 class="mb-4">Department Blog Writer</h2>
                             <div class="card" style="border-left: 4px solid var(--primary);">
@@ -2565,7 +2565,8 @@
         formData.append('uploaderName', currentUser.name);
 
         try {
-            const response = await fetch('http://localhost:5001/api/carousel', {
+            // 🔴 CHANGED: Now uses the dynamic API_URL
+            const response = await fetch(`${API_URL}/carousel`, {
                 method: 'POST',
                 body: formData
             });
@@ -2581,6 +2582,7 @@
             alert('⚠️ Server connection error.');
         }
     }
+
     // ==========================================
     // 📸 DYNAMIC HOMEPAGE SLIDER
     // ==========================================
@@ -2589,7 +2591,8 @@
         if (!wrapper) return;
 
         try {
-            const res = await fetch('http://localhost:5001/api/carousel'); 
+            // 🔴 CHANGED: Now uses the dynamic API_URL
+            const res = await fetch(`${API_URL}/carousel`); 
             const slides = await res.json();
 
             wrapper.innerHTML = '';
@@ -2599,8 +2602,12 @@
                 return;
             }
 
+            // 🔴 CHANGED: Automatically calculates the base server URL for the images
+            const BASE_SERVER_URL = API_URL.replace('/api', '');
+
             slides.forEach(slide => {
-                const imageUrl = `http://localhost:5001${slide.imageUrl}`;
+                const imageUrl = `${BASE_SERVER_URL}${slide.imageUrl}`;
+                
                 wrapper.innerHTML += `
                     <div class="swiper-slide" style="position: relative;">
                         <img src="${imageUrl}" alt="Department Highlight" style="width: 100%; height: 100%; object-fit: cover;">
