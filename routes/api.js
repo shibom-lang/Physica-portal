@@ -6,13 +6,30 @@ const fs = require('fs');
 const bcrypt = require('bcryptjs'); //  SECURITY TOOL 
 const { User, Resource, Blog, Notice, ResearchPost, EventHighlight, EventPost, Achievement, Carousel } = require('../models/schemas');
 // --- 1. FILE UPLOAD SETUP (Multer) ---
-const storage = multer.diskStorage({
-    destination: './uploads/',
-    filename: (req, file, cb) => {
-        // Renames file to: DOC-1789923.pdf to prevent duplicate names
-        cb(null, 'DOC-' + Date.now() + path.extname(file.originalname));
-    }
+// --- 1. FILE UPLOAD SETUP (Cloudinary) ---
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+// Configure credentials from environment variables
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+// Create the storage engine for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: 'physica_uploads',
+      // Ensure PDFs and images are both supported
+      resource_type: file.mimetype === 'application/pdf' ? 'raw' : 'image', 
+      public_id: Date.now() + '-' + file.originalname.split('.')[0],
+    };
+  },
+});
+
 const upload = multer({ storage: storage });
 
 
@@ -160,6 +177,8 @@ router.put('/profile/:username', upload.single('profilePic'), async (req, res) =
 });
 // --- 4. UPLOAD FILE ROUTE ---
 // Upload a Resource or Magazine (Upgraded with Academic Tags)
+// --- 4. UPLOAD FILE ROUTE ---
+// Upload a Resource or Magazine (Upgraded for Cloudinary)
 router.post('/upload', upload.single('file'), async (req, res) => {
     try {
         const newResource = new Resource({
@@ -167,17 +186,16 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             type: req.body.type,
             uploader: req.body.uploader,
             role: req.body.role,
-           
             semester: req.body.semester || '',
             subject: req.body.subject || '',
             topic: req.body.topic || '',
-            filePath: req.file.path
+            filePath: req.file.path 
         });
         await newResource.save();
         res.status(201).json(newResource);
     } catch (err) { 
-        console.error(err);
-        res.status(500).send(err); 
+        console.error("Cloudinary Upload Error:", err);
+        res.status(500).json({ message: "Cloudinary Upload Failed" }); 
     }
 });
 // Get all files (SECURED WITH RBAC)
@@ -533,7 +551,7 @@ router.post('/carousel', upload.single('image'), async (req, res) => {
     try {
         const newSlide = new Carousel({
             title: req.body.title,
-            imageUrl: '/uploads/' + req.file.filename, 
+            imageUrl: req.file.path,
             uploadedBy: req.body.uploaderName
         });
         await newSlide.save();

@@ -1081,7 +1081,7 @@
                     
                         
                        ${f.profilePicture 
-                         ? `<img src="https://physica-portal-production.up.railway.app/${f.profilePicture.replace(/\\/g, '/')}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 3px solid var(--primary); box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);">` 
+                         ? `<img src="${f.profilePicture.replace(/\\/g, '/')}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 3px solid var(--primary); box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);">` 
                         : `<div class="faculty-avatar" style="font-size: 5rem; margin-bottom: 1rem;"></div>`
                           }
                         
@@ -1158,7 +1158,7 @@
 
                 // Upgraded beautiful file rows
                 const createLink = (f) => `
-                    <a href="https://physica-portal-production.up.railway.app/${f.filePath}" target="_blank" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 0.75rem; text-decoration: none; transition: all 0.2s; color: var(--text-main);" onmouseover="this.style.background='rgba(0,136,255,0.05)'; this.style.borderColor='rgba(0,136,255,0.3)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.05)';">
+                    <a href="${f.filePath}" target="_blank" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 0.75rem; text-decoration: none; transition: all 0.2s; color: var(--text-main);" onmouseover="this.style.background='rgba(0,136,255,0.05)'; this.style.borderColor='rgba(0,136,255,0.3)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.05)';">
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
                             <span style="font-weight: 500;">${f.title}</span>
@@ -1388,7 +1388,7 @@
                         <div class="card text-center" style="margin-bottom: 1.5rem;">
                                                    
                             ${currentUser.profilePicture 
-                            ? `<img src="https://physica-portal-production.up.railway.app/${currentUser.profilePicture.replace(/\\/g, '/')}" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; border: 2px solid var(--primary);">` 
+                            ? `<img src="${currentUser.profilePicture.replace(/\\/g, '/')}" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; border: 2px solid var(--primary);">` 
                            : `<div class="faculty-avatar" style="margin: 0 auto 1rem;">🧑🏻‍🏫</div>`
                              }
                             <h4 style="margin-bottom: 0.5rem;">${currentUser.name}</h4>
@@ -2094,7 +2094,7 @@
                        </div>
                    </div>
                    
-                   <a href="https://physica-portal-production.up.railway.app/${f.filePath}" target="_blank" class="btn btn-outline" style="width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
+                   <a href="${f.filePath}" target="_blank" class="btn btn-outline" style="width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                        Download Resource
                    </a>
@@ -2144,7 +2144,7 @@
                                 Posted by ${n.author} • ${new Date(n.date).toLocaleDateString()}
                             </p>
                             <p style="white-space: pre-wrap; margin-bottom: 1rem; color: var(--text-dim);">${n.content || ''}</p>
-                            ${n.filePath ? `<a href="https://physica-portal-production.up.railway.app/${n.filePath}" target="_blank" class="btn btn-sm btn-outline">📎 View Attachment</a>` : ''}
+                            ${n.filePath ? `<a href="${n.filePath}" target="_blank" class="btn btn-sm btn-outline">📎 View Attachment</a>` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -2218,7 +2218,7 @@
 
                         ${b.imagePath ? `
                             <div style="margin-bottom: 2rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);">
-                                <img src="https://physica-portal-production.up.railway.app/${b.imagePath}" style="width: 100%; max-height: 450px; object-fit: cover;" alt="Blog Cover">
+                                <img src="${b.imagePath}" style="width: 100%; max-height: 450px; object-fit: cover;" alt="Blog Cover">
                             </div>
                         ` : ''}
                         
@@ -2234,7 +2234,7 @@
                                     <p style="white-space: pre-wrap; margin: 0;">${firstHalf}</p>
                                     
                                     <figure style="margin: 3rem 0; text-align: center; background: rgba(0, 136, 255, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px dashed rgba(0, 136, 255, 0.3);">
-                                        <img src="https://physica-portal-production.up.railway.app/${b.infographicPath.replace(/\\/g, '/')}" alt="Data Infographic for ${b.title}" style="max-width: 100%; border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);">
+                                        <img src="${b.infographicPath.replace(/\\/g, '/')}" alt="Data Infographic for ${b.title}" style="max-width: 100%; border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);">
                                         <figcaption style="color: var(--primary); font-size: 0.95rem; margin-top: 1.2rem; font-weight: 500;">
                                             📊 Visual Data: <span style="color: var(--text-dim); font-weight: normal;">Key insights from this section</span>
                                         </figcaption>
@@ -2249,7 +2249,7 @@
 
                         ${b.documentPath ? `
                             <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
-                                <a href="https://physica-portal-production.up.railway.app/${b.documentPath}" target="_blank" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 8px; color: var(--success); border-color: rgba(16, 185, 129, 0.3);">
+                                <a href="${b.documentPath}" target="_blank" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 8px; color: var(--success); border-color: rgba(16, 185, 129, 0.3);">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                         <polyline points="14 2 14 8 20 8"></polyline>
@@ -2385,7 +2385,7 @@
                     </div>
                         ${p.imagePath ? `
                             <div style="width: 100%; background: var(--bg-deep);">
-                                <img src="https://physica-portal-production.up.railway.app/${p.imagePath}" style="width: 100%; max-height: 500px; object-fit: contain; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);" alt="Research Photo">
+                                <img src="${p.imagePath}" style="width: 100%; max-height: 500px; object-fit: contain; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);" alt="Research Photo">
                             </div>
                         ` : ''}
 
@@ -2395,7 +2395,7 @@
 
                         ${p.documentPath ? `
                             <div style="padding: 0 1.5rem 1.5rem 1.5rem;">
-                                <a href="https://physica-portal-production.up.railway.app/${p.documentPath}" target="_blank" class="btn btn-outline" style="width: 100%; text-align: center; display: block; color: var(--text-main);">
+                                <a href="${p.documentPath}" target="_blank" class="btn btn-outline" style="width: 100%; text-align: center; display: block; color: var(--text-main);">
                                     📄 Read Research Document
                                 </a>
                             </div>
@@ -2512,9 +2512,9 @@
                     // 1. Build the HTML for multiple images WITH A DOWNLOAD BUTTON OVERLAY
                     const imagesHtml = p.imagePaths.map(imgPath => `
                         <div style="position: relative; flex: 0 0 100%; scroll-snap-align: start;">
-                            <img src="https://physica-portal-production.up.railway.app/${imgPath}" style="width: 100%; height: 400px; object-fit: cover;" alt="Event Photo">
+                            <img src="${imgPath}" style="width: 100%; height: 400px; object-fit: cover;" alt="Event Photo">
                             
-                            <a href="https://physica-portal-production.up.railway.app/${imgPath}" download="Event_Photo" class="btn btn-sm" style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(5px); text-decoration: none;">
+                            <a href="${imgPath}" download="Event_Photo" class="btn btn-sm" style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(5px); text-decoration: none;">
                                  Download
                             </a>
                         </div>
@@ -2706,7 +2706,7 @@
                 // Render multiple images if they exist
                 const imagesHtml = p.imagePaths.map(imgPath => `
                     <div style="flex: 0 0 100%; scroll-snap-align: start;">
-                        <img src="https://physica-portal-production.up.railway.app/${imgPath}" style="width: 100%; max-height: 500px; object-fit: contain; background: #000;" alt="Achievement Photo">
+                        <img src="${imgPath}" style="width: 100%; max-height: 500px; object-fit: contain; background: #000;" alt="Achievement Photo">
                     </div>
                 `).join('');
 
@@ -2788,6 +2788,9 @@
     // ==========================================
     // 📸 DYNAMIC HOMEPAGE SLIDER
     // ==========================================
+    // ==========================================
+    // 📸 DYNAMIC HOMEPAGE SLIDER (FIXED)
+    // ==========================================
     async function loadDynamicSlider() {
         const wrapper = document.getElementById('dynamic-slider-wrapper');
         if (!wrapper) return;
@@ -2803,12 +2806,12 @@
                 return;
             }
 
-            const BASE_SERVER_URL = API_URL.replace('/api', '');
-        
+            // 🔴 Check if the current user is a logged-in Teacher
             const isTeacher = currentUser && currentUser.role === 'teacher';
 
             slides.forEach(slide => {
-                const imageUrl = `${BASE_SERVER_URL}${slide.imageUrl}`;
+                // 🚀 DIRECT CLOUDINARY URL
+                const imageUrl = slide.imageUrl; 
                 
                 wrapper.innerHTML += `
                     <div class="swiper-slide" style="position: relative;">
@@ -2827,14 +2830,13 @@
                         <img src="${imageUrl}" alt="Department Highlight" style="width: 100%; height: 100%; object-fit: cover;">
                         
                         <div style="position: absolute; bottom: 0; width: 100%; padding: 40px 20px 20px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); color: white; text-align: center;">
-                            
                             <h3 style="margin: 0; font-size: 1.6rem; text-shadow: 0 2px 8px rgba(0,0,0,0.9); color: #ffffff; font-weight: 700; letter-spacing: 0.02em;">${slide.title}</h3>
-                        
                         </div>
                     </div>
                 `;
             });
 
+            // ✅ Fixed Swiper Initialization
             new Swiper(".heroSwiper", {
                 spaceBetween: 0,
                 centeredSlides: true,
