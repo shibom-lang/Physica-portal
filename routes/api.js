@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs'); //  SECURITY TOOL
 const { User, Resource, Blog, Notice, ResearchPost, EventHighlight, EventPost, Achievement, Carousel } = require('../models/schemas');
 // --- 1. FILE UPLOAD SETUP (Multer) ---
 // --- 1. FILE UPLOAD SETUP (Cloudinary) ---
+// --- 1. FILE UPLOAD SETUP (Cloudinary) ---
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
@@ -21,15 +22,15 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
+    const isPdf = file.mimetype === 'application/pdf';
     return {
       folder: 'physica_uploads',
-      // Ensure PDFs and images are both supported
-      resource_type: file.mimetype === 'application/pdf' ? 'raw' : 'image', 
+      // 'auto' allows Cloudinary to handle images, raw files (PDFs), and videos automatically
+      resource_type: 'auto', 
       public_id: Date.now() + '-' + file.originalname.split('.')[0],
     };
   },
 });
-
 const upload = multer({ storage: storage });
 
 
