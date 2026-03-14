@@ -265,22 +265,21 @@ router.put('/blogs/approve/:id', async (req, res) => {
 });
 
 // --- 7. DELETE RESOURCE (Notes & Magazines) ---
+// --- 7. DELETE RESOURCE (Notes & Magazines) ---
 router.delete('/resources/:id', async (req, res) => {
     try {
         const resource = await Resource.findById(req.params.id);
         if (!resource) return res.status(404).json({ message: "File not found" });
 
-        // 1. Delete the actual file from the 'uploads' folder to save space
-        if (resource.filePath) {
-            fs.unlink(resource.filePath, (err) => {
-                if (err) console.error("Failed to delete local file:", err);
-            });
-        }
-
-        // 2. Delete the database entry
+        // We ONLY delete the database entry now. 
+        // (Cloudinary holds the actual file safely in the cloud)
         await Resource.findByIdAndDelete(req.params.id);
+        
         res.json({ message: "Resource deleted successfully" });
-    } catch (err) { res.status(500).json(err); }
+    } catch (err) { 
+        console.error("Delete Resource Error:", err);
+        res.status(500).json(err); 
+    }
 });
 
 // --- 8. DELETE BLOG ---
