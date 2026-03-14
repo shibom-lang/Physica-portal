@@ -19,18 +19,14 @@ cloudinary.config({
 });
 
 // Create the storage engine for Cloudinary
+// Create the storage engine for Cloudinary
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: async (req, file) => {
-    const isPdf = file.mimetype === 'application/pdf';
-    return {
+    cloudinary: cloudinary,
+    params: {
       folder: 'physica_uploads',
-      // 'auto' allows Cloudinary to handle images, raw files (PDFs), and videos automatically
-      resource_type: 'auto', 
-      public_id: Date.now() + '-' + file.originalname.split('.')[0],
-    };
-  },
-});
+      resource_type: 'auto' 
+    }
+  });
 const upload = multer({ storage: storage });
 
 

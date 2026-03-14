@@ -45,7 +45,11 @@ io.on('connection', (socket) => {
         io.emit('visitorCountUpdate', activeUsers);
     });
 });
-
+//  UNMASK CLOUDINARY ERRORS
+app.use((err, req, res, next) => {
+    console.error("EXACT CLOUDINARY ERROR:", JSON.stringify(err, null, 2));
+    res.status(500).json({ message: "Upload failed. Check server logs." });
+});
 server.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT} with WebSockets enabled`);
 });
