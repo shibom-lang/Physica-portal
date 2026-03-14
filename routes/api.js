@@ -417,28 +417,15 @@ router.get('/events/highlights', async (req, res) => {
 router.post('/events/post', upload.array('photos', 20), async (req, res) => {
     try {
         const { highlightId, title, caption, author, role } = req.body;
-        
-        // Ensure files were uploaded
-        if (!req.files || req.files.length === 0) {
-            return res.status(400).json({ message: "Please select at least one photo." });
-        }
+        if (!req.files || req.files.length === 0) return res.status(400).json({ message: "No photos selected." });
 
-        // Map through the uploaded files and get their paths
-        const imagePaths = req.files.map(file => file.path);
+        // Map through the uploaded files and get their Cloudinary paths
+        const imagePaths = req.files.map(file => file.path); 
 
-        const newPost = new EventPost({
-            highlightId,
-            title,
-            caption,
-            imagePaths, // Save the array of multiple paths
-            author,
-            role
-        });
-
+        const newPost = new EventPost({ highlightId, title, caption, imagePaths, author, role });
         await newPost.save();
         res.status(201).json({ message: "Album published successfully!" });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ message: "Failed to publish album." });
     }
 });
@@ -483,17 +470,6 @@ router.delete('/events/post/:id', async (req, res) => {
     try {
         const post = await EventPost.findById(req.params.id);
         if (!post) return res.status(404).json({ message: "Album not found" });
-
-        // Step 1: Delete all the actual image files from the server's uploads folder
-        if (post.imagePaths && post.imagePaths.length > 0) {
-            post.imagePaths.forEach(imgPath => {
-                fs.unlink(imgPath, (err) => {
-                    if (err) console.error("Failed to delete local image:", err);
-                });
-            });
-        }
-
-        // Step 2: Delete the album from the database
         await EventPost.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: "Album deleted successfully" });
     } catch (err) {
@@ -507,17 +483,16 @@ router.delete('/events/post/:id', async (req, res) => {
 router.post('/achievements', upload.array('photos', 10), async (req, res) => {
     try {
         const { category, studentsInvolved, description, author, authorRole } = req.body;
+        // Correctly extract Cloudinary URLs for the array
         const imagePaths = req.files ? req.files.map(file => file.path) : [];
 
-        const newPost = new Achievement({
-            category, studentsInvolved, description, imagePaths, author, authorRole
-        });
-        
+        const newPost = new Achievement({ category, studentsInvolved, description, imagePaths, author, authorRole });
         await newPost.save();
         res.status(201).json(newPost);
-    } catch (err) { res.status(500).json({ message: "Failed to post achievement." }); }
+    } catch (err) {
+        res.status(500).json({ message: "Failed to post achievement." });
+    }
 });
-
 // 2. Get Achievements by Category
 router.get('/achievements/:category', async (req, res) => {
     try {
