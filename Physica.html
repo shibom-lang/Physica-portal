@@ -13,6 +13,60 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
     <style>
+        /* === LIGHT THEME OVERRIDES === */
+        body { transition: background 0.5s ease, color 0.5s ease; }
+        .card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease; }
+        
+        body.light-theme {
+            --primary: #0066cc;
+            --primary-dark: #004499;
+            --primary-glow: rgba(0, 102, 204, 0.15);
+            --accent: #0284c7;
+            --bg-deep: #f4f7fb; /* Clean academic gray-blue */
+            --bg-space: #ffffff;
+            --surface: rgba(255, 255, 255, 1);
+            --surface-elevated: #ffffff;
+            --text-main: #0f172a;
+            --text-dim: #334155;
+            --text-tertiary: #64748b;
+            --border: rgba(0, 0, 0, 0.1);
+            --border-hover: rgba(0, 102, 204, 0.3);
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-glow: 0 10px 25px rgba(0, 102, 204, 0.15);
+        }
+
+        /* Hide the stars and space background in daytime */
+        body.light-theme .space-bg { display: none; }
+        
+        /* Light mode specific header and card fixes */
+        body.light-theme header { 
+            background: rgba(255, 255, 255, 0.85); 
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        body.light-theme .card { box-shadow: var(--shadow); }
+        
+        body.light-theme input, body.light-theme select, body.light-theme textarea {
+            background: #ffffff;
+            color: var(--text-main);
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Force hardcoded white text to turn dark in light mode */
+        body.light-theme [style*="color: white"],
+        body.light-theme [style*="color: #fff"],
+        body.light-theme [style*="color: #ffffff"] {
+            color: var(--text-main) !important;
+        }
+        
+        /* Fix the gradient text on the homepage hero for light mode */
+        body.light-theme .hero h1 {
+            background: linear-gradient(to right, #004499, #0284c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
         /* === PROFESSIONAL THEME === */
         :root {
             --primary: #0088ff;
@@ -855,9 +909,15 @@
             </div>
     
             <div class="dept-nav-area" style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
-                <div class="logo" style="display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.5rem; color: var(--primary); text-shadow: 0 0 15px var(--primary-glow);">
-                    <dotlottie-wc src="https://lottie.host/b591dbd3-2f76-46d5-9a96-a0b97b60d11b/PY2eF3h4KP.lottie" autoplay loop class="animated-lottie-logo" style="width: 40px; height: 40px;"></dotlottie-wc>
-                    <span>PHYSICA</span>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div class="logo" style="display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.5rem; color: var(--primary); text-shadow: 0 0 15px var(--primary-glow);">
+                        <dotlottie-wc src="https://lottie.host/b591dbd3-2f76-46d5-9a96-a0b97b60d11b/PY2eF3h4KP.lottie" autoplay loop class="animated-lottie-logo" style="width: 40px; height: 40px;"></dotlottie-wc>
+                        <span>PHYSICA</span>
+                    </div>
+                    
+                    <button id="theme-toggle" onclick="toggleTheme()" style="background: rgba(148, 163, 184, 0.15); border: 1px solid var(--border); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow);" onmouseover="this.style.transform='scale(1.1)';" onmouseout="this.style.transform='scale(1)';">
+                        ☀️
+                    </button>
                 </div>
                 <nav>
                     <ul class="flex" id="mainNav" style="list-style: none; gap: 5px;"></ul>
@@ -939,6 +999,34 @@
             currentUser = null;
             localStorage.removeItem('physicaUser'); 
             navigate('home');
+        }
+        // ---  LIGHT/DARK THEME LOGIC ---
+        function toggleTheme() {
+            const body = document.body;
+            const toggleBtn = document.getElementById('theme-toggle');
+            
+            if (body.classList.contains('light-theme')) {
+                // Switch back to Dark Space Theme
+                body.classList.remove('light-theme');
+                localStorage.setItem('physicaTheme', 'dark');
+                toggleBtn.innerHTML = '☀️'; 
+                toggleBtn.style.background = 'rgba(148, 163, 184, 0.15)';
+            } else {
+                // Switch to Light Academic Theme
+                body.classList.add('light-theme');
+                localStorage.setItem('physicaTheme', 'light');
+                toggleBtn.innerHTML = '🌙'; 
+                toggleBtn.style.background = 'rgba(0, 102, 204, 0.1)';
+            }
+        }
+
+        // Check if the user previously chose light mode
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('physicaTheme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('theme-toggle').innerHTML = '🌙';
+            }
         }
         /// 📢 FETCH LIVE NOTICES FOR THE TICKER (36-HOUR EXPIRATION)
         async function loadLiveTicker() {
@@ -2755,7 +2843,6 @@
     }
     // ==========================================
     // 🖼️ TEACHER DASHBOARD: SLIDER MANAGER
-    // ==========================================
     async function uploadCarouselSlide(e) {
         e.preventDefault();
         const title = document.getElementById('carouselTitle').value;
@@ -2931,7 +3018,8 @@ async function handleAchievement(e) {
     window.addEventListener('DOMContentLoaded', () => {
         startSystemStatus();
         loadLiveTicker(); 
-    });
+        initializeTheme();
+    });   
     </script>
 </body>
 </html>
