@@ -22,29 +22,34 @@
             --primary-dark: #004499;
             --primary-glow: rgba(0, 102, 204, 0.15);
             --accent: #0284c7;
-            --bg-deep: #f4f7fb; /* Clean academic gray-blue */
+            --bg-deep: #f8fafc; /* Clean academic gray-blue */
             --bg-space: #ffffff;
             --surface: rgba(255, 255, 255, 1);
             --surface-elevated: #ffffff;
             --text-main: #0f172a;
             --text-dim: #334155;
             --text-tertiary: #64748b;
-            --border: rgba(0, 0, 0, 0.1);
+            --border: rgba(85, 93, 117, 0.685);
             --border-hover: rgba(0, 102, 204, 0.3);
             --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             --shadow-glow: 0 10px 25px rgba(0, 102, 204, 0.15);
         }
 
         /* Hide the stars and space background in daytime */
-        body.light-theme .space-bg { display: none; }
-        
-        /* Light mode specific header and card fixes */
-        body.light-theme header { 
-            background: rgba(255, 255, 255, 0.85); 
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        body.light-theme header {
+            background: #004499;
         }
         
+        body.light-theme .nav-link,
+        body.light-theme .college-name-en,
+        body.light-theme .college-name-as,
+        body.light-theme #live-ticker-text,
+        body.light-theme .clock-text {
+        color: white !important;
+       }
+       body.light-theme .traffic-text {
+    color: white;
+}
         body.light-theme .card { box-shadow: var(--shadow); }
         
         body.light-theme input, body.light-theme select, body.light-theme textarea {
@@ -60,13 +65,44 @@
             color: var(--text-main) !important;
         }
         
-        /* Fix the gradient text on the homepage hero for light mode */
-        body.light-theme .hero h1 {
-            background: linear-gradient(to right, #004499, #0284c7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: none;
-        }
+        /* Fix headings and logo in light mode */
+        body.light-theme h1,
+        body.light-theme h2,
+        body.light-theme h3,
+        body.light-theme h4,
+        body.light-theme h5,
+        body.light-theme h6 {
+    color: var(--text-main) !important;
+}
+
+    body.light-theme .logo,
+    body.light-theme .logo span {
+    color: var(--text-main) !important;
+    text-shadow: none !important;
+}
+
+/* Fix nav links */
+body.light-theme .nav-link {
+    color: var(--text-dim);
+}
+
+body.light-theme .nav-link:hover {
+    color: var(--primary);
+}
+
+/* Fix hero title gradient problem */
+body.light-theme .hero h1 {
+    background: none !important;
+    -webkit-text-fill-color: var(--text-main) !important;
+    color: var(--text-main) !important;
+}
+.clock-time {
+    color: var(--text-main);
+}
+
+body.light-theme .clock-time {
+    color: #ffffff;
+}
         /* === PROFESSIONAL THEME === */
         :root {
             --primary: #0088ff;
@@ -114,7 +150,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: #0a0e1a; /* Matches your space theme */
+            background: #0a0e1a; 
             backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(0, 136, 255, 0.3);
             padding: 10px 0;
@@ -361,7 +397,7 @@
         .font-bold { font-weight: 700; }
 
         /* === HEADER === */
-        header {
+        body:not(.light-theme) header {
             background: rgba(10, 14, 26, 0.7);
             backdrop-filter: blur(16px) saturate(180%);
             border-bottom: 1px solid var(--border);
@@ -879,10 +915,10 @@
         
         <div style="display: flex; align-items: center; gap: 8px;">
             <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: pulse-green 2s infinite;"></div>
-            <span style="color: var(--accent);">Live Campus Traffic: <strong id="activeVisitors" style="color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5);">--</strong> Online</span>
+            <span class="traffic-text">Live Campus Traffic: <strong id="activeVisitors" style="color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5);">--</strong> Online</span>
         </div>
 
-        <div id="liveClock" style="color: var(--text-dim); letter-spacing: 0.05em; font-weight: 500;">
+        <div id="liveClock" class="clock-text">
             Initializing Time Protocol...
         </div>
     </div>
@@ -898,7 +934,6 @@
         <marquee id="live-ticker-text" style="color: var(--text-main); font-size: 0.9rem; margin-left: 15px; font-weight: 500;" scrollamount="5">
             Loading live updates...
         </marquee>
-        </div>
         <div class="header-container container flex justify-between items-center">
             <div class="college-branding" style="display: flex; align-items: center; gap: 15px;">
                 <img class="college-logo" src="https://aryavidyapeeth.webdcl.com/images/logo.png" alt="College logo" height="55px" width="55px" style="filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));">
@@ -1104,7 +1139,7 @@
                         <div class="stat-value">120+</div>
                         <div class="stat-label">Students</div>
                     </div>
-                    <div class="card stat-card" style="border-bottom: 3px solid var(--tartiary);">
+                    <div class="card stat-card" style="border-bottom: 3px solid var(--tertiary);">
                         <div class="stat-value">3+</div>
                         <div class="stat-label">Lab Facilities</div>
                     </div>
@@ -2969,8 +3004,6 @@ async function handleAchievement(e) {
         if (res.ok) {
             alert("✅ Achievement Published Successfully!");
             form.reset();
-            
-            // Immediately jump to the feed they just posted to!
             const pageTitle = category === 'academic' 
                 ? ' Academic Programs & Excellence' 
                 : 'Student Activities & Achievements';
@@ -2984,7 +3017,7 @@ async function handleAchievement(e) {
 }
     // ⏱️ LIVE CLOCK & TRAFFIC LOGIC
 
-    function startSystemStatus() {
+         function startSystemStatus() {
         const clockElement = document.getElementById('liveClock');
         if (clockElement) {
             setInterval(() => {
@@ -2992,7 +3025,7 @@ async function handleAchievement(e) {
                 const dateStr = now.toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
                 const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 
-                clockElement.innerHTML = `<span style="color: var(--primary);"></span> ${dateStr} &nbsp;&nbsp;|&nbsp;&nbsp; <span style="color: var(--tartiary);">⏱️</span> <span style="color: #fff;">${timeStr}</span>`;
+                clockElement.innerHTML = `<span style="color: var(--primary);"></span> ${dateStr} &nbsp;&nbsp;|&nbsp;&nbsp; <span style="color: var(--tartiary);">⏱️</span> <span class="clock-time">${timeStr}</span>`;
             }, 1000); 
         }
         // 2. REAL-TIME WEBSOCKET VISITOR TRACKING
