@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -102,6 +102,35 @@ body.light-theme .hero h1 {
 
 body.light-theme .clock-time {
     color: #ffffff;
+}
+body.light-theme {
+    background-color: #f8fafc;
+}
+
+/* Doodle layer */
+body.light-theme {
+    background-color: #f8fafc;
+    position: relative;
+}
+
+/* Doodle background FIXED */
+body.light-theme::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-image: url("https://raw.githubusercontent.com/shibom-lang/projects/main/doodle.png");
+    background-repeat: repeat;
+    background-size: 300px;
+
+    opacity: 0.35;
+filter: grayscale(100%) brightness(1.3); /* increase visibility */
+
+    z-index: -1; /* IMPORTANT */
+    pointer-events: none;
 }
         /* === PROFESSIONAL THEME === */
         :root {
@@ -3052,7 +3081,8 @@ async function handleAchievement(e) {
         startSystemStatus();
         loadLiveTicker(); 
         initializeTheme();
-    });   
+    }); 
+     
     </script>
 </body>
 </html>
